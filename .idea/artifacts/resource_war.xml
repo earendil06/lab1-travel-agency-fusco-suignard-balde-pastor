@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="resource:war">
+    <output-path>$PROJECT_DIR$/services/resource/target</output-path>
+    <root id="archive" name="tcs-service-rest.war">
+      <element id="artifact" artifact-name="resource:war exploded" />
+    </root>
+  </artifact>
+</component>

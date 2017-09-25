@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="acceptation" />
+        <module name="document" />
+        <module name="resource" />
+        <module name="rpc" />
+        <module name="stress" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="acceptation" target="1.8" />
+      <module name="document" target="1.8" />
+      <module name="lab1-travel-agency-fusco-suignard-pastor" target="1.8" />
+      <module name="resource" target="1.8" />
+      <module name="rpc" target="1.8" />
+      <module name="services" target="1.8" />
+      <module name="stress" target="1.8" />
+      <module name="tests" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
