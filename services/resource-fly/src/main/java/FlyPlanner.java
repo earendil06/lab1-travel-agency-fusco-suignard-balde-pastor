@@ -4,17 +4,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 
-@Path("/submitTravel")
+@Path("/FlyPlanner")
 @Produces(MediaType.APPLICATION_JSON)
-public class SubmitProposal {
+public class FlyPlanner {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response submitProposal(String proposalString) {
+    public Response request(String proposalString) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Proposal proposal = mapper.readValue(proposalString, Proposal.class);
-            Storage.create(proposal);
+            Parameters parameters = mapper.readValue(proposalString, Parameters.class);
+            Storage.create(parameters);
             return Response.ok().build();
         } catch (IOException e) {
             return Response.status(Response.Status.CONFLICT)

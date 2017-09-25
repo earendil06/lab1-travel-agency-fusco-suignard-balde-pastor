@@ -5,7 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/tests/acceptation/acceptation.iml" filepath="$PROJECT_DIR$/tests/acceptation/acceptation.iml" />
       <module fileurl="file://$PROJECT_DIR$/services/document/document.iml" filepath="$PROJECT_DIR$/services/document/document.iml" />
       <module fileurl="file://$PROJECT_DIR$/lab1-travel-agency-fusco-suignard-pastor.iml" filepath="$PROJECT_DIR$/lab1-travel-agency-fusco-suignard-pastor.iml" />
-      <module fileurl="file://$PROJECT_DIR$/services/resource/resource.iml" filepath="$PROJECT_DIR$/services/resource/resource.iml" />
+      <module fileurl="file://$PROJECT_DIR$/services/resource-car/resource-car.iml" filepath="$PROJECT_DIR$/services/resource-car/resource-car.iml" />
+      <module fileurl="file://$PROJECT_DIR$/services/resource-fly/resource-fly.iml" filepath="$PROJECT_DIR$/services/resource-fly/resource-fly.iml" />
+      <module fileurl="file://$PROJECT_DIR$/services/resource-hotel/resource-hotel.iml" filepath="$PROJECT_DIR$/services/resource-hotel/resource-hotel.iml" />
       <module fileurl="file://$PROJECT_DIR$/services/rpc/rpc.iml" filepath="$PROJECT_DIR$/services/rpc/rpc.iml" />
       <module fileurl="file://$PROJECT_DIR$/services/services.iml" filepath="$PROJECT_DIR$/services/services.iml" />
       <module fileurl="file://$PROJECT_DIR$/tests/stress/stress.iml" filepath="$PROJECT_DIR$/tests/stress/stress.iml" />

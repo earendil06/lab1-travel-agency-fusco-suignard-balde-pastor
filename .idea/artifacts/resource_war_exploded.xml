@@ -4,7 +4,7 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="resource" />
+          <element id="module-output" name="resource-fly" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.json:json:20170516" />
@@ -14,9 +14,9 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/services/resource/target/tcs-service-rest/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/services/resource-fly/target/tcs-service-rest/META-INF/MANIFEST.MF" />
       </element>
-      <element id="javaee-facet-resources" facet="resource/web/Web" />
+      <element id="javaee-facet-resources" facet="resource-fly/web/Web" />
     </root>
   </artifact>
 </component>

@@ -4,7 +4,9 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/services" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/services/document" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/services/resource" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/services/resource-car" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/services/resource-fly" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/services/resource-hotel" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/services/rpc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tests" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tests/acceptation" charset="UTF-8" />

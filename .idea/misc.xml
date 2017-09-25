@@ -5,7 +5,9 @@
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/services/document" />
-    <file type="web" url="file://$PROJECT_DIR$/services/resource" />
+    <file type="web" url="file://$PROJECT_DIR$/services/resource-car" />
+    <file type="web" url="file://$PROJECT_DIR$/services/resource-fly" />
+    <file type="web" url="file://$PROJECT_DIR$/services/resource-hotel" />
     <file type="web" url="file://$PROJECT_DIR$/services/rpc" />
   </component>
   <component name="MavenProjectsManager">
@@ -19,6 +21,7 @@
         <option value="$PROJECT_DIR$/services/document/pom.xml" />
         <option value="$PROJECT_DIR$/services/resource/pom.xml" />
         <option value="$PROJECT_DIR$/services/rpc/pom.xml" />
+        <option value="$PROJECT_DIR$/services/resource-hotel/pom.xml" />
       </list>
     </option>
   </component>
