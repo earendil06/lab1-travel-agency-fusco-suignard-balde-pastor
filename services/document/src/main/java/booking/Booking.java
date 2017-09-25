@@ -19,7 +19,8 @@ public class Booking {
     public Response process(String input) {
         JSONObject obj = new JSONObject(input);
         try {
-            switch (EVENT.valueOf(obj.getString("event"))) {
+            EVENT event = EVENT.valueOf(obj.getString("event"));
+            switch (event) {
                 case CAR:
                     return Response.ok().entity(Handler.carExecute(obj).toString()).build();
                 case FLY:

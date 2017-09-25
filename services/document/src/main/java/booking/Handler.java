@@ -18,4 +18,5 @@ class Handler {
     static JSONObject hotelExecute(JSONObject obj) {
         return new HotelBookable().execute(obj);
     }
+
 }
