@@ -4,6 +4,7 @@ import com.mongodb.MongoClient;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -11,19 +12,26 @@ import java.util.List;
 
 class Handler {
 
-    static JSONObject retrieve(JSONObject input) {
+    static JSONObject register(JSONObject input) {
+        MongoCollection flights = getFlights();
+        Flight data = new Flight(input.getJSONObject("flight"));
+        flights.insert(data);
+        return new JSONObject().put("inserted", true).put("flight", data.toJson());
+    }
+
+    static JSONArray retrieve(JSONObject input) {
         MongoCollection flights = getFlights();
         String from = input.getString("from");
         MongoCursor<Flight> all = flights.find("{ from : # }", from).as(Flight.class);
 
-        List<JSONObject> list = new ArrayList<>();
+        JSONArray jArray = new JSONArray();
 
         for (Flight f : all) {
 
-            list.add(f.toJson());
+            jArray.put(f.toJson());
         }
 
-        return new JSONObject(list);
+        return jArray;
     }
 
     private static MongoCollection getFlights() {

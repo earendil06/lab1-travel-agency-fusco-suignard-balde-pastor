@@ -9,7 +9,7 @@ echo "databaseHostName=$db_host" >> $PROP
 echo "databasePort=$db_port" >> $PROP
 
 # step #2: update the webapp to load the right properties
-jar uvf ./webapps/tcs-service-document.war $PROP
+jar uvf ./webapps/tcs-service-doc.war $PROP
 
 # step #3: start the TomEE engine
 catalina.sh run

@@ -21,6 +21,8 @@ public class Registry {
         JSONObject obj = new JSONObject(input);
         try {
             switch (Event.valueOf(obj.getString("event"))) {
+                case REGISTER:
+                    return Response.ok().entity(Handler.register(obj).toString(INDENT_FACTOR)).build();
                 case RETRIEVE:
                     return Response.ok().entity(Handler.retrieve(obj).toString(INDENT_FACTOR)).build();
             }
