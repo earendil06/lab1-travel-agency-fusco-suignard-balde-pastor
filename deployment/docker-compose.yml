@@ -7,8 +7,22 @@ version: '3'
 
 services:
 
-  hotel-planner:                # Tax Computation, on port 9090
+  hotel-planner:
     container_name: tcs-hotel
     image: petitroll/tcs-rest-hotel
     ports:
       - "9090:8080"
+
+  flight-planner:
+    container_name: tcs-flight
+    image: petitroll/tcs-doc
+    ports:
+      - "9080:8080"
+
+  database:                       # MongoDB database, on port 27017
+    container_name: tcs-database
+    image: mongo:3.0
+    volumes:
+      - "./mongo_data:/data/db"
+    ports:
+      - "27017:27017"

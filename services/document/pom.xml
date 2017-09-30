@@ -34,7 +34,7 @@
     </dependencies>
 
     <build>
-        <finalName>tcs-service-document</finalName>
+        <finalName>tcs-service-doc</finalName>
     </build>
 
 </project>
