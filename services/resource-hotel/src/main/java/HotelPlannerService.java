@@ -2,6 +2,7 @@ import org.json.JSONArray;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -23,7 +24,7 @@ public class HotelPlannerService {
 
     @Path("/{place}")
     @GET
-    public Response request(String place) {
+    public Response request(@PathParam("place") String place) {
         Collection<HotelRental> hotelRentals = Storage.getHotelAtPlace(place);
         JSONArray result = new JSONArray();
         for (HotelRental hotelRental : hotelRentals) {

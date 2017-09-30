@@ -21,7 +21,7 @@ public class CarPlannerService {
 
     @Path("/{place}")
     @GET
-    public Response request(String place) { //todo error message when not any
+    public Response request(@PathParam("place") String place) { //todo error message when not any
         Collection<CarRental> carRentals = Storage.getCarAtPlace(place);
         JSONArray result = new JSONArray();
         for (CarRental carRental : carRentals) {

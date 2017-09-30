@@ -1,0 +1,14 @@
+## Start the system with "docker-compose up -d"
+## Shutdown it with "docker-compose down"
+## To clean your docker install: "docker system prune"
+## To purge your docker install: "docker system prune -a"
+
+version: '3'
+
+services:
+
+  hotel-planner:                # Tax Computation, on port 9090
+    container_name: tcs-hotel
+    image: petitroll/tcs-rest-hotel
+    ports:
+      - "9090:8080"
