@@ -1,4 +1,4 @@
-package travelproposal;
+package flights;
 
 import org.json.JSONObject;
 
@@ -9,12 +9,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import static travelproposal.Handler.proposal;
-
-
-@Path("/proposal")
+@Path("/flights")
 @Produces(MediaType.APPLICATION_JSON)
-public class TravelProposal {
+public class Registry {
 
     private static final int INDENT_FACTOR = 2;
 
@@ -23,14 +20,15 @@ public class TravelProposal {
     public Response process(String input) {
         JSONObject obj = new JSONObject(input);
         try {
-            switch (EVENT.valueOf(obj.getString("event"))) {
-                case SUBMIT:
-                    return Response.ok().entity(proposal(obj).toString(INDENT_FACTOR)).build();
+            switch (Event.valueOf(obj.getString("event"))) {
+                case RETRIEVE:
+                    return Response.ok().entity(Handler.retrieve(obj).toString(INDENT_FACTOR)).build();
             }
-        }catch(Exception e) {
+        } catch(Exception e) {
             JSONObject error = new JSONObject().put("error", e.toString());
             return Response.status(400).entity(error.toString(INDENT_FACTOR)).build();
         }
         return null;
     }
+
 }
