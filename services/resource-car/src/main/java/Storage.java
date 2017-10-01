@@ -1,30 +1,47 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import com.mongodb.MongoClient;
+import org.jongo.Jongo;
+import org.jongo.MongoCollection;
+import org.jongo.MongoCursor;
+import org.json.JSONArray;
+
+import java.util.*;
 
 public class Storage {
-    // this mocks a database.
-    private static HashMap<String, Collection<CarRental>> contents = new HashMap<>();
 
-    public static void create(CarRental carRental) {
-        List l = (ArrayList<CarRental>) contents.get(carRental.getPlace());
-        if (l == null) {
-            List<CarRental> toStore = new ArrayList<>();
-            toStore.add(carRental);
-            contents.put(carRental.getPlace(), toStore);
-        } else {
-            contents.get(carRental.getPlace()).add(carRental);
+    public static void create(CarRental carsRental) {
+        MongoCollection hotels = getCars();
+        hotels.insert(carsRental);
+    }
+
+    //todo reformat, separation of concern
+    public static JSONArray getCarsAtPlaceAndDuration(String place, String duration) {
+        MongoCollection cars = getCars();
+        MongoCursor<CarRental> all =
+                cars.find("{ place : #, duration : # }", place, duration).as(CarRental.class);
+
+        JSONArray jArray = new JSONArray();
+
+        for (CarRental f : all) {
+            jArray.put(f.toJson());
         }
+
+        return jArray;
     }
 
-    //todo add duration
-    public static Collection<CarRental> getCarAtPlace(String place) {
-        return contents.get(place);
+    public static JSONArray findAll() {
+        MongoCollection cars = getCars();
+        Iterator<CarRental> iter = cars.find().as(CarRental.class).iterator();
+        JSONArray jsonArray = new JSONArray();
+        while (iter.hasNext()) {
+            jsonArray.put(iter.next().toJson());
+        }
+        return jsonArray;
     }
 
-    public static Collection<CarRental> findAll() {
-        return contents.values().stream().collect(ArrayList::new, List::addAll, List::addAll);
+
+    private static MongoCollection getCars() {
+        MongoClient client = new MongoClient(Network.HOST, Network.PORT);
+        return new Jongo(client.getDB(Network.DATABASE)).getCollection(Network.COLLECTION);
     }
 
     static {

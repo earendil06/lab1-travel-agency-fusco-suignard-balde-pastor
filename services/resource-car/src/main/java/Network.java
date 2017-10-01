@@ -13,6 +13,6 @@ class Network {
 
   static final String HOST = readProperties("databaseHostName");
   static final int PORT = Integer.parseInt(readProperties("databasePort"));
-  static final String DATABASE = "hotelDatabase";
-  static final String COLLECTION = "hotels";
+  static final String DATABASE = "carsDatabase";
+  static final String COLLECTION = "cars";
 }

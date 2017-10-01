@@ -6,6 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.ParseException;
 
 @Path("/HotelPlannerService")
 @Produces(MediaType.APPLICATION_JSON)
@@ -17,10 +18,14 @@ public class HotelPlannerService {
         return Response.ok().entity(hotelRentals.toString()).build();
     }
 
-    @Path("/{place}/{date}")
+    @Path("/{destination}/{day}/{month}/{year}")
     @GET
-    public Response request(@PathParam("place") String place, @PathParam("date") String date) {
-        JSONArray hotelRentals = Storage.getHotelAtPlaceAndDate(place, date);
+    public Response request(@PathParam("destination") String destination,
+                            @PathParam("day") String day,
+                            @PathParam("month") String month,
+                            @PathParam("year") String year) {
+        JSONArray hotelRentals;
+        hotelRentals = Storage.getHotelAtPlaceAndDate(destination, day, month, year);
         return Response.ok().entity(hotelRentals.toString()).build();
     }
 

@@ -32,16 +32,26 @@ services:
   travel-manager:
     container_name: tcs-rpc
     image: petitroll/tcs-rpc
+    environment:
+      - db_host=tcs-database
+      - db_port=27017
+    depends_on:
+      - database
     ports:
       - "9070:8080"
 
   car-planner:
     container_name: tcs-car
     image: petitroll/tcs-rest-car
+    environment:
+      - db_host=tcs-database
+      - db_port=27017
+    depends_on:
+      - database
     ports:
       - "9060:8080"
 
-  database:                       # MongoDB database, on port 27017
+  database:
     container_name: tcs-database
     image: mongo:3.0
     volumes:

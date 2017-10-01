@@ -27,6 +27,16 @@
             <artifactId>jackson-databind</artifactId>
             <version>RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.jongo</groupId>
+            <artifactId>jongo</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>

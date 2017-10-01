@@ -14,22 +14,15 @@ public class CarPlannerService {
 
     @GET
     public Response request() { //todo might need to be deleted, maybe we don't want all the db to be downloadable
-        Collection<CarRental> carRentals = Storage.findAll();
-        JSONArray result = new JSONArray();
-        for (CarRental carRental : carRentals) {
-            result.put(carRental.toString());
-        }
-        return Response.ok().entity(result.toString()).build();
+        JSONArray hotelRentals = Storage.findAll();
+        return Response.ok().entity(hotelRentals.toString()).build();
     }
 
-    @Path("/{place}")
+    @Path("/{place}/{duration}")
     @GET
-    public Response request(@PathParam("place") String place) { //todo error message when not any
-        Collection<CarRental> carRentals = Storage.getCarAtPlace(place);
-        JSONArray result = new JSONArray();
-        for (CarRental carRental : carRentals) {
-            result.put(carRental.toString());
-        }
-        return Response.ok().entity(result.toString()).build();
+    public Response request(@PathParam("place") String place, @PathParam("duration") String duration) {
+        //todo error message when not any
+        JSONArray carRentals = Storage.getCarsAtPlaceAndDuration(place, duration);
+        return Response.ok().entity(carRentals.toString()).build();
     }
 }
