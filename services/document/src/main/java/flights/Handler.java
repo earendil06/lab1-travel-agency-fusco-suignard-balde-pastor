@@ -7,9 +7,6 @@ import org.jongo.MongoCursor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 class Handler {
 
     static JSONObject register(JSONObject input) {

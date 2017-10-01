@@ -4,7 +4,6 @@ import travel.data.TravelConfirmAnswer;
 import travel.data.TravelConfirmRequest;
 
 import javax.jws.WebService;
-import java.util.concurrent.ExecutionException;
 
 @WebService(targetNamespace   = "http://informatique.polytech.unice.fr/soa1/travel/",
         portName          = "ExternalTravelComputerPort",
