@@ -1,22 +1,32 @@
 package travel.service;
 
+import travel.data.TravelSubmitAnswer;
 import travel.data.TravelSubmitRequest;
 
 import javax.jws.WebService;
-import java.util.Arrays;
+import java.util.UUID;
 
-@WebService(/*targetNamespace   = "http://informatique.polytech.unice.fr/soa1/travel/",*/
+@WebService(targetNamespace   = "http://informatique.polytech.unice.fr/soa1/travel/",
         portName          = "ExternalTravelComputerPort",
         serviceName       = "ExternalTravelComputerService",
         endpointInterface = "travel.service.ITravelApprovalService")
 public class TravelSubmit implements ITravelSubmitService {
 
     @Override
-    public TravelSubmitRequest travelRequest(TravelSubmitRequest request) {
-        TravelSubmitRequest travelSubmitRequest = new TravelSubmitRequest();
-        travelSubmitRequest.setIdentifier("adfezdfaz");
-        travelSubmitRequest.setFlights(Arrays.asList("ephfi", "phnefe"));
-        travelSubmitRequest.setHotels(Arrays.asList("ezfzf", "rberbh"));
-        return travelSubmitRequest;
+    public TravelSubmitAnswer travelRequest(TravelSubmitRequest request) {
+        TravelSubmitAnswer answer = new TravelSubmitAnswer();
+
+        try {
+            //TODO save in database the request
+
+            String uuidRequest = UUID.randomUUID().toString();
+            answer.setUuid(uuidRequest);
+            answer.setSuccess(true);
+        } catch (Exception e) {
+            answer.setSuccess(false);
+        }
+
+
+        return answer;
     }
 }

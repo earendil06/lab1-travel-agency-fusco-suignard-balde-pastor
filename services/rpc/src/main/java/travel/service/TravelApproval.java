@@ -1,22 +1,29 @@
 package travel.service;
 
 import travel.data.TravelConfirmAnswer;
-import travel.data.TravelSubmitRequest;
+import travel.data.TravelConfirmRequest;
 
 import javax.jws.WebService;
-import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
-@WebService(/*targetNamespace   = "http://informatique.polytech.unice.fr/soa1/travel/",*/
+@WebService(targetNamespace   = "http://informatique.polytech.unice.fr/soa1/travel/",
         portName          = "ExternalTravelComputerPort",
         serviceName       = "ExternalTravelComputerService",
         endpointInterface = "travel.service.ITravelApprovalService")
 public class TravelApproval implements ITravelApprovalService {
 
+
     @Override
-    public TravelConfirmAnswer travelConfirm(TravelConfirmAnswer answer) {
-        TravelConfirmAnswer travelSubmitRequest = new TravelConfirmAnswer();
-        travelSubmitRequest.setConfirmed(true);
-        travelSubmitRequest.setIdentifier("rrrrrrr");
-        return travelSubmitRequest;
+    public TravelConfirmAnswer travelConfirm(TravelConfirmRequest request) {
+        TravelConfirmAnswer answer = new TravelConfirmAnswer();
+        answer.setUuid(request.getUuid());
+        try {
+            //TODO send the mail to the owner demand
+            answer.setSuccess(true);
+        }catch (Exception e) {
+            answer.setSuccess(false);
+        }
+
+        return answer;
     }
 }

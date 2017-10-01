@@ -6,13 +6,13 @@ import java.util.List;
 
 @XmlType
 public class TravelSubmitRequest {
-    private String identifier;
+    private String owner;
     private List<String> hotels;
     private List<String> flights;
 
-    @XmlElement(name = "id")
-    public String getIdentifier() { return identifier; }
-    public void setIdentifier(String identifier) { this.identifier = identifier; }
+    @XmlElement(name = "owner", required = true)
+    public String getOwner() { return owner; }
+    public void setOwner(String owner) { this.owner = owner; }
 
     @XmlElement(name = "hotels", required = true)
     public List<String> getHotels() { return hotels; }

@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType
-public class TravelConfirmAnswer {
+public class TravelSubmitAnswer {
     private String uuidRequest;
     private boolean success;
 
@@ -15,4 +15,5 @@ public class TravelConfirmAnswer {
     @XmlElement
     public boolean isSuccess() { return success; }
     public void setSuccess(boolean success) { this.success = success; }
+
 }
