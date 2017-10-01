@@ -24,6 +24,18 @@ services:
     ports:
       - "9080:8080"
 
+  travel-manager:
+    container_name: tcs-rpc
+    image: petitroll/tcs-rpc
+    ports:
+      - "9070:8080"
+
+  car-planner:
+    container_name: tcs-car
+    image: petitroll/tcs-rest-car
+    ports:
+      - "9060:8080"
+
   database:                       # MongoDB database, on port 27017
     container_name: tcs-database
     image: mongo:3.0

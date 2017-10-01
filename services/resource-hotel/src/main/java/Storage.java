@@ -28,9 +28,9 @@ public class Storage {
     }
 
     static {
-        create(new HotelRental("first", "Madrid", "2"));
-        create(new HotelRental("second", "Paris", "85"));
-        create(new HotelRental("third", "New York", "42"));
+        create(new HotelRental("first", "Tokyo", "2"));
+        create(new HotelRental("second", "Londre", "85"));
+        create(new HotelRental("third", "Bordeaux", "42"));
     }
 
 }

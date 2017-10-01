@@ -9,7 +9,7 @@ public class Storage {
         if (l == null) {
             List<CarRental> toStore = new ArrayList<>();
             toStore.add(carRental);
-            contents.put(carRental.getName(), toStore);
+            contents.put(carRental.getPlace(), toStore);
         } else {
             contents.get(carRental.getPlace()).add(carRental);
         }
