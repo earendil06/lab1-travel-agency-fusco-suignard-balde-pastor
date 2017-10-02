@@ -1,3 +1,5 @@
+package planner.data;
+
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.json.JSONObject;
 
@@ -38,7 +40,7 @@ public class CarRental {
 
     @Override
     public String toString() {
-        return "CarRental{" +
+        return "old.CarRental{" +
                 "name='" + name + '\'' +
                 ", place='" + place + '\'' +
                 ", duration='" + duration + '\'' +

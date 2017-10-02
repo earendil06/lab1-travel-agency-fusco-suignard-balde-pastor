@@ -1,16 +1,18 @@
+package planner.data;
+
 import com.mongodb.MongoClient;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 import org.json.JSONArray;
 
-import java.util.*;
+import java.util.Iterator;
 
 public class Storage {
 
     public static void create(CarRental carsRental) {
-        MongoCollection hotels = getCars();
-        hotels.insert(carsRental);
+        MongoCollection cars = getCars();
+        cars.insert(carsRental);
     }
 
     //todo reformat, separation of concern

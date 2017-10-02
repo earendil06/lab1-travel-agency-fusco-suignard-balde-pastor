@@ -17,7 +17,7 @@
 
     <modules>
         <module>rpc</module>
-        <module>resource-car</module>
+        <module>car-planner</module>
         <module>resource-hotel</module>
         <module>document</module>
     </modules>

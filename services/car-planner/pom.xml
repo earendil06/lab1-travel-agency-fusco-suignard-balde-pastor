@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.unice.polytech.esb.services</groupId>
-    <artifactId>resource-car</artifactId>
+    <artifactId>car-planner</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>ESB :: Services :: REST :: car</name>
+    <name>ESB :: Services :: RPC :: car-planner</name>
 
     <parent>
         <groupId>fr.unice.polytech.esb</groupId>
@@ -40,7 +40,7 @@
     </dependencies>
 
     <build>
-        <finalName>tcs-service-rest-car</finalName>
+        <finalName>service-car-planner</finalName>
     </build>
 
 </project>

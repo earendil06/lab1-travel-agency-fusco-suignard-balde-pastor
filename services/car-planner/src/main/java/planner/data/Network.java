@@ -1,3 +1,5 @@
+package planner.data;
+
 import java.io.IOException;
 import java.util.Properties;
 
@@ -13,6 +15,6 @@ class Network {
 
   static final String HOST = readProperties("databaseHostName");
   static final int PORT = Integer.parseInt(readProperties("databasePort"));
-  static final String DATABASE = "carsDatabase";
-  static final String COLLECTION = "cars";
+  static final String DATABASE = "carplannersDatabase";
+  static final String COLLECTION = "carplanners";
 }
