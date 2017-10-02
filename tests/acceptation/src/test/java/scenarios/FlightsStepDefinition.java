@@ -66,7 +66,7 @@ public class FlightsStepDefinition {
     public void setting_filter(String filter) { this.filter = filter; }*/
 
     @When("^the RETRIEVE message is sent$")
-    public void call_registry(String input) {
+    public void call_registry() {
         JSONObject request = new JSONObject();
         request.put("event", "RETRIEVE");
 
