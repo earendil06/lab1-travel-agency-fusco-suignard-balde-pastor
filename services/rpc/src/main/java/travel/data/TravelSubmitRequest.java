@@ -1,11 +1,17 @@
 package travel.data;
 
+import org.jongo.marshall.jackson.oid.MongoObjectId;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.List;
 
 @XmlType
 public class TravelSubmitRequest {
+
+    @MongoObjectId
+    public String id;
+
     private String owner;
     private List<String> hotels;
     private List<String> flights;

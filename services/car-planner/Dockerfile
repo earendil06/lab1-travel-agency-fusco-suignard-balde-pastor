@@ -13,9 +13,9 @@ ENV db_port=27017
 
 ## We need to install the `jar` command to modify the network.properties file
 ##
-##RUN apt-get  update \
-##      && apt-get --no-install-recommends install -y openjdk-8-jdk \
-##      && rm -rf /var/lib/apt/lists/*
+RUN apt-get  update \
+      && apt-get --no-install-recommends install -y openjdk-8-jdk \
+      && rm -rf /var/lib/apt/lists/*
 
 COPY ./start_in_docker.sh start.sh
 RUN ["chmod", "u+x", "./start.sh"]
