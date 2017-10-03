@@ -8,8 +8,8 @@ version: '3'
 services:
 
   hotel-planner:
-    container_name: tcs-hotel
-    image: petitroll/tcs-rest-hotel
+    container_name: hotel-planner
+    image: petitroll/hotel-planner
     environment:
       - db_host=tcs-database
       - db_port=27017

@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.unice.polytech.esb.services</groupId>
-    <artifactId>resource-hotel</artifactId>
+    <artifactId>hotel-planner</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>ESB :: Services :: REST :: hotel</name>
+    <name>ESB :: Services :: RPC :: hotel-planner</name>
 
     <parent>
         <groupId>fr.unice.polytech.esb</groupId>
@@ -40,7 +40,7 @@
     </dependencies>
 
     <build>
-        <finalName>tcs-service-rest-hotel</finalName>
+        <finalName>service-hotel-planner</finalName>
     </build>
 
 </project>

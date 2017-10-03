@@ -1,3 +1,5 @@
+package oldhotel;
+
 import com.mongodb.MongoClient;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;

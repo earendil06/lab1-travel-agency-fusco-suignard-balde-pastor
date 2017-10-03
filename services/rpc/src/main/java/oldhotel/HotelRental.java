@@ -1,3 +1,5 @@
+package oldhotel;
+
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.json.JSONObject;
 

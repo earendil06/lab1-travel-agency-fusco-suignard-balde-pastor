@@ -46,11 +46,11 @@ public class Storage {
         return new Jongo(client.getDB(Network.DATABASE)).getCollection(Network.COLLECTION);
     }
 
-    static {
+/*    static {
         create(new CarRental("first", "Madrid", "2"));
         create(new CarRental("second", "Paris", "85"));
         create(new CarRental("third", "New York", "42"));
         create(new CarRental("4", "toto", "10"));
-    }
+    }*/
 
 }

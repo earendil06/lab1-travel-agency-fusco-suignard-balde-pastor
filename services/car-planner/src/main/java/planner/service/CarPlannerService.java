@@ -1,7 +1,5 @@
 package planner.service;
 
-//import planner.data.Storage;
-
 import planner.data.Storage;
 
 import javax.jws.WebService;
@@ -21,7 +19,7 @@ public class CarPlannerService implements ICarPlannerService {
         }
     }
 
-    //public static void main(String[] args) {
-     //   System.out.println(Storage.findAll().toString());
-    //}
+    public static void main(String[] args) {
+        System.out.println(Storage.findAll().toString());
+    }
 }
