@@ -7,12 +7,31 @@ import org.jongo.MongoCursor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 public class Handler {
 
     static JSONArray retrieve(JSONObject input) {
         MongoCollection flights = getFlights();
-        //String from = input.getString("from");
-        MongoCursor<Flight> all = flights.find(/*"{ from : # }", from*/).as(Flight.class);
+
+        Map<String, Object> parameters = new HashMap<>();
+        for (Field field : Flight.class.getDeclaredFields()) {
+            if (field.isAnnotationPresent(AttributeQueryable.class)){
+                try {
+                    Object value = input.get(field.getName());
+                    if (field.getType().isAssignableFrom(String.class)) value = "\"" + value + "\"";
+                    parameters.put(field.getName(), value);
+                }catch (Exception e){
+
+                }
+            }
+        }
+        String filter = filter(parameters);
+        MongoCursor<Flight> all = flights.find(filter).as(Flight.class);
 
         JSONArray jArray = new JSONArray();
 
@@ -22,6 +41,19 @@ public class Handler {
         }
 
         return jArray;
+    }
+
+    public static String filter(Map<String, Object> map) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("{");
+        Iterator<String> listeKeys = map.keySet().iterator();
+        while(listeKeys.hasNext()) {
+            String key = listeKeys.next();
+            builder.append(key + ":" + map.get(key));
+            if (listeKeys.hasNext()) builder.append(",");
+        }
+        builder.append("}");
+        return builder.toString();
     }
 
     public static void create(Flight flight) {
