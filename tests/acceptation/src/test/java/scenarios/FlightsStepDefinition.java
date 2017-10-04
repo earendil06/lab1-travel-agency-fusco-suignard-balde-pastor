@@ -11,8 +11,11 @@ import org.json.JSONObject;
 
 import javax.ws.rs.core.MediaType;
 
+import java.text.ParseException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 public class FlightsStepDefinition {
@@ -45,9 +48,9 @@ public class FlightsStepDefinition {
         Handler.purge();
     }
 
-    @Given("^a (direct|non-direct) flight from (.*) to (.*) for (\\d+) euros the (\\d\\d/\\d\\d/\\d\\d\\d\\d)-(\\d\\d:\\d\\d) duration (\\d+) min$")
-    public void upload_preregistered_citizen(String direct, String from, String to, int price, String date, String hour, int duration) {
-        Flight flight = new Flight(from, to, date, hour, duration, price, direct.equals("direct"));
+    @Given("^a (direct|non-direct) flight from (.*) to (.*) for (.+) euros the (\\d\\d/\\d\\d/\\d\\d\\d\\d-\\d\\d:\\d\\d) duration (\\d+) min$")
+    public void upload_preregistered_citizen(String direct, String from, String to, double price, String date, int duration) throws ParseException {
+        Flight flight = new Flight(from, to, date, duration, price, direct.equals("direct"));
         Handler.create(flight);
     }
 
@@ -55,6 +58,7 @@ public class FlightsStepDefinition {
     @When("^the parameter date is set as (\\d\\d/\\d\\d/\\d\\d\\d\\d)$")
     public void call_with_date(String date){
         JSONObject request = createRetrieveRequest();
+
         request.put("date", date);
         answer = call(request);
         assertNotNull(answer);
@@ -74,6 +78,67 @@ public class FlightsStepDefinition {
         request.put("to", to);
         answer = call(request);
         assertNotNull(answer);
+    }
+
+    @When("^the RETRIEVE message is sent with option order by (.*)$")
+    public void call_with_order_option(String attr) {
+        JSONObject request = createRetrieveRequest();
+        request.put("order-by", attr);
+        answer = call(request);
+        assertNotNull(answer);
+    }
+
+    @When("^the RETRIEVE message is sent with option only direct$")
+    public void call_only_direct(){
+        JSONObject request = createRetrieveRequest();
+        request.put("direct", true);
+        answer = call(request);
+        assertNotNull(answer);
+    }
+
+    @When("^we require all flights with a (\\d+) max duration$")
+    public void call_with_max_duration(int max){
+        JSONObject request = createRetrieveRequest();
+        JSONObject maxObject = new JSONObject();
+        maxObject.put("duration", 120);
+        request.put("max", maxObject);
+        answer = call(request);
+        assertNotNull(answer);
+    }
+
+    @Then("^all the results are less than (\\d+) min$")
+    public void the_results_have_max_duration(int max){
+        System.out.println(answer);
+        for (int i = 0; i < answer.length(); i++) {
+            JSONObject o = answer.getJSONObject(i);
+            assertTrue(o.getInt("duration") <= max);
+        }
+    }
+
+    @Then("^all the results only direct$")
+    public void the_result_are_only_direct(){
+        for (int i = 0; i < answer.length(); i++) {
+            JSONObject o = answer.getJSONObject(i);
+            assertTrue(o.getBoolean("direct"));
+        }
+    }
+
+    @Then("^all the results are sorted by (.*)$")
+    public void the_results_are_sorted(String attr) {
+        for (int i = 0; i < answer.length() - 1; i++) {
+            Object o1 = answer.getJSONObject(i).get(attr);
+            Object o2 = answer.getJSONObject(i + 1).get(attr);
+            System.out.println(o1);
+            System.out.println(o2);
+            if (o1 instanceof String && o2 instanceof String) {
+                assertTrue(((String) o1).compareToIgnoreCase((String)o2) <= 0);
+            } else if (o1 instanceof Double && o2 instanceof Double){
+                assertTrue(((Double) o1).compareTo((Double) o2) <= 0);
+            } else {
+                assertTrue(((Integer) o1).compareTo((Integer) o2) <= 0);
+            }
+
+        }
     }
 
     @Then("^all the results go from (.*) to (.*)$")
