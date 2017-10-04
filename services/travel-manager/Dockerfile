@@ -5,7 +5,7 @@ FROM tomee:8-jre-7.0.3-plus
 
 WORKDIR /usr/local/tomee/
 
-COPY ./target/tcs-service-rpc.war ./webapps/.
+COPY ./target/service-travel-manager.war ./webapps/.
 
 ## Configuring the network.properties file (default values are provided)
 ENV db_host=localhost

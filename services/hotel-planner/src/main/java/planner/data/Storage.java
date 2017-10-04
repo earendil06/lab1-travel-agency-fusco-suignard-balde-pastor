@@ -1,4 +1,4 @@
-package oldhotel;
+package planner.data;
 
 import com.mongodb.MongoClient;
 import org.jongo.Jongo;
@@ -9,8 +9,6 @@ import org.json.JSONArray;
 import java.util.Iterator;
 
 public class Storage {
-    // this mocks a database.
-    //private static HashMap<String, Collection<HotelRental>> contents = new HashMap<>();
 
     public static void create(HotelRental hotelRental) {
         MongoCollection hotels = getHotels();
@@ -50,9 +48,9 @@ public class Storage {
     }
 
 /*    static {
-        create(new HotelRental("first", "Tokyo", "02/09/2010"));
-        create(new HotelRental("second", "Paris", "04/06/2017"));
-        create(new HotelRental("third", "Bordeaux", "12/12/1012"));
+        create(new planner.data.HotelRental("first", "Tokyo", "02/09/2010"));
+        create(new planner.data.HotelRental("second", "Paris", "04/06/2017"));
+        create(new planner.data.HotelRental("third", "Bordeaux", "12/12/1012"));
     }*/
 
 }

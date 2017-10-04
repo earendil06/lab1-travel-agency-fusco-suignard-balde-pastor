@@ -1,4 +1,4 @@
-package oldhotel;
+package manager.service;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -15,6 +15,8 @@ class Network {
 
   static final String HOST = readProperties("databaseHostName");
   static final int PORT = Integer.parseInt(readProperties("databasePort"));
-  static final String DATABASE = "hotelDatabase";
-  static final String COLLECTION = "hotels";
+  static final String DATABASE_REFUSED = "refusedRequestDatabase";
+  static final String DATABASE_VALIDATED = "validatedRequestDatabase";
+  static final String DATABASE_PENDING = "pendingRequestDatabase";
+  static final String COLLECTION = "travelRequests";
 }
