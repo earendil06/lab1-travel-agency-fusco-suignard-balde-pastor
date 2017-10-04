@@ -1,4 +1,4 @@
-package travel;
+package planner.data;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -15,6 +15,6 @@ class Network {
 
   static final String HOST = readProperties("databaseHostName");
   static final int PORT = Integer.parseInt(readProperties("databasePort"));
-  static final String DATABASE = "travelsDatabase";
-  static final String COLLECTION = "travels";
+  static final String DATABASE = "hotelDatabase";
+  static final String COLLECTION = "hotels";
 }

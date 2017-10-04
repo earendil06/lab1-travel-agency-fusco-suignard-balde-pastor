@@ -16,7 +16,7 @@
     </parent>
 
     <modules>
-        <module>rpc</module>
+        <module>travel-manager</module>
         <module>car-planner</module>
         <module>hotel-planner</module>
         <module>document</module>
@@ -32,6 +32,11 @@
             <artifactId>tomee-embedded</artifactId>
             <version>${versions.tomee}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.0.1</version>
         </dependency>
     </dependencies>
 

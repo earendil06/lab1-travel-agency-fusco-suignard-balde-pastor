@@ -1,4 +1,4 @@
-package oldhotel;
+package planner.data;
 
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.json.JSONObject;
@@ -40,7 +40,7 @@ public class HotelRental {
 
     @Override
     public String toString() {
-        return "HotelRental{" +
+        return "planner.data.HotelRental{" +
                 "name='" + name + '\'' +
                 ", place='" + place + '\'' +
                 ", date='" + date + '\'' +
