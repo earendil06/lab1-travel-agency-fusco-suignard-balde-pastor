@@ -27,6 +27,7 @@ class RegistrySimulation extends Simulation {
             .exec(
               http("registering a flight")
                 .post("flights")
+
                 .body(StringBody(session => buildRetrieve(session)))
                 .check(status.is(200))
             )
