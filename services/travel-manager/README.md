@@ -1,8 +1,8 @@
-##Travel Planner REST Service
+#Travel Planner REST Service
 
-**API**
+#**API**
 
-**Travel Request Data Type**
+##Travel Request Data Type
 
 A TravelRequest is a JSONObject with the following data:
 - uuidRequest : String
@@ -15,7 +15,7 @@ A TravelRequest is a JSONObject with the following data:
     - array of ids of flights  
 
 
-**Create a new Travel Request:**
+##Create a new Travel Request:
 
  - Entry Point 
 	 - http://localhost:9070/service-travel-manager/TravelPlannerService/create
@@ -43,7 +43,7 @@ A TravelRequest is a JSONObject with the following data:
         ``` 
     - returns 62b0566f-3d7a-430a-ad34-a66e6ee0baec
     
-**Get all pending Travel Requests:**
+##Get all pending Travel Requests:
 
 - Entry Point
     - http://localhost:9070/service-travel-manager/TravelPlannerService/
@@ -67,7 +67,7 @@ A TravelRequest is a JSONObject with the following data:
         ]
         ``` 
 
-**Get all pending Requests by email**
+##Get all pending Requests by email
 
 - Entry Point
     - http://localhost:9070/service-travel-manager/TravelPlannerService/email/{email}
@@ -78,7 +78,7 @@ A TravelRequest is a JSONObject with the following data:
 - Example:
     - GET http://localhost:9070/service-travel-manager/TravelPlannerService/email/toto@tutu.com
     
-**Get all pending Requests by uuidRequest**
+##Get all pending Requests by uuidRequest
 
 - Entry Point
     - http://localhost:9070/service-travel-manager/TravelPlannerService/uid/{uuidRequest}
@@ -89,7 +89,7 @@ A TravelRequest is a JSONObject with the following data:
 - Example:
     - GET http://localhost:9070/service-travel-manager/TravelPlannerService/uid/62b0566f-3d7a-430a-ad34-a66e6ee0baec
     
-**Validate a request:**
+##Validate a request:
 
  - Entry Point 
 	 - http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/uid/{uuidRequest}
@@ -102,7 +102,7 @@ A TravelRequest is a JSONObject with the following data:
     - POST http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/uid/1f701709-3ab3-4f8b-9fe4-574f8e86eecd
     - returns "Request 1f701709-3ab3-4f8b-9fe4-574f8e86eecd has been validated"
     
-**Refuse a request:**
+##Refuse a request:
 
  - Entry Point 
 	 - http://localhost:9070/service-travel-manager/TravelAcceptationService/refuse/uid/{uuidRequest}
@@ -115,7 +115,7 @@ A TravelRequest is a JSONObject with the following data:
     - POST http://localhost:9070/service-travel-manager/TravelAcceptationService/refuse/uid/1f701709-3ab3-4f8b-9fe4-574f8e86eecd
     - returns "Request 1f701709-3ab3-4f8b-9fe4-574f8e86eecd has been refused"
     
-**Get all validated Requests by email**
+##Get all validated Requests by email
 
 - Entry Point
     - http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/email/{email}
@@ -126,7 +126,7 @@ A TravelRequest is a JSONObject with the following data:
 - Example:
     - GET http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/email/toto@tutu.com
 
-**Get all refused Requests by email**
+##Get all refused Requests by email
 
 - Entry Point
     - http://localhost:9070/service-travel-manager/TravelAcceptationService/refuse/email/{email}
