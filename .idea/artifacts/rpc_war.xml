@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="rpc:war">
-    <output-path>$PROJECT_DIR$/services/rpc/target</output-path>
-    <root id="archive" name="tcs-service-rpc.war">
-      <element id="artifact" artifact-name="rpc:war exploded" />
-    </root>
-  </artifact>
-</component>
