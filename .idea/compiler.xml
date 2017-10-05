@@ -1,40 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <resourceExtensions />
-    <wildcardResourcePatterns>
-      <entry name="!?*.java" />
-      <entry name="!?*.form" />
-      <entry name="!?*.class" />
-      <entry name="!?*.groovy" />
-      <entry name="!?*.scala" />
-      <entry name="!?*.flex" />
-      <entry name="!?*.kt" />
-      <entry name="!?*.clj" />
-      <entry name="!?*.aj" />
-    </wildcardResourcePatterns>
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
-        <processorPath useClasspath="true" />
-      </profile>
-      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+      <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
         <module name="acceptation" />
+        <module name="car-planner" />
         <module name="document" />
+        <module name="hotel-planner" />
         <module name="resource" />
         <module name="resource-car" />
         <module name="resource-fly" />
         <module name="resource-hotel" />
         <module name="rpc" />
         <module name="stress" />
+        <module name="travel-manager" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="acceptation" target="1.8" />
+      <module name="car-planner" target="1.8" />
       <module name="document" target="1.8" />
+      <module name="hotel-planner" target="1.8" />
       <module name="lab1-travel-agency-fusco-suignard-pastor" target="1.8" />
       <module name="resource" target="1.8" />
       <module name="resource-car" target="1.8" />
@@ -44,6 +33,7 @@
       <module name="services" target="1.8" />
       <module name="stress" target="1.8" />
       <module name="tests" target="1.8" />
+      <module name="travel-manager" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

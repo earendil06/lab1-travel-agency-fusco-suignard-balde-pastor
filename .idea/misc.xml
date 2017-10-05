@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
-  </component>
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/services/car-planner" />
     <file type="web" url="file://$PROJECT_DIR$/services/document" />
+    <file type="web" url="file://$PROJECT_DIR$/services/hotel-planner" />
     <file type="web" url="file://$PROJECT_DIR$/services/resource-car" />
     <file type="web" url="file://$PROJECT_DIR$/services/resource-fly" />
     <file type="web" url="file://$PROJECT_DIR$/services/resource-hotel" />
     <file type="web" url="file://$PROJECT_DIR$/services/rpc" />
+    <file type="web" url="file://$PROJECT_DIR$/services/travel-manager" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -25,7 +25,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
