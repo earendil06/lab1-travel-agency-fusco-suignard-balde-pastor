@@ -3,7 +3,7 @@ package planner.data;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.json.JSONObject;
 
-import java.util.Date;
+import java.util.UUID;
 
 public class HotelRental {
     private String name;
@@ -12,6 +12,7 @@ public class HotelRental {
     private int month;
     private int year;
     private int price;
+    private String uid;
 
     @MongoObjectId
     String id;
@@ -43,7 +44,12 @@ public class HotelRental {
         return price;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
     public HotelRental(String name, String place, int day, int month, int year, int price) {
+        this.uid = UUID.randomUUID().toString();
         this.name = name;
         this.place = place;
         this.day = day;
@@ -54,6 +60,7 @@ public class HotelRental {
 
     JSONObject toJson() {
         return new JSONObject()
+                .put("uid", uid)
                 .put("name", this.name)
                 .put("place", this.place)
                 .put("day", this.day)
@@ -71,6 +78,7 @@ public class HotelRental {
                 ", month=" + month +
                 ", year=" + year +
                 ", price=" + price +
+                ", uid='" + uid + '\'' +
                 '}';
     }
 }
