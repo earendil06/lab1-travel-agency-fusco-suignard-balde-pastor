@@ -1,32 +1,139 @@
-## Service API
+##Travel Planner REST Service
 
-The service produces `application/json` data. It defines several routes under the `generator` prefix, to create generators, get all available generators, generate a new identifier or delete a generator.
+**API**
 
-```java
-@Path("/generators")
-@Produces(MediaType.APPLICATION_JSON)
-public class GeneratorService {
+**Travel Request Data Type**
 
-	@POST
-	@Consumes(MediaType.TEXT_PLAIN)
-	public Response createNewGenerator(String name) { ... }
+A TravelRequest is a JSONObject with the following data:
+- uuidRequest : String
+    - unique id of the request
+- email : String
+    - email of the requester
+- hotels : array of String
+    - array of ids of hotels
+- flights : array of String
+    - array of ids of flights  
 
-	@GET
-	public Response getAvailableGenerators() { ... }
 
-	@Path("/{name}")
-	@GET
-	public Response generateIdentifier(@PathParam("name") String name) { ... }
+**Create a new Travel Request:**
 
-	@Path("/{name}")
-	@DELETE
-	public Response deleteGenerator(@PathParam("name") String name) { ... }
+ - Entry Point 
+	 - http://localhost:9070/service-travel-manager/TravelPlannerService/create
+ - Method **POST**
+- Parameters:
+    - email of the requester
+    - array of hotel ids
+    - array of flight ids
+- Return the unique id of the generated request
 
-}
-``` 
+- Example:
+    - POST http://localhost:9070/service-travel-manager/TravelPlannerService/create
+    -   Body:
+        ```json
+        {
+            "hotels": [
+                "id hotel 1",
+                "id hotel 2"
+            ],
+            "flights": [
+                "id vol 1"
+            ],
+            "email": "user@email.com"
+        }
+        ``` 
+    - returns 62b0566f-3d7a-430a-ad34-a66e6ee0baec
+    
+**Get all pending Travel Requests:**
 
-The service is implemented in the [GeneratorService](https://github.com/polytechnice-si/5A-Microservices-Integration/blob/master/services/resource/src/main/java/gen/GeneratorService.java) class.
+- Entry Point
+    - http://localhost:9070/service-travel-manager/TravelPlannerService/
+- Method **GET**
+- Return a JSONArray of TravelRequests
+- Example:
+    - GET http://localhost:9070/service-travel-manager/TravelPlannerService/
+    - returns 
+        ```json
+        [
+            {
+                "hotels": [
+                    "id hotel 1",
+                    "id hotel 2"
+                ],
+                "flights": [
+                    "id vol 1"
+                ],
+                "email": "user@email.com"
+            }
+        ]
+        ``` 
 
-## Starting the service
-  * The service is available at [http://localhost:8080/tcs-service-rest/generators](http://localhost:8080/tcs-service-rest/generators)
+**Get all pending Requests by email**
 
+- Entry Point
+    - http://localhost:9070/service-travel-manager/TravelPlannerService/email/{email}
+- Method **GET**
+- Parameters:
+    - email : email of the requests desired
+- Return a JSONArray of TravelRequests
+- Example:
+    - GET http://localhost:9070/service-travel-manager/TravelPlannerService/email/toto@tutu.com
+    
+**Get all pending Requests by uuidRequest**
+
+- Entry Point
+    - http://localhost:9070/service-travel-manager/TravelPlannerService/uid/{uuidRequest}
+- Method **GET**
+- Parameters:
+    - email : email of the requests desired
+- Return a JSONArray of TravelRequests
+- Example:
+    - GET http://localhost:9070/service-travel-manager/TravelPlannerService/uid/62b0566f-3d7a-430a-ad34-a66e6ee0baec
+    
+**Validate a request:**
+
+ - Entry Point 
+	 - http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/uid/{uuidRequest}
+ - Method **POST**
+- Parameters:
+    - uid of the request to validate
+- Returns a acceptance message and send an email to the owner of the request
+
+- Example:
+    - POST http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/uid/1f701709-3ab3-4f8b-9fe4-574f8e86eecd
+    - returns "Request 1f701709-3ab3-4f8b-9fe4-574f8e86eecd has been validated"
+    
+**Refuse a request:**
+
+ - Entry Point 
+	 - http://localhost:9070/service-travel-manager/TravelAcceptationService/refuse/uid/{uuidRequest}
+ - Method **POST**
+- Parameters:
+    - uid of the request to refuse
+- Returns a message and send an email to the owner of the request
+
+- Example:
+    - POST http://localhost:9070/service-travel-manager/TravelAcceptationService/refuse/uid/1f701709-3ab3-4f8b-9fe4-574f8e86eecd
+    - returns "Request 1f701709-3ab3-4f8b-9fe4-574f8e86eecd has been refused"
+    
+**Get all validated Requests by email**
+
+- Entry Point
+    - http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/email/{email}
+- Method **GET**
+- Parameters:
+    - email : email of the requests desired
+- Return a JSONArray of TravelRequests
+- Example:
+    - GET http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/email/toto@tutu.com
+
+**Get all refused Requests by email**
+
+- Entry Point
+    - http://localhost:9070/service-travel-manager/TravelAcceptationService/refuse/email/{email}
+- Method **GET**
+- Parameters:
+    - email : email of the requests desired
+- Return a JSONArray of TravelRequests
+- Example:
+    - GET http://localhost:9070/service-travel-manager/TravelAcceptationService/refuse/email/toto@tutu.com
+    
