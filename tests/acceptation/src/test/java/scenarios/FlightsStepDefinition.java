@@ -48,9 +48,9 @@ public class FlightsStepDefinition {
         Handler.purge();
     }
 
-    @Given("^a (direct|non-direct) flight from (.*) to (.*) for (.+) euros the (\\d\\d/\\d\\d/\\d\\d\\d\\d-\\d\\d:\\d\\d) duration (\\d+) min$")
-    public void upload_preregistered_citizen(String direct, String from, String to, double price, String date, int duration) throws ParseException {
-        Flight flight = new Flight(from, to, date, duration, price, direct.equals("direct"));
+    @Given("^a (direct|non-direct) flight from (.*) to (.*) for (.+) euros the (\\d\\d/\\d\\d/\\d\\d\\d\\d)-(\\d\\d:\\d\\d) duration (\\d+) min$")
+    public void upload_preregistered_citizen(String direct, String from, String to, double price, String date, String hour, int duration) throws ParseException {
+        Flight flight = new Flight(from, to, date, hour, duration, price, direct.equals("direct"));
         Handler.create(flight);
     }
 
@@ -108,7 +108,6 @@ public class FlightsStepDefinition {
 
     @Then("^all the results are less than (\\d+) min$")
     public void the_results_have_max_duration(int max){
-        System.out.println(answer);
         for (int i = 0; i < answer.length(); i++) {
             JSONObject o = answer.getJSONObject(i);
             assertTrue(o.getInt("duration") <= max);
@@ -128,8 +127,6 @@ public class FlightsStepDefinition {
         for (int i = 0; i < answer.length() - 1; i++) {
             Object o1 = answer.getJSONObject(i).get(attr);
             Object o2 = answer.getJSONObject(i + 1).get(attr);
-            System.out.println(o1);
-            System.out.println(o2);
             if (o1 instanceof String && o2 instanceof String) {
                 assertTrue(((String) o1).compareToIgnoreCase((String)o2) <= 0);
             } else if (o1 instanceof Double && o2 instanceof Double){

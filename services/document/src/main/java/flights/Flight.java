@@ -1,12 +1,9 @@
 package flights;
 
-import org.joda.time.format.DateTimeFormat;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.json.JSONObject;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Flight {
 
@@ -16,8 +13,11 @@ public class Flight {
     @AttributeQueryable(order = true, filter = true)
     private String to;
 
-//    @AttributeQueryable(order = true, filter = true)
-//    private Date date;
+    @AttributeQueryable(filter = true)
+    private String date;
+
+    @AttributeQueryable(filter = true)
+    private String hour;
 
     @AttributeQueryable(order = true, filter = true, minMax = true)
     private int duration;
@@ -31,14 +31,13 @@ public class Flight {
     @MongoObjectId
     String id;
 
-    private static final String DATE_PATTERN = "dd/MM/yyyy-HH:mm";
-
     public Flight() {}
 
-    public Flight(String from, String to, String date, int duration, double price, boolean direct) throws ParseException {
+    public Flight(String from, String to, String date, String hour, int duration, double price, boolean direct) throws ParseException {
         this.from = from;
         this.to = to;
-        //this.date = new SimpleDateFormat(DATE_PATTERN).parse(date);
+        this.date = date;
+        this.hour = hour;
         this.duration = duration;
         this.price = price;
         this.direct= direct;
@@ -47,7 +46,8 @@ public class Flight {
     public Flight(JSONObject data) throws ParseException {
         this.from = data.getString("from");
         this.to = data.getString("to");
-        //this.date = new SimpleDateFormat(DATE_PATTERN).parse(data.getString("date"));
+        this.date = data.getString("date");
+        this.hour = data.getString("hour");
         this.duration = data.getInt("duration");
         this.price = data.getDouble("price");
         this.direct = data.getBoolean("direct");
@@ -58,7 +58,8 @@ public class Flight {
         return new JSONObject()
                 .put("from", this.from)
                 .put("to", this.to)
-                //.put("date", new SimpleDateFormat(DATE_PATTERN).format(this.date))
+                .put("date", this.date)
+                .put("hour", this.hour)
                 .put("duration", this.duration)
                 .put("price", this.price)
                 .put("direct", this.direct);
