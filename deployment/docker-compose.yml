@@ -30,8 +30,8 @@ services:
       - "9080:8080"
 
   travel-manager:
-    container_name: tcs-rpc
-    image: petitroll/tcs-rpc
+    container_name: travel-manager
+    image: petitroll/travel-manager
     environment:
       - db_host=tcs-database
       - db_port=27017

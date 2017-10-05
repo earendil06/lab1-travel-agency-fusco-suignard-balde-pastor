@@ -1,7 +1,8 @@
 package manager.service;
 
+import manager.data.StoragePendings;
+import manager.data.TravelRequest;
 import org.json.JSONArray;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,7 +32,7 @@ public class TravelPlannerService {
         if (pending == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok().entity(pending.toJson()).build();
+        return Response.ok().entity(pending.toJson().toString()).build();
     }
 
     @POST
@@ -46,7 +47,7 @@ public class TravelPlannerService {
     }
 
     public static void main(String[] args) {
-        TravelRequest pending = StoragePendings.getRequestByUID("0f8387f8-290c-4bc9-a034-767181f805fd");
-        System.out.println(pending.toJson());
+        JSONArray pending = StoragePendings.getRequestByEmail("a");
+        System.out.println(pending);
     }
 }

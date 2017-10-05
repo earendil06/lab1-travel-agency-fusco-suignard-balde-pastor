@@ -1,8 +1,8 @@
 # IntelliJ project files
-.idea
+.idea/*
 *.iml
 deployment/mongo_data/
 services/car-planner/target/
 services/document/target/
-services/resource-hotel/target/
 services/rpc/target/
+services/hotel-planner/target/

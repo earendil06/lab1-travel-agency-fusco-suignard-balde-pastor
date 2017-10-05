@@ -14,7 +14,7 @@ build() { # $1: directory, $2: image_name
 mvn clean package
 
 # Build docker images
-build rpc       petitroll/tcs-rpc
-build hotel-planner petitroll/hotel-planner
-build car-planner  petitroll/car-planner
-build document  petitroll/tcs-doc
+build travel-manager petitroll/travel-manager
+build hotel-planner  petitroll/hotel-planner
+build car-planner    petitroll/car-planner
+build document       petitroll/tcs-doc

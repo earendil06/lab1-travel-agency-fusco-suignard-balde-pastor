@@ -1,12 +1,14 @@
 package manager.service;
 
+import manager.data.StoragePendings;
+import manager.data.StorageRefused;
+import manager.data.StorageValidated;
+import manager.data.TravelRequest;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.UUID;
 
 @Path("/TravelAcceptationService")
 @Produces(MediaType.APPLICATION_JSON)
