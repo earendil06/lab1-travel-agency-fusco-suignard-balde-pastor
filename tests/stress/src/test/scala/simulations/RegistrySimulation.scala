@@ -13,21 +13,18 @@ class RegistrySimulation extends Simulation {
 
   val httpConf =
     http
-      .baseURL("http://localhost:9080/tcs-service-doc/")
+      .baseURL("http://localhost:9080/tcs-service-doc/flights")
       .acceptHeader("application/json")
       .header("Content-Type", "application/json")
 
   val stressSample =
-    scenario("Registering Flight")
-        .repeat(2)
+    scenario("Requiring all flights")
+        .repeat(5)
         {
-          exec(session =>
-            session.set("from", UUID.randomUUID().toString)
-          )
+          exec()
             .exec(
-              http("registering a flight")
+              http("requiring all flights")
                 .post("flights")
-
                 .body(StringBody(session => buildRetrieve(session)))
                 .check(status.is(200))
             )
@@ -35,17 +32,8 @@ class RegistrySimulation extends Simulation {
         }
 
   def buildRetrieve(session: Session): String = {
-    val from = session("from").as[String]
     raw"""{
-      "event": "RETRIEVE",
-      "flight": {
-        "from": "Nice",
-        "to":   "Lyon",
-        "dateFrom": "20/12/17",
-        "duration": "4",
-        "price" : "100",
-        "directFlight" : "true",
-      }
+      "event": "RETRIEVE"
     }""""
   }
 
