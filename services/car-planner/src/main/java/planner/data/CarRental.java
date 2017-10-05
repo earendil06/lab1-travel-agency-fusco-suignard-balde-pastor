@@ -6,7 +6,10 @@ import org.json.JSONObject;
 public class CarRental {
     private String name;
     private String place;
-    private String duration;
+    private int duration;
+
+    public CarRental() {
+    }
 
     @MongoObjectId
     String id;
@@ -19,14 +22,11 @@ public class CarRental {
         return place;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public CarRental() {
-    }
-
-    public CarRental(String name, String place, String duration) {
+    public CarRental(String name, String place, int duration) {
         this.name = name;
         this.place = place;
         this.duration = duration;
@@ -34,6 +34,7 @@ public class CarRental {
 
     JSONObject toJson() {
         return new JSONObject()
+                .put("name", this.name)
                 .put("place", this.place)
                 .put("duration", this.duration);
     }

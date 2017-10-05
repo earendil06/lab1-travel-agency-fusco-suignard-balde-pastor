@@ -15,16 +15,17 @@ public class Storage {
         cars.insert(carsRental);
     }
 
-    //todo reformat, separation of concern
-    public static JSONArray getCarsAtPlaceAndDuration(String place, String duration) {
+    public static JSONArray getCarsForTravel(String place, int duration) {
         MongoCollection cars = getCars();
         MongoCursor<CarRental> all =
-                cars.find("{ place : #, duration : # }", place, duration).as(CarRental.class);
+                cars.find("{ place : # }", place).as(CarRental.class);
 
         JSONArray jArray = new JSONArray();
 
         for (CarRental f : all) {
-            jArray.put(f.toJson());
+            if (f.getDuration() >= duration) {
+                jArray.put(f.toJson());
+            }
         }
 
         return jArray;
@@ -46,11 +47,12 @@ public class Storage {
         return new Jongo(client.getDB(Network.DATABASE)).getCollection(Network.COLLECTION);
     }
 
-/*    static {
-        create(new CarRental("first", "Madrid", "2"));
-        create(new CarRental("second", "Paris", "85"));
-        create(new CarRental("third", "New York", "42"));
-        create(new CarRental("4", "toto", "10"));
-    }*/
+    static {
+//        create(new CarRental("peugeot", "Paris", 4));
+//        create(new CarRental("renault", "Paris", 24));
+//        create(new CarRental("first", "Madrid", 2));
+//        create(new CarRental("second", "Paris", 85));
+//        create(new CarRental("third", "Tunis", 24));
+    }
 
 }

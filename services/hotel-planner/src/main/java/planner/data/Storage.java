@@ -6,6 +6,8 @@ import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 import org.json.JSONArray;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 public class Storage {
@@ -15,12 +17,12 @@ public class Storage {
         hotels.insert(hotelRental);
     }
 
-    //todo reformat, separation of concern
-    public static JSONArray getHotelAtPlaceAndDate(String destination, String day, String month, String year) {
+    public static JSONArray getHotelsForTravel(String place, int day, int month, int year) {
         MongoCollection hotels = getHotels();
-        String date = day + "/" + month + "/" + year;
         MongoCursor<HotelRental> all =
-                hotels.find("{ place : #, date : # }", destination, date).as(HotelRental.class);
+                hotels.find("{ place : # , day : # , month : # , year : # }", place, day, month, year)
+                        .sort("{ price : 1 }")
+                        .as(HotelRental.class);
 
         JSONArray jArray = new JSONArray();
 
@@ -33,7 +35,7 @@ public class Storage {
 
     public static JSONArray findAll() {
         MongoCollection hotels = getHotels();
-        Iterator<HotelRental> iter = hotels.find().as(HotelRental.class).iterator();
+        Iterator<HotelRental> iter = hotels.find().sort("{ price : 1 }").as(HotelRental.class).iterator();
         JSONArray jsonArray = new JSONArray();
         while (iter.hasNext()) {
             jsonArray.put(iter.next().toJson());
@@ -47,10 +49,12 @@ public class Storage {
         return new Jongo(client.getDB(Network.DATABASE)).getCollection(Network.COLLECTION);
     }
 
-/*    static {
-        create(new planner.data.HotelRental("first", "Tokyo", "02/09/2010"));
-        create(new planner.data.HotelRental("second", "Paris", "04/06/2017"));
-        create(new planner.data.HotelRental("third", "Bordeaux", "12/12/1012"));
-    }*/
+//    static {
+//        create(new HotelRental("first", "Tokyo", 10, 5, 2017, 100));
+//
+//        create(new HotelRental("second", "Paris", 17, 8, 2001, 500));
+//
+//        create(new HotelRental("third", "Bordeaux", 20, 12, 2012, 420));
+//    }
 
 }
