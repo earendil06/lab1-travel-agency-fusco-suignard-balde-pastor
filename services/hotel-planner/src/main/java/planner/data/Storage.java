@@ -6,8 +6,6 @@ import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 import org.json.JSONArray;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 
 public class Storage {
@@ -49,12 +47,12 @@ public class Storage {
         return new Jongo(client.getDB(Network.DATABASE)).getCollection(Network.COLLECTION);
     }
 
-//    static {
-//        create(new HotelRental("first", "Tokyo", 10, 5, 2017, 100));
-//
-//        create(new HotelRental("second", "Paris", 17, 8, 2001, 500));
-//
-//        create(new HotelRental("third", "Bordeaux", 20, 12, 2012, 420));
-//    }
+    static {
+        create(new HotelRental("aa", "Japon", 10, 5, 2017, 100));
+
+        create(new HotelRental("bb", "USA", 17, 8, 2001, 500));
+
+        create(new HotelRental("cc", "Italy", 20, 12, 2012, 420));
+    }
 
 }

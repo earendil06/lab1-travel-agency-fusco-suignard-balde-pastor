@@ -18,14 +18,12 @@ public class Storage {
     public static JSONArray getCarsForTravel(String place, int duration) {
         MongoCollection cars = getCars();
         MongoCursor<CarRental> all =
-                cars.find("{ place : # }", place).as(CarRental.class);
+                cars.find("{ place : #, duration : { $gt : # } }", place, duration).as(CarRental.class);
 
         JSONArray jArray = new JSONArray();
 
         for (CarRental f : all) {
-            if (f.getDuration() >= duration) {
-                jArray.put(f.toJson());
-            }
+            jArray.put(f.toJson());
         }
 
         return jArray;
@@ -48,11 +46,11 @@ public class Storage {
     }
 
     static {
-//        create(new CarRental("peugeot", "Paris", 4));
-//        create(new CarRental("renault", "Paris", 24));
-//        create(new CarRental("first", "Madrid", 2));
-//        create(new CarRental("second", "Paris", 85));
-//        create(new CarRental("third", "Tunis", 24));
+        create(new CarRental("peugeot", "Paris", 4));
+        create(new CarRental("renault", "Paris", 24));
+        create(new CarRental("first", "Madrid", 2));
+        create(new CarRental("second", "Paris", 85));
+        create(new CarRental("third", "Tunis", 24));
     }
 
 }
