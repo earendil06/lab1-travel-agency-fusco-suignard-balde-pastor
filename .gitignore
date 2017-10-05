@@ -6,3 +6,8 @@ services/car-planner/target/
 services/document/target/
 services/rpc/target/
 services/hotel-planner/target/
+/services/travel-manager/target/
+services/travel-manager/target/classes/manager/
+services/travel-manager/target/generated-sources/
+services/travel-manager/target/service-travel-manager.war
+services/travel-manager/target/service-travel-manager/
