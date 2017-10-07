@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="document:war">
-    <output-path>$PROJECT_DIR$/services/document/target</output-path>
-    <root id="archive" name="tcs-service-doc.war">
-      <element id="artifact" artifact-name="document:war exploded" />
-    </root>
-  </artifact>
-</component>
