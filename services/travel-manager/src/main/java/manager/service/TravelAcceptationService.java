@@ -14,35 +14,35 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class TravelAcceptationService {
 
-    @Path("/validate")
+    @Path("/validatedRequest")
     @GET
     public Response getAllValidated() {
         JSONArray validated = StorageValidated.findAll();
-        return Response.ok().entity(validated.toString()).build();
+        return Response.ok().entity(validated).build();
     }
 
-    @Path("/refuse")
+    @Path("/refusedRequest")
     @GET
     public Response getAllRefused() {
         JSONArray validated = StorageRefused.findAll();
-        return Response.ok().entity(validated.toString()).build();
+        return Response.ok().entity(validated).build();
     }
 
-    @Path("/validate/email/{email}")
+    @Path("/validatedRequest/email/{email}")
     @GET
     public Response getAcceptedRequestsByUser(@PathParam("email") String email) {
         JSONArray pending = StorageValidated.getRequestByEmail(email);
-        return Response.ok().entity(pending.toString()).build();
+        return Response.ok().entity(pending).build();
     }
 
-    @Path("/refuse/email/{email}")
+    @Path("/refusedRequest/email/{email}")
     @GET
     public Response getRefusedRequestsByUser(@PathParam("email") String email) {
         JSONArray pending = StorageRefused.getRequestByEmail(email);
-        return Response.ok().entity(pending.toString()).build();
+        return Response.ok().entity(pending).build();
     }
 
-    @Path("/validate/uid/{uid}")
+    @Path("/validatedRequest/uid/{uid}")
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response validate(@PathParam("uid") String uid) {
@@ -55,7 +55,7 @@ public class TravelAcceptationService {
         return Response.ok().entity("Request " + request.getUuidRequest() + " has been validated").build();
     }
 
-    @Path("/refuse/uid/{uid}")
+    @Path("/refusedRequest/uid/{uid}")
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response refuse(@PathParam("uid") String uid) {

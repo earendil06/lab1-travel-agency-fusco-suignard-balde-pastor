@@ -1,9 +1,7 @@
 package manager.data;
 
 import org.jongo.marshall.jackson.oid.MongoObjectId;
-import org.json.JSONObject;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.UUID;
@@ -14,11 +12,8 @@ public class TravelRequest {
     public String id;
 
     private String uuidRequest;
-    @XmlElement
     private String email;
-    @XmlElement
     private List<String> hotels;
-    @XmlElement
     private List<String> flights;
 
     public TravelRequest() {
@@ -46,14 +41,6 @@ public class TravelRequest {
 
     public List<String> getFlights() { return flights; }
     public void setFlights(List<String> flights) { this.flights = flights; }
-
-    public JSONObject toJson() {
-        return new JSONObject()
-                .put("uuidRequest", this.uuidRequest)
-                .put("email", this.email)
-                .put("hotels", this.hotels)
-                .put("flights", this.flights);
-    }
 
     @Override
     public String toString() {

@@ -28,7 +28,7 @@ public class StoragePendings {
         JSONArray jArray = new JSONArray();
 
         for (TravelRequest f : all) {
-            jArray.put(f.toJson());
+            jArray.put(f);
         }
         return jArray;
     }
@@ -50,7 +50,7 @@ public class StoragePendings {
         Iterator<TravelRequest> iter = pendings.find().as(TravelRequest.class).iterator();
         JSONArray jsonArray = new JSONArray();
         while (iter.hasNext()) {
-            jsonArray.put(iter.next().toJson());
+            jsonArray.put(iter.next());
         }
         return jsonArray;
     }
