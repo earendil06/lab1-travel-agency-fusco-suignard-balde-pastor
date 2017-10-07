@@ -18,7 +18,7 @@ A TravelRequest is a JSONObject with the following data:
 ##Create a new Travel Request:
 
  - Entry Point 
-	 - http://localhost:9070/service-travel-manager/TravelPlannerService/create
+	 - http://localhost:9070/service-travel-manager/TravelPlannerService/request
  - Method **POST**
 - Parameters:
     - email of the requester
@@ -27,7 +27,7 @@ A TravelRequest is a JSONObject with the following data:
 - Return the unique id of the generated request
 
 - Example:
-    - POST http://localhost:9070/service-travel-manager/TravelPlannerService/create
+    - POST http://localhost:9070/service-travel-manager/TravelPlannerService/request
     -   Body:
         ```json
         {
@@ -46,11 +46,11 @@ A TravelRequest is a JSONObject with the following data:
 ##Get all pending Travel Requests:
 
 - Entry Point
-    - http://localhost:9070/service-travel-manager/TravelPlannerService/
+    - http://localhost:9070/service-travel-manager/TravelPlannerService/request
 - Method **GET**
 - Return a JSONArray of TravelRequests
 - Example:
-    - GET http://localhost:9070/service-travel-manager/TravelPlannerService/
+    - GET http://localhost:9070/service-travel-manager/TravelPlannerService/request
     - returns 
         ```json
         [
@@ -70,70 +70,70 @@ A TravelRequest is a JSONObject with the following data:
 ##Get all pending Requests by email
 
 - Entry Point
-    - http://localhost:9070/service-travel-manager/TravelPlannerService/email/{email}
+    - http://localhost:9070/service-travel-manager/TravelPlannerService/request/email/{email}
 - Method **GET**
 - Parameters:
     - email : email of the requests desired
 - Return a JSONArray of TravelRequests
 - Example:
-    - GET http://localhost:9070/service-travel-manager/TravelPlannerService/email/toto@tutu.com
+    - GET http://localhost:9070/service-travel-manager/TravelPlannerService/request/email/toto@tutu.com
     
 ##Get all pending Requests by uuidRequest
 
 - Entry Point
-    - http://localhost:9070/service-travel-manager/TravelPlannerService/uid/{uuidRequest}
+    - http://localhost:9070/service-travel-manager/TravelPlannerService/request/uid/{uuidRequest}
 - Method **GET**
 - Parameters:
     - email : email of the requests desired
 - Return a JSONArray of TravelRequests
 - Example:
-    - GET http://localhost:9070/service-travel-manager/TravelPlannerService/uid/62b0566f-3d7a-430a-ad34-a66e6ee0baec
+    - GET http://localhost:9070/service-travel-manager/TravelPlannerService/request/uid/62b0566f-3d7a-430a-ad34-a66e6ee0baec
     
 ##Validate a request:
 
  - Entry Point 
-	 - http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/uid/{uuidRequest}
+	 - http://localhost:9070/service-travel-manager/TravelAcceptationService/validatedRequest/uid/{uuidRequest}
  - Method **POST**
 - Parameters:
     - uid of the request to validate
 - Returns a acceptance message and send an email to the owner of the request
 
 - Example:
-    - POST http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/uid/1f701709-3ab3-4f8b-9fe4-574f8e86eecd
+    - POST http://localhost:9070/service-travel-manager/TravelAcceptationService/validatedRequest/uid/1f701709-3ab3-4f8b-9fe4-574f8e86eecd
     - returns "Request 1f701709-3ab3-4f8b-9fe4-574f8e86eecd has been validated"
     
 ##Refuse a request:
 
  - Entry Point 
-	 - http://localhost:9070/service-travel-manager/TravelAcceptationService/refuse/uid/{uuidRequest}
+	 - http://localhost:9070/service-travel-manager/TravelAcceptationService/refusedRequest/uid/{uuidRequest}
  - Method **POST**
 - Parameters:
     - uid of the request to refuse
 - Returns a message and send an email to the owner of the request
 
 - Example:
-    - POST http://localhost:9070/service-travel-manager/TravelAcceptationService/refuse/uid/1f701709-3ab3-4f8b-9fe4-574f8e86eecd
+    - POST http://localhost:9070/service-travel-manager/TravelAcceptationService/refusedRequest/uid/1f701709-3ab3-4f8b-9fe4-574f8e86eecd
     - returns "Request 1f701709-3ab3-4f8b-9fe4-574f8e86eecd has been refused"
     
 ##Get all validated Requests by email
 
 - Entry Point
-    - http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/email/{email}
+    - http://localhost:9070/service-travel-manager/TravelAcceptationService/validatedRequest/email/{email}
 - Method **GET**
 - Parameters:
     - email : email of the requests desired
 - Return a JSONArray of TravelRequests
 - Example:
-    - GET http://localhost:9070/service-travel-manager/TravelAcceptationService/validate/email/toto@tutu.com
+    - GET http://localhost:9070/service-travel-manager/TravelAcceptationService/validatedRequest/email/toto@tutu.com
 
 ##Get all refused Requests by email
 
 - Entry Point
-    - http://localhost:9070/service-travel-manager/TravelAcceptationService/refuse/email/{email}
+    - http://localhost:9070/service-travel-manager/TravelAcceptationService/refusedRequest/email/{email}
 - Method **GET**
 - Parameters:
     - email : email of the requests desired
 - Return a JSONArray of TravelRequests
 - Example:
-    - GET http://localhost:9070/service-travel-manager/TravelAcceptationService/refuse/email/toto@tutu.com
+    - GET http://localhost:9070/service-travel-manager/TravelAcceptationService/refusedRequest/email/toto@tutu.com
     
