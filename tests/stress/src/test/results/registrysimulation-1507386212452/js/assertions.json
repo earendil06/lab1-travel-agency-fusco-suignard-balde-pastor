@@ -1,0 +1,10 @@
+{
+  "simulation": "computerdatabase.RegistrySimulation",
+  "simulationId": "registrysimulation",
+  "start": 1507386212452,
+  "description": "null",
+  "scenarios": ["Requiring all flights"],
+  "assertions": [
+
+  ]
+}
