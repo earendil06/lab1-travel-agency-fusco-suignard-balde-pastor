@@ -1,12 +1,9 @@
 package computerdatabase
 
-import java.util.UUID
-
-import scala.util.Random
-import scala.language.postfixOps
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import scala.concurrent.duration._
+
+import scala.language.postfixOps
 
 
 object TravelTest{
@@ -15,7 +12,7 @@ object TravelTest{
 
   val viewTravelValidated = exec(
     http("Views All Travels Validated")
-      .get("/TravelAcceptationService/validate")
+      .get("/TravelAcceptationService/validatedRequest")
       .header("Content-Type", "application/json")
       .asJSON
       .check(status is 200)
@@ -23,7 +20,7 @@ object TravelTest{
 
   val viewTravelRefused = exec(
     http("Views All Travels Refused")
-      .get("/TravelAcceptationService/refuse")
+      .get("/TravelAcceptationService/refusedRequest")
       .header("Content-Type", "application/json")
       .asJSON
       .check(status is 200)
@@ -31,7 +28,7 @@ object TravelTest{
 
   val viewTravelValidatedByUser = exec(
     http("Views All Travels Validated by User")
-      .get("/TravelAcceptationService/validate/email/test")
+      .get("/TravelAcceptationService/validatedRequest/email/test")
       .header("Content-Type", "application/json")
       .asJSON
       .check(status is 200)
@@ -39,7 +36,7 @@ object TravelTest{
 
   val viewTravelRefusedByUser = exec(
     http("Views All Travels Refused by User")
-      .get("/TravelAcceptationService/refuse/email/test")
+      .get("/TravelAcceptationService/refusedRequest/email/test")
       .header("Content-Type", "application/json")
       .asJSON
       .check(status is 200)
@@ -47,7 +44,7 @@ object TravelTest{
 
   val viewTravelValidatedByUid = exec(
     http("Views All Travels Validated by UID")
-      .get("/TravelAcceptationService/validate/uid")
+      .get("/TravelAcceptationService/validatedRequest/uid")
       .header("Content-Type", "application/json")
       .asJSON
       .check(status is 200)
@@ -55,7 +52,7 @@ object TravelTest{
 
   val viewTravelRefusedByUid = exec(
     http("Views All Travels Refused by UID")
-      .get("/TravelAcceptationService/refuse/uid")
+      .get("/TravelAcceptationService/refusedRequest/uid")
       .header("Content-Type", "application/json")
       .asJSON
       .check(status is 200)
