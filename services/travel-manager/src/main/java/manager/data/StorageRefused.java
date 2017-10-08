@@ -21,9 +21,9 @@ public class StorageRefused {
                 pendings.find("{ " + type + " : # }", field).as(TravelRequest.class);
 
         JSONArray jArray = new JSONArray();
-
+        String uri = "/service-travel-manager/TravelAcceptationService/refusedRequest/uid/";
         for (TravelRequest f : all) {
-            jArray.put(f);
+            jArray.put(uri + f.getUuidRequest());
         }
         return jArray;
     }
@@ -32,12 +32,21 @@ public class StorageRefused {
         return getRequestByField("email", owner);
     }
 
+    public static TravelRequest getRequestByUid(String uid) {
+        MongoCollection pendings = getRefusedRequests();
+        MongoCursor<TravelRequest> all =
+                pendings.find("{ uuidRequest : # }", uid).as(TravelRequest.class);
+        if (all == null) return null;
+        return all.next();
+    }
+
     public static JSONArray findAll() {
         MongoCollection validated = getRefusedRequests();
         Iterator<TravelRequest> iter = validated.find().as(TravelRequest.class).iterator();
         JSONArray jsonArray = new JSONArray();
+        String uri = "/service-travel-manager/TravelAcceptationService/refusedRequest/uid/";
         while (iter.hasNext()) {
-            jsonArray.put(iter.next());
+            jsonArray.put(uri + iter.next().getUuidRequest());
         }
         return jsonArray;
     }
@@ -50,6 +59,7 @@ public class StorageRefused {
     public static void purge() {
         getRefusedRequests().drop();
     }
+
 
 /*    static {
         create(new TravelRequest("Adrien", Arrays.asList("Adrien", "Adrien"), Arrays.asList("Adrien", "Adrien", "Adrien")));

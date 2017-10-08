@@ -43,6 +43,26 @@ public class TravelAcceptationService {
     }
 
     @Path("/validatedRequest/uid/{uid}")
+    @GET
+    public Response getAcceptedRequestsByUid(@PathParam("uid") String uid) {
+        TravelRequest request = StorageValidated.getRequestByUid(uid);
+        if (request == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok().entity(request).build();
+    }
+
+    @Path("/refusedRequest/uid/{uid}")
+    @GET
+    public Response getRefusedRequestsByUid(@PathParam("uid") String uid) {
+        TravelRequest request = StorageRefused.getRequestByUid(uid);
+        if (request == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok().entity(request).build();
+    }
+
+    @Path("/validatedRequest/uid/{uid}")
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response validate(@PathParam("uid") String uid) {

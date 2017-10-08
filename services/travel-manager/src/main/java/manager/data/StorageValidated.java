@@ -21,9 +21,9 @@ public class StorageValidated {
                 pendings.find("{ " + type + " : # }", field).as(TravelRequest.class);
 
         JSONArray jArray = new JSONArray();
-
+        String uri = "/service-travel-manager/TravelAcceptationService/validatedRequest/uid/";
         for (TravelRequest f : all) {
-            jArray.put(f);
+            jArray.put(uri + f.getUuidRequest());
         }
         return jArray;
     }
@@ -36,8 +36,9 @@ public class StorageValidated {
         MongoCollection validated = getValidatedRequests();
         Iterator<TravelRequest> iter = validated.find().as(TravelRequest.class).iterator();
         JSONArray jsonArray = new JSONArray();
+        String uri = "/service-travel-manager/TravelAcceptationService/validatedRequest/uid/";
         while (iter.hasNext()) {
-            jsonArray.put(iter.next());
+            jsonArray.put(uri + iter.next().getUuidRequest());
         }
         return jsonArray;
     }
@@ -50,6 +51,14 @@ public class StorageValidated {
 
     public static void purge() {
         getValidatedRequests().drop();
+    }
+
+    public static TravelRequest getRequestByUid(String uid) {
+        MongoCollection pendings = getValidatedRequests();
+        MongoCursor<TravelRequest> all =
+                pendings.find("{ uuidRequest : # }", uid).as(TravelRequest.class);
+        if (all == null) return null;
+        return all.next();
     }
 
 /*

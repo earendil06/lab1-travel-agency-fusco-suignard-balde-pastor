@@ -26,9 +26,9 @@ public class StoragePendings {
                 pendings.find("{ " + type + " : # }", field).as(TravelRequest.class);
 
         JSONArray jArray = new JSONArray();
-
+        String uri = "/service-travel-manager/TravelPlannerService/request/uid/";
         for (TravelRequest f : all) {
-            jArray.put(f);
+            jArray.put(uri + f.getUuidRequest());
         }
         return jArray;
     }
@@ -49,8 +49,9 @@ public class StoragePendings {
         MongoCollection pendings = getPendingRequests();
         Iterator<TravelRequest> iter = pendings.find().as(TravelRequest.class).iterator();
         JSONArray jsonArray = new JSONArray();
+        String uri = "/service-travel-manager/TravelPlannerService/request/uid/";
         while (iter.hasNext()) {
-            jsonArray.put(iter.next());
+            jsonArray.put(uri + iter.next().getUuidRequest());
         }
         return jsonArray;
     }
