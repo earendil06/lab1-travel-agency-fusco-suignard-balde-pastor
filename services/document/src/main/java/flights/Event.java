@@ -1,5 +1,5 @@
 package flights;
 
 public enum Event {
-    RETRIEVE
+    RETRIEVE, CREATE, PURGE
 }
