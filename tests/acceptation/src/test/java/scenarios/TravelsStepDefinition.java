@@ -5,6 +5,8 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import manager.data.StoragePendings;
+import manager.data.StorageRefused;
+import manager.data.StorageValidated;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,13 +35,13 @@ public class TravelsStepDefinition {
         return raw;
     }
 
-    private JSONArray callGet(String route) {
+    private String callGet(String route) {
         String raw =
                 WebClient.create("http://" + host + ":" + port + "/service-travel-manager/" + route)
                         .accept(MediaType.APPLICATION_JSON_TYPE)
                         .header("Content-Type", MediaType.APPLICATION_JSON)
                         .get(String.class);
-        return new JSONArray(raw);
+        return raw;
     }
 
     @Given("^the service deployed on (.*):(\\d+)$")
@@ -47,16 +49,18 @@ public class TravelsStepDefinition {
         this.host = host;
         this.port = port;
         StoragePendings.purge();
+        StorageRefused.purge();
+        StorageValidated.purge();
     }
 
     @When("^retrieving pending requests$")
     public void pendings() {
-        arrayAnswer = callGet(PLANNER + "/request");
+        arrayAnswer = new JSONArray(callGet(PLANNER + "/request"));
     }
 
     @When("^retrieving confirm requests$")
     public void confirms() {
-        arrayAnswer = callGet(CONFIRM + "/validatedRequest");
+        arrayAnswer = new JSONArray(callGet(CONFIRM + "/validatedRequest"));
     }
 
     @Then("^the answer have (\\d+) result(?:s)?$")
@@ -72,17 +76,16 @@ public class TravelsStepDefinition {
         o.put("hotels", new JSONArray().put("hotel1").put("hotel2"));
         o.put("flights", new JSONArray().put("flight1").put("flight2"));
         uuid = callPost(PLANNER + "/request", o);
-        //arrayAnswer = new JSONArray(callPost(PLANNER + "/request", o));
     }
 
-    @When("^retrieving pending requests by uid (.*)$")
-    public void get_pending_uuid(String uuid){
-        arrayAnswer = callGet(PLANNER + "/request/uid/" + uuid);
+    @When("^retrieving pending requests by previous uid$")
+    public void get_pending_uuid(){
+        arrayAnswer = new JSONArray().put(callGet(PLANNER + "/request/uid/" + uuid));
     }
 
     @And("^(.*) have one pending request$")
     public void get_by_email(String email) {
-        arrayAnswer = callGet(PLANNER + "/request/email/" + email);
+        arrayAnswer = new JSONArray(callGet(PLANNER + "/request/email/" + email));
     }
 
     @When("^confirming this travel$")
