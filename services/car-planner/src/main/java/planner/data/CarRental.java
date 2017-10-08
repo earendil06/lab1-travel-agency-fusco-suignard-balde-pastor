@@ -3,8 +3,11 @@ package planner.data;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.json.JSONObject;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.UUID;
 
+@XmlType
 public class CarRental {
     private String name;
     private String place;
@@ -17,18 +20,19 @@ public class CarRental {
     @MongoObjectId
     String id;
 
+    @XmlElement
     public String getName() {
         return name;
     }
-
+    @XmlElement
     public String getPlace() {
         return place;
     }
-
+    @XmlElement
     public int getDuration() {
         return duration;
     }
-
+    @XmlElement
     public String getUid() {
         return uid;
     }

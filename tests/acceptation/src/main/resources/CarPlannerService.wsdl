@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.planner/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  name="CarPlannerService" targetNamespace="http://service.planner/">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://service.planner/" elementFormDefault="unqualified" targetNamespace="http://service.planner/" version="1.0">
+            <xs:element name="getAllCars" type="tns:getAllCars"/>
+            <xs:element name="getAllCarsResponse" type="tns:getAllCarsResponse"/>
+            <xs:element name="getCarByPlace" type="tns:getCarByPlace"/>
+            <xs:element name="getCarByPlaceResponse" type="tns:getCarByPlaceResponse"/>
+            <xs:complexType name="getAllCars">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="getAllCarsResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="all_car_result" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getCarByPlace">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="place" type="xs:string"/>
+                    <xs:element name="duration" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getCarByPlaceResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="car_planner_result" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getCarByPlaceResponse">
+        <wsdl:part element="tns:getCarByPlaceResponse" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAllCars">
+        <wsdl:part element="tns:getAllCars" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAllCarsResponse">
+        <wsdl:part element="tns:getAllCarsResponse" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getCarByPlace">
+        <wsdl:part element="tns:getCarByPlace" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="CarPlanner">
+        <wsdl:operation name="getAllCars">
+            <wsdl:input message="tns:getAllCars" name="getAllCars">
+            </wsdl:input>
+            <wsdl:output message="tns:getAllCarsResponse" name="getAllCarsResponse">
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getCarByPlace">
+            <wsdl:input message="tns:getCarByPlace" name="getCarByPlace">
+            </wsdl:input>
+            <wsdl:output message="tns:getCarByPlaceResponse" name="getCarByPlaceResponse">
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CarPlannerServiceSoapBinding" type="tns:CarPlanner">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getAllCars">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getAllCars">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getAllCarsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getCarByPlace">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getCarByPlace">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getCarByPlaceResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="CarPlannerService">
+        <wsdl:port binding="tns:CarPlannerServiceSoapBinding" name="CarPlannerPort">
+            <soap:address location="http://localhost:9060/service-car-planner/CarPlannerService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

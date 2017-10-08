@@ -52,16 +52,6 @@
             <version>3.2.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>fr.unice.polytech.esb.services</groupId>
-            <artifactId>document</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.unice.polytech.esb.services</groupId>
-            <artifactId>travel-manager</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -75,13 +65,13 @@
                         <id>generate-sources</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <sourceRoot>${basedir}/src/main/java/</sourceRoot>
+                            <sourceRoot>${basedir}/src/main/java/carplanner</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/ExternalTaxComputerService.wsdl</wsdl>
+                                    <wsdl>${basedir}/src/main/resources/CarPlannerService.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-p</extraarg>
-                                        <extraarg>http://informatique.polytech.unice.fr/soa1/cookbook/=stubs.tcs</extraarg>
+                                        <extraarg>=stubs.tcs</extraarg>
                                     </extraargs>
                                 </wsdlOption>
                             </wsdlOptions>

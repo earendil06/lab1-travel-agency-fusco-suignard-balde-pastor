@@ -4,7 +4,7 @@ import planner.data.Storage;
 
 import javax.jws.WebService;
 
-@WebService(targetNamespace = "",
+@WebService(targetNamespace = "planner.service",
         portName = "CarPlannerPort",
         serviceName = "CarPlannerService",
         endpointInterface = "planner.service.ICarPlannerService")
