@@ -3,12 +3,10 @@ package planner.service;
 import planner.data.Storage;
 
 import javax.jws.WebService;
-import java.util.Calendar;
-import java.util.Date;
 
-@WebService(targetNamespace   = "",
-        portName          = "HotelPlannerPort",
-        serviceName       = "HotelPlannerService",
+@WebService(targetNamespace = "planner.service",
+        portName = "HotelPlannerPort",
+        serviceName = "HotelPlannerService",
         endpointInterface = "planner.service.IHotelPlannerService")
 public class HotelPlannerService implements IHotelPlannerService {
 
@@ -31,6 +29,6 @@ public class HotelPlannerService implements IHotelPlannerService {
     }
 
     public static void main(String[] args) {
-       System.out.println(Storage.findAll().toString());
+        System.out.println(Storage.findAll().toString());
     }
 }
