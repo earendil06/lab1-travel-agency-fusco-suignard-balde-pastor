@@ -28,3 +28,25 @@ Feature: Travels
     Then the answer have 0 result
     When retrieving confirm requests
     Then the answer have 1 result
+    When retrieving confirmed requests by previous uid
+    Then the answer have 1 result
+    When retrieving confirm requests for email@email.com
+    Then the answer have 1 result
+    When retrieving confirm requests for email2@email.com
+    Then the answer have 0 result
+
+  Scenario: Refusing a travel
+    When propose a travel by email@email.com
+    When retrieving pending requests
+    Then the answer have 1 result
+    When refusing this travel
+    When retrieving pending requests
+    Then the answer have 0 result
+    When retrieving refused requests
+    Then the answer have 1 result
+    When retrieving refused requests by previous uid
+    Then the answer have 1 result
+    When retrieving refused requests for email@email.com
+    Then the answer have 1 result
+    When retrieving refused requests for email2@email.com
+    Then the answer have 0 result

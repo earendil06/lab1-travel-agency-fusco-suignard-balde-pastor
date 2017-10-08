@@ -48,6 +48,14 @@ public class TravelPlannerService {
         return Response.ok().entity(uid).build();
     }
 
+    @DELETE
+    @Path("/request/purge")
+    public Response purge() {
+        StoragePendings.purge();
+        return Response.ok().entity("Database deleted").build();
+    }
+
+
     public static void main(String[] args) {
         JSONArray pending = StoragePendings.getRequestByEmail("a");
         System.out.println(pending);

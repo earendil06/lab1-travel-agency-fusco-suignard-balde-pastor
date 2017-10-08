@@ -88,4 +88,18 @@ public class TravelAcceptationService {
         return Response.ok().entity("Request " + request.getUuidRequest() + " has been refused").build();
     }
 
+    @Path("/refusedRequest/purge")
+    @DELETE
+    public Response purgeRefused(){
+        StorageRefused.purge();
+        return Response.ok().entity("Database deleted").build();
+    }
+
+    @Path("/validatedRequest/purge")
+    @DELETE
+    public Response purgeValidated(){
+        StorageValidated.purge();
+        return Response.ok().entity("Database deleted").build();
+    }
+
 }

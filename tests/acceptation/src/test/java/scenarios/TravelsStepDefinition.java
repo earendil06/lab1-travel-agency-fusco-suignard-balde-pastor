@@ -4,14 +4,12 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import manager.data.StoragePendings;
-import manager.data.StorageRefused;
-import manager.data.StorageValidated;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,13 +42,21 @@ public class TravelsStepDefinition {
         return raw;
     }
 
+    private void callDelete(String route) {
+        Response raw =
+                WebClient.create("http://" + host + ":" + port + "/service-travel-manager/" + route)
+                        //.accept(MediaType.APPLICATION_JSON_TYPE)
+                        //.header("Content-Type", MediaType.APPLICATION_JSON)
+                        .delete();
+    }
+
     @Given("^the service deployed on (.*):(\\d+)$")
     public void set_clean_registr(String host, int port) {
         this.host = host;
         this.port = port;
-        StoragePendings.purge();
-        StorageRefused.purge();
-        StorageValidated.purge();
+        callDelete(CONFIRM + "/refusedRequest/purge");
+        callDelete(CONFIRM + "/validatedRequest/purge");
+        callDelete(PLANNER + "/request/purge");
     }
 
     @When("^retrieving pending requests$")
@@ -83,6 +89,16 @@ public class TravelsStepDefinition {
         arrayAnswer = new JSONArray().put(callGet(PLANNER + "/request/uid/" + uuid));
     }
 
+    @When("^retrieving confirmed requests by previous uid$")
+    public void get_confirm_uuid(){
+        arrayAnswer = new JSONArray().put(callGet(CONFIRM + "/validatedRequest/uid/" + uuid));
+    }
+
+    @When("^retrieving refused requests by previous uid$")
+    public void get_refuse_uuid(){
+        arrayAnswer = new JSONArray().put(callGet(CONFIRM + "/refusedRequest/uid/" + uuid));
+    }
+
     @And("^(.*) have one pending request$")
     public void get_by_email(String email) {
         arrayAnswer = new JSONArray(callGet(PLANNER + "/request/email/" + email));
@@ -91,5 +107,25 @@ public class TravelsStepDefinition {
     @When("^confirming this travel$")
     public void confirm (){
         callPost(CONFIRM + "/validatedRequest/uid/" + uuid, new JSONObject());
+    }
+
+    @When("^refusing this travel$")
+    public void refuse (){
+        callPost(CONFIRM + "/refusedRequest/uid/" + uuid, new JSONObject());
+    }
+
+    @When("^retrieving refused requests$")
+    public void all_refused (){
+        arrayAnswer = new JSONArray(callGet(CONFIRM + "/refusedRequest"));
+    }
+
+    @When("^retrieving confirm requests for (.*)$")
+    public void confirmed_for (String email){
+        arrayAnswer = new JSONArray(callGet(CONFIRM + "/validatedRequest/email/" + email));
+    }
+
+    @When("^retrieving refused requests for (.*)$")
+    public void refused_for (String email){
+        arrayAnswer = new JSONArray(callGet(CONFIRM + "/refusedRequest/email/" + email));
     }
 }
