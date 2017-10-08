@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.planner/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  name="HotelPlannerService" targetNamespace="http://service.planner/">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://service.planner/" elementFormDefault="unqualified" targetNamespace="http://service.planner/" version="1.0">
+            <xs:element name="getHotels" type="tns:getHotels"/>
+            <xs:element name="getHotelsForTravel" type="tns:getHotelsForTravel"/>
+            <xs:element name="getHotelsForTravelResponse" type="tns:getHotelsForTravelResponse"/>
+            <xs:element name="getHotelsResponse" type="tns:getHotelsResponse"/>
+            <xs:complexType name="getHotelsForTravel">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="place" type="xs:string"/>
+                    <xs:element name="day" type="xs:int"/>
+                    <xs:element name="month" type="xs:int"/>
+                    <xs:element name="year" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getHotelsForTravelResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="hotel_planner_result" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getHotels">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="getHotelsResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="all_hotels_result" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getHotelsForTravel">
+        <wsdl:part element="tns:getHotelsForTravel" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getHotels">
+        <wsdl:part element="tns:getHotels" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getHotelsForTravelResponse">
+        <wsdl:part element="tns:getHotelsForTravelResponse" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getHotelsResponse">
+        <wsdl:part element="tns:getHotelsResponse" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="HotelPlanner">
+        <wsdl:operation name="getHotelsForTravel">
+            <wsdl:input message="tns:getHotelsForTravel" name="getHotelsForTravel">
+            </wsdl:input>
+            <wsdl:output message="tns:getHotelsForTravelResponse" name="getHotelsForTravelResponse">
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getHotels">
+            <wsdl:input message="tns:getHotels" name="getHotels">
+            </wsdl:input>
+            <wsdl:output message="tns:getHotelsResponse" name="getHotelsResponse">
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="HotelPlannerServiceSoapBinding" type="tns:HotelPlanner">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getHotelsForTravel">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getHotelsForTravel">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getHotelsForTravelResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getHotels">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getHotels">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getHotelsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="HotelPlannerService">
+        <wsdl:port binding="tns:HotelPlannerServiceSoapBinding" name="HotelPlannerPort">
+            <soap:address location="http://localhost:9090/service-hotel-planner/HotelPlannerService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
