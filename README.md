@@ -2,6 +2,19 @@
 ##Flight planner :
 Paradigme Document
 
+Interface :
+
+Le chemin d’accès est /flight. L’utilisateur choisi ensuite la fonction en passant dans un JsonObject les paramètres.
+
+La réponse est un JsonArray qui contient tous les vols qui satisfont la requête.
+
+Design Choice :
+
+Ce service utilise le paradigme Document pour son implémentation.
+
+Nous avons choisi ce paradigme car les paramètres de la requête sont complexes et peuvent varier selon la requête et nous voulons manipuler un objet utilisateur qui définit ces paramètres. 
+
+
 #Hotel Planner :
 Paradigme RPC
 
