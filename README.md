@@ -1,6 +1,6 @@
-#SOA Lab 1 : Florent Pastor, Thomas Suignard, Cello Balde, Anthony Fusco
+# SOA Lab 1 : Florent Pastor, Thomas Suignard, Cello Balde, Anthony Fusco
 
-##Flight planner :
+## Flight planner :
 Paradigme Document
 
 Interface :
@@ -16,7 +16,7 @@ Ce service utilise le paradigme Document pour son implémentation.
 Nous avons choisi ce paradigme car les paramètres de la requête sont complexes et peuvent varier selon la requête et nous voulons manipuler un objet utilisateur qui définit ces paramètres. 
 
 
-#Hotel Planner :
+# Hotel Planner :
 Paradigme RPC
 
 Interface :
@@ -31,7 +31,7 @@ Design Choice :
    
    RPC permet de renforcer ces propriété, on ne rajoute pas de complexité à ce service et on s’assure de bien encapsulé les paramètres dont on as besoin pour la requète.
 
-##Car Planner :
+## Car Planner :
 Paradigme RPC
 
 Interface :
@@ -46,7 +46,7 @@ Design Choice :
    
    RPC permet de renforcer ces propriété, on ne rajoute pas de complexité à ce service et on s’assure de bien encapsulé les paramètres dont on as besoin pour la requète.
 
-##Travel Planner :
+## Travel Planner :
 
 Paradigme REST
 
