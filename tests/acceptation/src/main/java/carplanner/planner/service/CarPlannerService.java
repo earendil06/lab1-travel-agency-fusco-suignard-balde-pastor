@@ -15,7 +15,7 @@ import java.net.URL;
  * 
  */
 @WebServiceClient(name = "CarPlannerService",
-//                  wsdlLocation = "file:/home/afusco/IdeaProjects/lab1-travel-agency-fusco-suignard-balde-pastor/tests/acceptation/src/main/resources/CarPlannerService.wsdl",
+                  wsdlLocation = "file:/home/afusco/IdeaProjects/lab1-travel-agency-fusco-suignard-balde-pastor/tests/acceptation/src/main/resources/CarPlannerService.wsdl",
                   targetNamespace = "http://service.planner/") 
 public class CarPlannerService extends Service {
 
