@@ -10,7 +10,7 @@
     <name>ESB :: Tests</name>
 
     <parent>
-        <groupId>fr.unice.polytech.esb</groupId>
+        <groupId>fr.unice.groupe4</groupId>
         <artifactId>root</artifactId>
         <version>1.0</version>
     </parent>
