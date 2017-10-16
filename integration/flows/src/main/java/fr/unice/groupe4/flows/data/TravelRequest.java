@@ -3,13 +3,12 @@ package fr.unice.groupe4.flows.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class TravelRequest implements Serializable {
     @JsonProperty("email") private String email;
-    @JsonProperty("flights") private List<Flight> flights;
-    @JsonProperty("hotels") private List<Hotel> hotels;
-    @JsonProperty("cars") private List<Car> cars;
+    @JsonProperty("flight") private Flight flight;
+    @JsonProperty("hotel") private Hotel hotel;
+    @JsonProperty("car") private Car car;
 
     public String getEmail() {
         return email;
@@ -19,37 +18,37 @@ public class TravelRequest implements Serializable {
         this.email = email;
     }
 
-    public List<Flight> getFlights() {
-        return flights;
+    public Flight getFlight() {
+        return flight;
     }
 
-    public void setFlights(List<Flight> flights) {
-        this.flights = flights;
+    public void setFlight(Flight flight) {
+        this.flight = flight;
     }
 
-    public List<Hotel> getHotels() {
-        return hotels;
+    public Hotel getHotel() {
+        return hotel;
     }
 
-    public void setHotels(List<Hotel> hotels) {
-        this.hotels = hotels;
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 
-    public List<Car> getCars() {
-        return cars;
+    public Car getCar() {
+        return car;
     }
 
-    public void setCars(List<Car> cars) {
-        this.cars = cars;
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     @Override
     public String toString() {
         return "TravelRequest{" +
                 "email='" + email + '\'' +
-                ", flights=" + flights +
-                ", hotels=" + hotels +
-                ", cars=" + cars +
+                ", flight=" + flight +
+                ", hotel=" + hotel +
+                ", car=" + car +
                 '}';
     }
 }
