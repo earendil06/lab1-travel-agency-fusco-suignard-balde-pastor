@@ -7,7 +7,6 @@
     - Setup de l'environnement
     - Récupération de la demande de voyage de l'employé
     - Envoie de la demande à la compagnie
-    - Service de polling de mails
   - Semaine 42 :
     - Sélection du moins cher par la compagnie
     - Intégration des services des autres groupes
@@ -23,5 +22,4 @@
     - Archive des pièces justificatives (FTP)
     - Acceptation ou refus par le manager
   - Semaine 45 :
-    - Script de build
-    - Rapport final
+    - Préparation démo
