@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+
+/* spliting a list of expenses on json file */
+
 public class ExpenseRequestSplitter {
     public static List split(Exchange exchange) {
         List list = new ArrayList();

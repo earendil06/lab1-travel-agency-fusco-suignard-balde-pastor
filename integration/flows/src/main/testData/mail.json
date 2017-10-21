@@ -1,0 +1,23 @@
+{
+  "livingExpenses": "FS",
+  "employer": "identifiant@test",
+  "travel" : "travelID012155",
+  "expenses": [{
+    "Type": "transport",
+    "Motif": "sem",
+    "Date": "10.11.20",
+    "Heure": "12h52",
+    "Price": "100",
+    "Desc" : "kksskskks"
+
+  },
+    {
+      "Type": "restaurent",
+      "Motif": "bouf",
+      "Date": "10.10.20",
+      "Heure": "12h52",
+      "Price": "50" ,
+      "Desc" : "lsllsdlmslmdlmslm"
+
+    }]
+}
