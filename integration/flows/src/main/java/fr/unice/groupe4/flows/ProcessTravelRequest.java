@@ -3,8 +3,10 @@ package fr.unice.groupe4.flows;
 import com.google.gson.Gson;
 import fr.unice.groupe4.flows.data.Car;
 import fr.unice.groupe4.flows.data.Flight;
+import fr.unice.groupe4.flows.data.Hotel;
 import fr.unice.groupe4.flows.data.TravelRequest;
 import fr.unice.groupe4.flows.utils.Endpoints;
+import fr.unice.groupe4.flows.utils.TravelRequestSplitter;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
@@ -15,6 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static fr.unice.groupe4.flows.utils.Endpoints.COMPARE_HOTEL_ENDPOINT;
 import static fr.unice.groupe4.flows.utils.Endpoints.HANDLE_A_TRAVEL_SUBMIT;
 
 public class ProcessTravelRequest extends RouteBuilder {
@@ -26,42 +29,39 @@ public class ProcessTravelRequest extends RouteBuilder {
                 .log("Starting submit travel")
                 .routeId("submitTravel")
                 .log("input is " + body())
-                .unmarshal().json(JsonLibrary.Gson, Map.class)
-                .log("to map " + body())
+                .unmarshal().json(JsonLibrary.Jackson, Map.class)
                 .split().method(TravelRequestSplitter.class, "split")
-                //.parallelProcessing().executorService(WORKERS)
-                    .log("split msg ${body}")
                     .choice()
-                        .when(header("type").isEqualTo("email"))
-                            .log("email is " + body())
-                            //.to(HANDLE_A_TRAVEL_SUBMIT)
-                        .when(header("type").isEqualTo("flight"))
-                            .log("flight is " + body())
-                            //.to("direct:flights")
-                        .when(header("type").isEqualTo("car"))
-                            .log("car is " + body())
-                            //.to("direct:cars")
+                    .when(header("type").isEqualTo("email"))
+                        .log("email is " + body())
+                    .when(header("type").isEqualTo("flight"))
+                        .log("flight is " + body())
+                    .when(header("type").isEqualTo("car"))
+                        .log("car is " + body())
+                    .when(header("type").isEqualTo("hotel"))
+                        .log("hotel is " + body())
+                        //.unmarshal().json(JsonLibrary.Jackson, Hotel.class)
+                        .process((Exchange exchange) -> {
+                            Gson gson = new Gson();
+                            String s = exchange.getIn().getBody(String.class);
+                            Hotel hotel = gson.fromJson(s, Hotel.class);
+                            exchange.getIn().setBody(hotel);
+                        })
+                        .log("UNMARSHAL HOTEL " + body())
+                        .inOut(COMPARE_HOTEL_ENDPOINT)
                     .end()
                 .aggregate(constant(true), merge)
                 .completionPredicate(exchange -> {
                     TravelRequest travelRequest = exchange.getIn().getBody(TravelRequest.class);
-                    //System.out.println("predicate " + travelRequest);
-                    return travelRequest != null && travelRequest.getEmail() != null &&
-                            travelRequest.getEmail().contains("aaaaaaaaaaa"/*"toto@toto.com"*/);
+                    return travelRequest != null &&
+                            travelRequest.getEmail() != null &&
+                            travelRequest.getCar() != null &&
+                            travelRequest.getHotel() != null &&
+                            travelRequest.getFlight() != null;
                 })
                 .log("after aggregation " + body())
 
-                    //.to(HANDLE_A_TRAVEL_SUBMIT)
-        ;
-
-        from("direct:flights")
-                .log("FLIGHTS PROCESSING " + body())
-                //.to(HANDLE_A_TRAVEL_SUBMIT)
-        ;
-
-        from("direct:cars")
-                .log("CARS PROCESSING " + body())
-                //.to(HANDLE_A_TRAVEL_SUBMIT)
+        //.to(HANDLE_A_TRAVEL_SUBMIT)
         ;
 
         from(HANDLE_A_TRAVEL_SUBMIT)
@@ -84,45 +84,16 @@ public class ProcessTravelRequest extends RouteBuilder {
         public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
             Message newIn = newExchange.getIn();
             if (oldExchange == null) {
-//                list = new ArrayList();
                 TravelRequest travelRequest = new TravelRequest();
-                //list.add(newBody);
                 add(travelRequest, newIn);
-//                newIn.setBody(list);
                 newIn.setBody(travelRequest);
-                //newExchange.setIn(newIn);
-                //list.add(newIn.getBody());
                 return newExchange;
             } else {
                 TravelRequest old = oldExchange.getIn().getBody(TravelRequest.class);
-                /*if (old == null) {
-                    System.out.println("IS NULL");
-                    //return oldExchange;
-                    old = new TravelRequest();
-                    add(old, oldExchange.getIn());
-                }*/
                 add(old, newIn);
-//                list = in.getBody(ArrayList.class);
-//                list.add(newBody);
                 oldExchange.getIn().setBody(old);
                 System.out.println("MERGED " + old);
                 return oldExchange;
-
-                /*Object obj = oldExchange.getIn().getBody();
-                System.out.println("FROM OLD " + obj);
-                list.add(obj);
-                list.add(newIn.getBody());
-                TravelRequest request = new TravelRequest();
-                if (list.size() == 3) {
-                    for (Object o : list) {
-                        add(request, o);
-                    }
-                } else {
-                    oldExchange.getIn().setBody(list);
-                    return oldExchange;
-                }
-                System.out.println("FINAL " + request);
-                return oldExchange;*/
             }
         }
 
@@ -142,28 +113,11 @@ public class ProcessTravelRequest extends RouteBuilder {
                     Car car = gson.fromJson(msg.getBody(String.class), Car.class);
                     old.setCar(car);
                     break;
+                case "hotel":
+                    Hotel hotel = gson.fromJson(msg.getBody(String.class), Hotel.class);
+                    old.setHotel(hotel);
+                    break;
             }
-            /*if (msg.getBody() == null) {
-                System.out.println("NULL IN ADD");
-                return;
-            }*/
-            /*switch (msg.getHeader("type").toString()) {
-                case "email":
-                    String email = msg.getBody(String.class);
-                    old.setEmail(email);
-                    System.out.println("email " + email + "\ntravel " + old);
-                    break;
-                case "flights":
-                    List<Flight> flights = msg.getBody(List.class);
-                    old.setFlights(flights);
-                    System.out.println("flights " + flights + "\ntravel " + old);
-                    break;
-                case "cars":
-                    List<Car> cars = msg.getBody(List.class);
-                    old.setCars(cars);
-                    System.out.println("cars " + cars + "\ntravel " + old);
-                    break;
-            }*/
         }
     };
 

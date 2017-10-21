@@ -7,6 +7,9 @@ import java.io.Serializable;
 public class Flight implements Serializable {
     @JsonProperty("destination") private String destination;
 
+    public Flight() {
+    }
+
     public String getDestination() {
         return destination;
     }

@@ -5,22 +5,52 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class Hotel implements Serializable {
-    @JsonProperty("destination") private String destination;
-    @JsonProperty("nbNights") private int nbNights;
+    @JsonProperty("place")
+    private String place;
+    @JsonProperty("dateArrival")
+    private String dateArrival;
+    @JsonProperty("dateDeparture")
+    private String dateDeparture;
 
-    public String getDestination() {
-        return destination;
+    public Hotel() {
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public Hotel(Hotel origin) {
+        this.place = origin.place;
+        this.dateArrival = origin.dateArrival;
+        this.dateDeparture = origin.dateDeparture;
     }
 
-    public int getNbNights() {
-        return nbNights;
+    public String getPlace() {
+        return place;
     }
 
-    public void setNbNights(int nbNights) {
-        this.nbNights = nbNights;
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public String getDateArrival() {
+        return dateArrival;
+    }
+
+    public void setDateArrival(String dateArrival) {
+        this.dateArrival = dateArrival;
+    }
+
+    public String getDateDeparture() {
+        return dateDeparture;
+    }
+
+    public void setDateDeparture(String dateDeparture) {
+        this.dateDeparture = dateDeparture;
+    }
+
+    @Override
+    public String toString() {
+        return "Hotel{" +
+                "place='" + place + '\'' +
+                ", dateArrival='" + dateArrival + '\'' +
+                ", dateDeparture='" + dateDeparture + '\'' +
+                '}';
     }
 }

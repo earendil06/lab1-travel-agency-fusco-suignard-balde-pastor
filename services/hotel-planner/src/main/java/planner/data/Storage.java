@@ -17,6 +17,15 @@ import java.util.Scanner;
 
 public class Storage {
 
+    static {
+        try {
+            Storage.purge();
+            Storage.initialize();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void createHotel(Hotel hotel) {
         MongoCollection hotels = getHotels();
         hotels.insert(hotel);

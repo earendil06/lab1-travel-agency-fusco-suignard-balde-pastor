@@ -10,6 +10,9 @@ public class TravelRequest implements Serializable {
     @JsonProperty("hotel") private Hotel hotel;
     @JsonProperty("car") private Car car;
 
+    public TravelRequest() {
+    }
+
     public String getEmail() {
         return email;
     }

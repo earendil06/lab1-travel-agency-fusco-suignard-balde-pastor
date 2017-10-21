@@ -7,7 +7,10 @@ import java.io.Serializable;
 public class Car implements Serializable {
     //private date... //todo do it...
     @JsonProperty("place") private String place;
-    @JsonProperty("hours") private int hours;
+    @JsonProperty("hours") private String hours;
+
+    public Car() {
+    }
 
     public String getPlace() {
         return place;
@@ -17,11 +20,11 @@ public class Car implements Serializable {
         this.place = place;
     }
 
-    public int getHours() {
+    public String getHours() {
         return hours;
     }
 
-    public void setHours(int hours) {
+    public void setHours(String hours) {
         this.hours = hours;
     }
 

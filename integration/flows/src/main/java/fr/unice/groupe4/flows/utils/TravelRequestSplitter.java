@@ -1,4 +1,4 @@
-package fr.unice.groupe4.flows;
+package fr.unice.groupe4.flows.utils;
 
 
 import org.apache.camel.Exchange;
@@ -25,14 +25,16 @@ public class TravelRequestSplitter {
                     msg.setHeader("type", "email");
                     break;
                 case "flight":
-//                    Flight flight = (Flight) value;
                     msg.setBody(value);
                     msg.setHeader("type", "flight");
                     break;
                 case "car":
-//                    Car car = (Car) value;
                     msg.setBody(value);
                     msg.setHeader("type", "car");
+                    break;
+                case "hotel":
+                    msg.setBody(value);
+                    msg.setHeader("type", "hotel");
                     break;
                 default:
                     msg.setBody("def");
