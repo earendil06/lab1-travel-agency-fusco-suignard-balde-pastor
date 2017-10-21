@@ -66,20 +66,6 @@ public class ProcessTravelRequest extends RouteBuilder {
                 })
                 .log("after aggregation " + body())
 
-        //.to(HANDLE_A_TRAVEL_SUBMIT)
-        ;
-
-        from(HANDLE_A_TRAVEL_SUBMIT)
-                .log("aggregation " + body())
-                .aggregate(merge)
-                .body()
-                .completionPredicate(exchange -> {
-                    TravelRequest travelRequest = exchange.getIn().getBody(TravelRequest.class);
-                    //System.out.println("predicate " + travelRequest);
-                    return travelRequest != null && travelRequest.getEmail() != null &&
-                            travelRequest.getEmail().contains("azeazeaze");
-                })
-                .log("after aggregation " + body())
         ;
 
     }
