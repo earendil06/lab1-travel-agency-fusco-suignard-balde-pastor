@@ -13,8 +13,8 @@ public interface IHotelPlannerService {
 
     @WebResult(name="hotel_planner_result")
     String getHotelsForTravel(@WebParam(name="place") String place,
-                              @WebParam(name="from") String from,
-                              @WebParam(name = "to") String to
+                              @WebParam(name="dateArrival") String from,
+                              @WebParam(name = "dateDeparture") String to
                               );
 
 }

@@ -36,7 +36,7 @@ public class Storage {
     public static JSONArray getHotelsForTravel(String place, Date from, Date to) {
         MongoCollection hotels = getHotels();
         MongoCursor<Hotel> all =
-                hotels.find("{ place : # , from: {$lte: #}, to: {$gte: #} }", place, from, to)
+                hotels.find("{ place : # , dateArrival: {$lte: #}, dateDeparture: {$gte: #} }", place, from, to)
                         .sort("{ price : 1 }")
                         .as(Hotel.class);
 
