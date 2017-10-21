@@ -11,6 +11,12 @@ public class Hotel implements Serializable {
     private String dateArrival;
     @JsonProperty("dateDeparture")
     private String dateDeparture;
+    @JsonProperty("price")
+    private int price = 0;
+    @JsonProperty("name")
+    private String name = "";
+    @JsonProperty("uid")
+    private String uid = "";
 
     public Hotel() {
     }
@@ -19,6 +25,9 @@ public class Hotel implements Serializable {
         this.place = origin.place;
         this.dateArrival = origin.dateArrival;
         this.dateDeparture = origin.dateDeparture;
+        this.price = origin.price;
+        this.name = origin.name;
+        this.uid = uid;
     }
 
     public String getPlace() {
@@ -45,12 +54,39 @@ public class Hotel implements Serializable {
         this.dateDeparture = dateDeparture;
     }
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     @Override
     public String toString() {
         return "Hotel{" +
                 "place='" + place + '\'' +
                 ", dateArrival='" + dateArrival + '\'' +
                 ", dateDeparture='" + dateDeparture + '\'' +
+                ", price=" + price +
+                ", name='" + name + '\'' +
+                ", uid='" + uid + '\'' +
                 '}';
+    }
+
+    public int getPrice() {
+        return price;
     }
 }

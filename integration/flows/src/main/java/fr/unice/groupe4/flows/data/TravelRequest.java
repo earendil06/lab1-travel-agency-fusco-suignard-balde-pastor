@@ -47,11 +47,11 @@ public class TravelRequest implements Serializable {
 
     @Override
     public String toString() {
-        return "TravelRequest{" +
-                "email='" + email + '\'' +
-                ", flight=" + flight +
-                ", hotel=" + hotel +
-                ", car=" + car +
+        return "TravelRequest{" + "\n" +
+                "email='" + email + '\'' + "\n" +
+                "flight=" + flight + "\n" +
+                "hotel=" + hotel + "\n" +
+                "car=" + car + "\n" +
                 '}';
     }
 }
