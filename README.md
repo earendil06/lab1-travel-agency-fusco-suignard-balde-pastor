@@ -1,4 +1,4 @@
-# SOA Lab 1 : Florent Pastor, Thomas Suignard, Cello Balde, Anthony Fusco
+# SOA Lab 1 : Florent Pastor, Thomas Suignard, Thierno Balde, Anthony Fusco
 
 ## Flight planner :
 Paradigme Document
