@@ -34,8 +34,8 @@ public class Flight {
     @MongoObjectId
     String id;
 
-    public static final String DATE_PATTERN = "dd/MM/yyyy";
-    public static final String HOUR_PATTERN = "HH:mm";
+    public static final String DATE_PATTERN = "dd.MM.yyyy";
+    public static final String HOUR_PATTERN = "HH.mm";
     public Flight() {}
 
     public Flight(String from, String to, Date date, Date hour, int duration, double price, boolean direct) throws ParseException {

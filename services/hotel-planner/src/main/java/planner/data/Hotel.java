@@ -18,7 +18,7 @@ public class Hotel {
     private Date dateDeparture;
 
 
-    public static final String DATE_PATTERN = "dd/MM/yyyy";
+    public static final String DATE_PATTERN = "dd.MM.yyyy";
 
 
     @MongoObjectId
