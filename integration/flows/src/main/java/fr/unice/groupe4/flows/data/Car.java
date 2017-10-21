@@ -6,10 +6,34 @@ import java.io.Serializable;
 
 public class Car implements Serializable {
     //private date... //todo do it...
-    @JsonProperty("place") private String place;
-    @JsonProperty("hours") private String hours;
+//    @JsonProperty("place") private String place;
+//    @JsonProperty("hours") private String hours;
+
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("place")
+    private String place;
+    @JsonProperty("duration")
+    private int duration;
+    @JsonProperty("uid")
+    private String uid;
 
     public Car() {
+    }
+
+    public Car(Car other) {
+        this.name = other.name;
+        this.place = other.place;
+        this.duration = other.duration;
+        this.uid = other.uid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPlace() {
@@ -20,19 +44,29 @@ public class Car implements Serializable {
         this.place = place;
     }
 
-    public String getHours() {
-        return hours;
+    public int getDuration() {
+        return duration;
     }
 
-    public void setHours(String hours) {
-        this.hours = hours;
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     @Override
     public String toString() {
         return "Car{" +
-                "place='" + place + '\'' +
-                ", hours=" + hours +
+                "name='" + name + '\'' +
+                ", place='" + place + '\'' +
+                ", duration=" + duration +
+                ", uid='" + uid + '\'' +
                 '}';
     }
 }

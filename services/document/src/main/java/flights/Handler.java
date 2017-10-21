@@ -13,6 +13,25 @@ import java.util.*;
 
 public class Handler {
 
+    static {
+        JSONObject o = new JSONObject();
+        o.put("from", "Paris")
+                .put("to", "Pangkalan")
+                .put("date", "09.12.2017")
+                .put("hour", "10.10")
+                .put("duration", 12)
+                .put("price", 12.0)
+                .put("direct", true);
+        Flight f = null;
+        try {
+            f = new Flight(o);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        purge();
+        create(f);
+    }
+
     static JSONArray retrieve(JSONObject input) throws ParseException {
         MongoCollection flights = getFlights();
 
@@ -44,21 +63,21 @@ public class Handler {
         StringBuilder builderMin = new StringBuilder();
 
         Iterator<String> iterator = attrs.keySet().iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             String key = iterator.next();
             builderAttrs.append(key).append(":").append(attrs.get(key));
             if (iterator.hasNext()) builderAttrs.append(",");
         }
 
         iterator = max.keySet().iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             String key = iterator.next();
             builderMax.append(key).append(": {$lt : ").append(max.get(key)).append("}");
             if (iterator.hasNext()) builderMax.append(",");
         }
 
         iterator = min.keySet().iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             String key = iterator.next();
             builderMin.append(key).append(": {$gt : ").append(min.get(key)).append("}");
             if (iterator.hasNext()) builderMin.append(",");
@@ -84,14 +103,14 @@ public class Handler {
             String attrSort = input.getString("order-by");
             List<String> orderables = new ArrayList<>();
             for (Field field : Flight.class.getDeclaredFields()) {
-                if (field.isAnnotationPresent(AttributeQueryable.class) && field.getAnnotation(AttributeQueryable.class).order()){
+                if (field.isAnnotationPresent(AttributeQueryable.class) && field.getAnnotation(AttributeQueryable.class).order()) {
                     orderables.add(field.getName());
                 }
             }
-            if (orderables.contains(attrSort)){
+            if (orderables.contains(attrSort)) {
                 return "{" + attrSort + ": 1}";
             }
-        }catch(Exception ignored) {
+        } catch (Exception ignored) {
 
         }
         return "{}";
@@ -100,13 +119,13 @@ public class Handler {
     private static Map<String, Object> getHashMap(JSONObject input) {
         Map<String, Object> result = new HashMap<>();
         for (Field field : Flight.class.getDeclaredFields()) {
-            if (field.isAnnotationPresent(AttributeQueryable.class) && field.getAnnotation(AttributeQueryable.class).filter()){
+            if (field.isAnnotationPresent(AttributeQueryable.class) && field.getAnnotation(AttributeQueryable.class).filter()) {
                 try {
                     Object value = input.get(field.getName());
                     if (field.getType().isAssignableFrom(String.class)) value = "\"" + value + "\"";
                     else if (field.getType().isAssignableFrom(Date.class)) value = "{$date : \"" + value + "\"}";
                     result.put(field.getName(), value);
-                }catch (Exception ignored){
+                } catch (Exception ignored) {
 
                 }
             }
@@ -114,21 +133,21 @@ public class Handler {
         return result;
     }
 
-    private static Map<String, Double> getHashMapMinMax(JSONObject master, String key){
+    private static Map<String, Double> getHashMapMinMax(JSONObject master, String key) {
         Map<String, Double> result = new HashMap<>();
         JSONObject o;
         try {
             o = master.getJSONObject(key);
-        }catch (Exception e){
+        } catch (Exception e) {
             return result;
         }
 
         for (Field field : Flight.class.getDeclaredFields()) {
-            if (field.isAnnotationPresent(AttributeQueryable.class) && field.getAnnotation(AttributeQueryable.class).minMax()){
+            if (field.isAnnotationPresent(AttributeQueryable.class) && field.getAnnotation(AttributeQueryable.class).minMax()) {
                 try {
                     double value = o.getDouble(field.getName());
                     result.put(field.getName(), value);
-                }catch (Exception ignored){
+                } catch (Exception ignored) {
 
                 }
             }
@@ -136,7 +155,7 @@ public class Handler {
         return result;
     }
 
-    public static String create(Flight flight){
+    public static String create(Flight flight) {
 
         getFlights().insert(flight);
         return "inserted";

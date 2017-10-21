@@ -17,8 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static fr.unice.groupe4.flows.utils.Endpoints.COMPARE_HOTEL_ENDPOINT;
-import static fr.unice.groupe4.flows.utils.Endpoints.HANDLE_A_TRAVEL_SUBMIT;
+import static fr.unice.groupe4.flows.utils.Endpoints.*;
 
 public class ProcessTravelRequest extends RouteBuilder {
     private static final ExecutorService WORKERS = Executors.newFixedThreadPool(3);
@@ -31,25 +30,31 @@ public class ProcessTravelRequest extends RouteBuilder {
                 .log("input is " + body())
                 .unmarshal().json(JsonLibrary.Jackson, Map.class)
                 .split().method(TravelRequestSplitter.class, "split")
-                    .choice()
-                    .when(header("type").isEqualTo("email"))
-                        .log("email is " + body())
-                    .when(header("type").isEqualTo("flight"))
-                        .log("flight is " + body())
-                    .when(header("type").isEqualTo("car"))
-                        .log("car is " + body())
-                    .when(header("type").isEqualTo("hotel"))
-                        .log("hotel is " + body())
-                        //.unmarshal().json(JsonLibrary.Jackson, Hotel.class)
-                        .process((Exchange exchange) -> {
-                            Gson gson = new Gson();
-                            String s = exchange.getIn().getBody(String.class);
-                            Hotel hotel = gson.fromJson(s, Hotel.class);
-                            exchange.getIn().setBody(hotel);
-                        })
-                        .log("UNMARSHAL HOTEL " + body())
-                        .inOut(COMPARE_HOTEL_ENDPOINT)
-                    .end()
+                .parallelProcessing().executorService(WORKERS)
+                .choice()
+
+                .when(header("type").isEqualTo("email"))
+                .log("email is " + body())
+
+                .when(header("type").isEqualTo("flight"))
+                .log("flight is " + body())
+                .process(ProcessTravelRequest::json2flight)
+                .log("UNMARSHAL FLIGHT " + body())
+                .inOut(COMPARE_FLIGHT_ENDPOINT)
+
+                .when(header("type").isEqualTo("car"))
+                .log("car is " + body())
+                .process(ProcessTravelRequest::json2car)
+                .log("UNMARSHAL CAR " + body())
+                .inOut(COMPARE_CAR_ENDPOINT)
+
+                .when(header("type").isEqualTo("hotel"))
+                .log("hotel is " + body())
+                .process(ProcessTravelRequest::json2hotel)
+                .log("UNMARSHAL HOTEL " + body())
+                .inOut(COMPARE_HOTEL_ENDPOINT)
+
+                .end()
                 .aggregate(constant(true), merge)
                 .completionPredicate(exchange -> {
                     TravelRequest travelRequest = exchange.getIn().getBody(TravelRequest.class);
@@ -79,6 +84,27 @@ public class ProcessTravelRequest extends RouteBuilder {
 
     }
 
+    private static void json2car(Exchange exchange) {
+        Gson gson = new Gson();
+        String s = exchange.getIn().getBody(String.class);
+        Car car = gson.fromJson(s, Car.class);
+        exchange.getIn().setBody(car);
+    }
+
+    private static void json2flight(Exchange exchange) {
+        Gson gson = new Gson();
+        String s = exchange.getIn().getBody(String.class);
+        Flight flight = gson.fromJson(s, Flight.class);
+        exchange.getIn().setBody(flight);
+    }
+
+    private static void json2hotel(Exchange exchange) {
+        Gson gson = new Gson();
+        String s = exchange.getIn().getBody(String.class);
+        Hotel hotel = gson.fromJson(s, Hotel.class);
+        exchange.getIn().setBody(hotel);
+    }
+
     private static AggregationStrategy merge = new AggregationStrategy() {
         @Override
         public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
@@ -92,7 +118,14 @@ public class ProcessTravelRequest extends RouteBuilder {
                 TravelRequest old = oldExchange.getIn().getBody(TravelRequest.class);
                 add(old, newIn);
                 oldExchange.getIn().setBody(old);
-                System.out.println("MERGED " + old);
+                //System.out.println("MERGED " + old);
+                if (old != null &&
+                        old.getEmail() != null &&
+                        old.getCar() != null &&
+                        old.getHotel() != null &&
+                        old.getFlight() != null) {
+                    System.out.println("EVERYTHING IS AGGREGATED\n" + old);
+                }
                 return oldExchange;
             }
         }
@@ -106,19 +139,18 @@ public class ProcessTravelRequest extends RouteBuilder {
                     old.setEmail(email);
                     break;
                 case "flight":
-                    Flight flight = gson.fromJson(msg.getBody(String.class), Flight.class);
+                    Flight flight = msg.getBody(Flight.class);
                     old.setFlight(flight);
                     break;
                 case "car":
-                    Car car = gson.fromJson(msg.getBody(String.class), Car.class);
+                    Car car = msg.getBody(Car.class);
                     old.setCar(car);
                     break;
                 case "hotel":
-                    Hotel hotel = gson.fromJson(msg.getBody(String.class), Hotel.class);
+                    Hotel hotel = msg.getBody(Hotel.class);
                     old.setHotel(hotel);
                     break;
             }
         }
     };
-
 }

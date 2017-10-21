@@ -46,11 +46,9 @@ public class Storage {
     }
 
     static {
-        create(new CarRental("peugeot", "Paris", 4));
-        create(new CarRental("renault", "Paris", 24));
-        create(new CarRental("first", "Madrid", 2));
-        create(new CarRental("second", "Paris", 85));
-        create(new CarRental("third", "Tunis", 24));
+        getCars().remove();
+        create(new CarRental("peugeot", "Pangkalan", 24));
+        create(new CarRental("renault", "Paris", 10));
     }
 
 }
