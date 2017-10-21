@@ -136,12 +136,15 @@ public class Handler {
         return result;
     }
 
-    public static void create(Flight flight) {
+    public static String create(Flight flight){
+
         getFlights().insert(flight);
+        return "inserted";
     }
 
-    public static void purge() {
+    public static String purge() {
         getFlights().remove();
+        return "purged";
     }
 
 

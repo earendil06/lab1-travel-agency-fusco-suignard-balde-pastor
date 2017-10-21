@@ -6,34 +6,52 @@ import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 import org.json.JSONArray;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Scanner;
 
 public class Storage {
 
-    public static void create(HotelRental hotelRental) {
+    public static void createHotel(Hotel hotel) {
         MongoCollection hotels = getHotels();
-        hotels.insert(hotelRental);
+        hotels.insert(hotel);
     }
 
-    public static JSONArray getHotelsForTravel(String place, int day, int month, int year) {
+    public static void purge() {
+        getHotels().remove();
+    }
+
+    private static MongoCollection getHotels() {
+        MongoClient client = new MongoClient(Network.HOST, Network.PORT);
+        return new Jongo(client.getDB(Network.DATABASE)).getCollection(Network.COLLECTION);
+    }
+
+
+
+    public static JSONArray getHotelsForTravel(String place, Date from, Date to) {
         MongoCollection hotels = getHotels();
-        MongoCursor<HotelRental> all =
-                hotels.find("{ place : # , day : # , month : # , year : # }", place, day, month, year)
+        MongoCursor<Hotel> all =
+                hotels.find("{ place : # , from: {$lte: #}, to: {$gte: #} }", place, from, to)
                         .sort("{ price : 1 }")
-                        .as(HotelRental.class);
+                        .as(Hotel.class);
 
         JSONArray jArray = new JSONArray();
 
-        for (HotelRental f : all) {
+        for (Hotel f : all) {
             jArray.put(f.toJson());
         }
 
         return jArray;
     }
 
-    public static JSONArray findAll() {
+    public static JSONArray findAllHotels() {
         MongoCollection hotels = getHotels();
-        Iterator<HotelRental> iter = hotels.find().sort("{ price : 1 }").as(HotelRental.class).iterator();
+        Iterator<Hotel> iter = hotels.find().sort("{ price : 1 }").as(Hotel.class).iterator();
         JSONArray jsonArray = new JSONArray();
         while (iter.hasNext()) {
             jsonArray.put(iter.next().toJson());
@@ -41,18 +59,23 @@ public class Storage {
         return jsonArray;
     }
 
+    public static void initialize() throws ParseException {
+        DateFormat format = new SimpleDateFormat(Hotel.DATE_PATTERN);
 
-    private static MongoCollection getHotels() {
-        MongoClient client = new MongoClient(Network.HOST, Network.PORT);
-        return new Jongo(client.getDB(Network.DATABASE)).getCollection(Network.COLLECTION);
+        File file = new File(Storage.class.getClassLoader().getResource("hotels.csv").getFile());
+        try (Scanner scanner = new Scanner(file)) {
+            scanner.nextLine();
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] objects = line.split(";");
+                Hotel hotel = new Hotel(objects[0], objects[1], Integer.parseInt(objects[2]), format.parse(objects[3]), format.parse(objects[4]));
+                createHotel(hotel);
+            }
+
+            scanner.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-    static {
-        create(new HotelRental("aa", "Japon", 10, 5, 2017, 100));
-
-        create(new HotelRental("bb", "USA", 17, 8, 2001, 500));
-
-        create(new HotelRental("cc", "Italy", 20, 12, 2012, 420));
-    }
-
 }

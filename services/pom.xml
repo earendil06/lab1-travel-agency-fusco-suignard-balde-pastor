@@ -16,10 +16,10 @@
     </parent>
 
     <modules>
-        <module>travel-manager</module>
         <module>car-planner</module>
         <module>hotel-planner</module>
         <module>document</module>
+        <module>travel-manager</module>
     </modules>
 
     <properties>

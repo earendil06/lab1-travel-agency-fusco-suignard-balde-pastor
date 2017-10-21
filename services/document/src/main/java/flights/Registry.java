@@ -23,6 +23,11 @@ public class Registry {
             switch (Event.valueOf(obj.getString("event"))) {
                 case RETRIEVE:
                     return Response.ok().entity(Handler.retrieve(obj).toString(INDENT_FACTOR)).build();
+                case CREATE:
+                    Flight f = new Flight(obj.getJSONObject("flight"));
+                    return Response.ok().entity(Handler.create(f)).build();
+                case PURGE:
+                    return Response.ok().entity(Handler.purge()).build();
             }
         } catch(Exception e) {
             JSONObject error = new JSONObject().put("error", e.toString());

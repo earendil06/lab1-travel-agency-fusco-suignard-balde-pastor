@@ -3,21 +3,30 @@ package planner.data;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
-public class HotelRental {
+
+public class Hotel {
     private String name;
     private String place;
-    private int day;
-    private int month;
-    private int year;
     private int price;
     private String uid;
+    private Date from;
+    private Date to;
+
+
+    public static final String DATE_PATTERN = "dd/MM/yyyy";
+
 
     @MongoObjectId
     String id;
 
-    public HotelRental() {
+    public Hotel() {
     }
 
     public String getName() {
@@ -28,18 +37,6 @@ public class HotelRental {
         return place;
     }
 
-    public int getDay() {
-        return day;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
     public int getPrice() {
         return price;
     }
@@ -48,37 +45,45 @@ public class HotelRental {
         return uid;
     }
 
-    public HotelRental(String name, String place, int day, int month, int year, int price) {
+    public Date getFrom() {
+        return from;
+    }
+
+    public Date getTo() {
+        return to;
+    }
+
+    public Hotel(String name, String place, int price, Date from, Date to) {
         this.uid = UUID.randomUUID().toString();
         this.name = name;
         this.place = place;
-        this.day = day;
-        this.month = month;
-        this.year = year;
         this.price = price;
+        this.from = from;
+        this.to = to;
     }
 
     JSONObject toJson() {
+        DateFormat df = new SimpleDateFormat(DATE_PATTERN);
         return new JSONObject()
                 .put("uid", uid)
                 .put("name", this.name)
                 .put("place", this.place)
-                .put("day", this.day)
-                .put("month", this.month)
-                .put("year", this.year)
-                .put("price", this.price);
+                .put("price", this.price)
+                .put("from", df.format(this.from))
+                .put("to", df.format(this.to));
     }
+
 
     @Override
     public String toString() {
-        return "HotelRental{" +
+        DateFormat df = new SimpleDateFormat(DATE_PATTERN);
+        return "Hotel{" +
                 "name='" + name + '\'' +
                 ", place='" + place + '\'' +
-                ", day=" + day +
-                ", month=" + month +
-                ", year=" + year +
                 ", price=" + price +
                 ", uid='" + uid + '\'' +
+                ", from=" + df.format(this.from) +
+                ", to=" + df.format(this.to) +
                 '}';
     }
 }
