@@ -9,7 +9,7 @@ public class SupportingRequest {
     @JsonProperty("employer") private String employer;
     @JsonProperty("travel") private String travel;
    // @JsonProperty("expenses") private List<String> expenses;
-    @JsonProperty("prices") private String prices;
+   // @JsonProperty("prices") private String prices;
 
     public SupportingRequest() {
     }
@@ -47,6 +47,7 @@ public class SupportingRequest {
         this.expenses = expenses;
     }
     */
+    /*
     public String getPrices() {
         return prices;
     }
@@ -54,7 +55,7 @@ public class SupportingRequest {
     public void setPrices(String prices) {
         this.prices = prices;
     }
-
+    */
     @Override
     public String toString() {
         return "SupportingRequest{" +
@@ -62,7 +63,7 @@ public class SupportingRequest {
                 ", employer='" + employer + '\'' +
                 ", travel='" + travel + '\'' +
                // ", expenses=" + expenses +
-                ", prices='" + prices + '\'' +
+                //", prices='" + prices + '\'' +
                 '}';
     }
 }

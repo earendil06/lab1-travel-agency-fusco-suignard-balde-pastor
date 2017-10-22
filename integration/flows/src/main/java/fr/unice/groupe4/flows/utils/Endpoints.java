@@ -3,7 +3,7 @@ package fr.unice.groupe4.flows.utils;
 public class Endpoints {
 
     public static final String MAIL_INPUT = "file:camel/mail";
-    public static final String MAIL_ANALYSIS = "file:camel/analysis";
+    public static final String MAIL_ANALYSIS = "file:camel/output";
 
 
     public static final String HANDLE_A_TRAVEL_SUBMIT = "activemq:handleTravelSubmit";
