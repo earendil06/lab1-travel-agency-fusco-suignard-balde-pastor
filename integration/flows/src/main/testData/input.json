@@ -1,0 +1,6 @@
+{
+	"email" : "toto@toto.com",
+	"flight" : { "from" : "Paris", "to" : "Pangkalan" },
+	"car" : { "place" : "Pangkalan", "duration": 10},
+	"hotel" : { "place" : "Pangkalan", "dateArrival" : "09.12.2017", "dateDeparture" : "19.12.2017" }
+}
