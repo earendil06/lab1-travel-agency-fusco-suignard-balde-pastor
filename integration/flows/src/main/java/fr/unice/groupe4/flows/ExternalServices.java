@@ -28,32 +28,24 @@ public class ExternalServices extends RouteBuilder {
     public void configure() throws Exception {
         from(COMPARE_HOTEL_ENDPOINT)
                 .routeId("retrieve hotels from services")
-                .log("START HOTEL ENDPOINT")
                 .bean(HotelHelper.class, "buildGetHotelForTravel(${body})")
                 .inOut(HOTEL_ENDPOINT)
-                .process(result2Hotel)
-                .log("AFTER HOTEL SERVICE: " + body());
+                .process(result2Hotel);
 
         from(COMPARE_FLIGHT_ENDPOINT)
                 .routeId("retrieve flights from services")
-                .log("START FLIGHT ENDPOINT")
                 .setHeader(Exchange.HTTP_METHOD, constant("POST"))
                 .setHeader("Content-Type", constant("application/json"))
                 .setHeader("Accept", constant("application/json"))
                 .bean(FlightHelper.class, "buildGetFlightForTravel(${body})")
-
                 .inOut(FLIGHT_ENDPOINT)
-//                .log("AFTER FLIGHT SERVICE: " + body())
-                .process(result2Flight)
-                .log("AFTER FLIGHT SERVICE: " + body());
+                .process(result2Flight);
 
         from(COMPARE_CAR_ENDPOINT)
                 .routeId("retrieve cars from services")
-                .log("START CAR ENDPOINT")
                 .bean(CarHelper.class, "buildGetCarForTravel(${body})")
                 .inOut(CAR_ENDPOINT)
-                .process(result2Car)
-                .log("AFTER CAR SERVICE: " + body());
+                .process(result2Car);
     }
 
     private static Processor result2Hotel = (Exchange exc) -> {

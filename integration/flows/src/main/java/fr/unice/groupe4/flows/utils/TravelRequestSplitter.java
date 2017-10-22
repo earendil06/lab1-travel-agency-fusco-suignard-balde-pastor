@@ -38,6 +38,7 @@ public class TravelRequestSplitter {
                     break;
                 default:
                     msg.setBody("def");
+                    msg.setHeader("type", "error");
             }
             msg.setHeader("uid", uid);
             list.add(msg);
