@@ -194,7 +194,7 @@ public class Handler {
             scanner.nextLine();
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                String[] objects = line.split(";");
+                String[] objects = line.split(",");
                 Flight f = new Flight(
                         objects[0],
                         objects[1],

@@ -57,7 +57,7 @@ public class Storage {
             scanner.nextLine();
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                String[] objects = line.split(";");
+                String[] objects = line.split(",");
                 CarRental car = new CarRental(objects[0], objects[1], objects[2], Integer.parseInt(objects[3]), Integer.parseInt(objects[4]));
                 create(car);
             }
