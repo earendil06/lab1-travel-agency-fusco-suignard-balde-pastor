@@ -16,14 +16,14 @@ mvn clean package
 # Build docker images
 #build services/travel-manager travel-manager
 build services/hotel-planner  hotel-planner
-#build services/car-planner    car-planner
-#build services/document       tcs-doc
+build services/car-planner    car-planner
+build services/document       tcs-doc
 
 #build integration/esbgroupe4 esbgroupe4
-#cd integration/esbgroupe4
-#docker build -t esbgroupe4 . --no-cache
-#cd ../..
-#
-#cd integration
-#docker build -t integration . --no-cache
-#cd ..
+cd integration/esbgroupe4
+docker build -t esbgroupe4 . #--no-cache
+cd ../..
+
+cd integration
+docker build -t integration . #--no-cache
+cd ..
