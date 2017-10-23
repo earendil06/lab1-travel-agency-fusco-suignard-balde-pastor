@@ -1,0 +1,41 @@
+uuid,from,to,date,hour,duration,price,direct
+f634bce5-4699-4544-b610-afbfe98ca1dc,New York,Cogolin,27.12.2017,13.23,159,859,true
+76ddd613-963b-462c-83eb-6096742d7799,Berlin,Cogolin,29.11.2017,21.19,176,893,true
+393f0677-6dd1-4dc2-aebb-fed6015c9005,Menton,Paris,01.11.2017,23.34,193,792,true
+7ca741b5-12fa-4fa8-80b2-3eefc8487db6,New York,London,11.10.2017,2.20,153,856,false
+c8f90b3b-0e5b-4914-87e1-cd77670542fb,Paris,Menton,25.11.2017,14.58,257,859,false
+69d5140d-2438-42a7-8039-219a0994fad8,Cogolin,Berlin,12.05.2017,21.07,266,795,true
+57fcebae-9d31-41a8-af3c-96f23cee9195,Menton,New York,10.01.2017,9.34,286,968,false
+b58e0ec9-e0e2-49d8-b883-dc5c6c2e1e0d,New York,Berlin,24.11.2017,12.25,213,932,true
+a412df4d-daac-4171-a2cb-6be285474bb1,New York,Cogolin,27.04.2017,16.05,132,624,true
+ad5ae661-0258-41e4-8097-a48ec64881f5,Menton,New York,23.01.2017,18.34,288,906,true
+efdeb773-8edc-4bf8-a3e2-793a6df31b63,London,Cogolin,21.11.2017,23.03,217,777,false
+6ba4bc1e-7c15-4603-8233-72326112a0d2,Menton,New York,22.04.2017,22.17,197,568,false
+ea769457-7a7e-4546-ab80-faf2d9b573b9,New York,Paris,07.02.2017,22.54,254,861,false
+add5f2ad-dda7-48cb-9f16-80698a30cd8d,Cogolin,Nice,13.11.2017,12.41,234,716,false
+a4d956ad-268c-4f27-be9e-37151242eb2c,New York,Menton,07.09.2017,22.13,219,682,true
+8bc41c86-6653-4772-b812-08cf90ec6285,Menton,Nice,07.05.2017,13.56,155,519,true
+366e1486-6b16-4de9-838a-27a694769b7e,Paris,Berlin,20.04.2017,7.28,283,511,false
+2790f7e9-b2ea-4cb5-a4f1-fcd5d8fbb9d5,Paris,New York,08.07.2017,8.32,149,564,true
+6afffe6f-e254-4221-9bec-b0abd9c12b3c,Paris,Nice,23.07.2017,13.56,267,789,false
+d5ce2752-7cef-4db1-a0c1-e9c738c6bd9f,Cogolin,Paris,28.12.2016,12.19,169,535,true
+039dd036-520c-4997-a5aa-5c4dee06cd3a,London,Nice,06.06.2017,20.19,232,794,true
+f0be57e7-34ec-4bbf-9a73-dec874b460c9,Paris,New York,10.10.2017,13.25,195,585,false
+0f6ca06c-e765-4c47-879e-926fe26d33a9,Paris,Nice,07.08.2017,7.43,181,774,false
+4b713440-f526-483d-a661-0c9c712eaf42,London,New York,27.05.2017,7.43,232,539,true
+6b48024a-4b5d-4d60-b8f3-fa60af086b04,Paris,New York,21.11.2016,17.18,214,889,true
+1e14352d-4619-41f7-ab22-3a9e7a998ba9,Cogolin,Menton,19.10.2017,13.01,177,774,false
+85760ba2-3de1-4660-963a-99f922227c65,Nice,Menton,31.12.2016,18.17,248,651,true
+7491cd19-8d05-4f35-a852-faddf67a23be,Paris,Cogolin,20.07.2017,16.53,183,589,false
+8953f7f0-9a37-4829-b582-bd2da12f3ea0,Menton,Berlin,02.09.2017,12.05,247,968,false
+cb9d4014-dbf5-47c9-aeed-e2b8a048d37f,Nice,Menton,16.08.2017,3.16,126,876,false
+8bff423e-11e9-4ce2-9b9a-11dded2eb1e7,Cogolin,New York,01.02.2017,14.30,244,694,false
+059604b3-b0fc-4111-ab44-e83be0eb5e21,Cogolin,Menton,07.04.2017,16.46,282,740,true
+e7115f40-76ad-40ce-8430-82069262208f,Cogolin,London,12.09.2017,15.29,268,635,true
+e9636e49-8332-4ab8-95d7-6ba16c72ef96,Berlin,London,21.05.2017,10.09,299,804,false
+0fa65940-7110-4c1e-bd61-434ddf94647e,Menton,Berlin,03.03.2017,18.14,239,954,true
+4c7031dc-882e-4580-af22-dde943274f0a,London,Menton,21.11.2017,11.13,216,589,false
+b372abe7-3309-4c38-a1ef-5ef7ac1ca0ef,Nice,Paris,16.12.2016,1.27,206,833,true
+9ee6e70f-27a8-42e0-8012-56cfa53c3f36,London,Paris,18.11.2017,23.05,298,812,true
+4f25f5e2-b173-4d7a-bbf4-59b4921de2db,Nice,London,13.04.2017,12.11,202,899,false
+7134de7f-c4d4-4f22-b4de-826cc55cb8ac,Menton,Paris,26.08.2017,3.19,260,860,true

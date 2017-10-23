@@ -1,0 +1,41 @@
+uuid,name,place,duration,price
+dae969b2-6578-4793-8d1d-a4bdf13ba9dd,Maserati,Berlin,22,1760
+d73a946b-0750-45d9-ba04-b022a06cb338,Acura,Berlin,20,1600
+825491d4-355a-4c90-bae7-48bc65c29dd4,Chevrolet,London,21,1680
+1ca050ed-0781-4a7a-82a1-1afcb619ed15,Lexus,Paris,21,1680
+09f991f9-fcb1-403e-becf-41353d4099bd,Mercedes-Benz,Paris,5,400
+095c0a31-6de8-4508-baf4-abfac658ac51,Mazda,New York,19,1520
+339231f1-4dd6-4439-92fc-d261376659fe,Honda,New York,24,1920
+5eadb42f-4685-4fcf-a20b-16dd8a18e895,Chrysler,Nice,14,1120
+9a9d6784-95e7-4fe7-963f-70813a0eee2f,Ford,Nice,18,1440
+998082de-7748-43b0-adec-810941d409d5,Buick,New York,13,1040
+f9e4a6ec-cd1d-4616-80f1-3038c9ba259d,Chevrolet,Cogolin,26,2080
+efda30ec-d78c-4bda-8a1b-807ea2f1750b,Cadillac,Nice,10,800
+7550c103-53e6-4d4a-b717-d75b95220c5f,Mercedes-Benz,Berlin,16,1280
+cf74df2c-b912-4c1b-ad1d-30e08fd244cf,Oldsmobile,Cogolin,29,2320
+cee54ea1-1a1c-4619-803e-4d11846d4c11,Volvo,New York,22,1760
+58e38d57-7008-4a99-93e7-2fdf75c3821c,Dodge,London,13,1040
+72f15d24-3bd8-425b-9ae2-29267294d3dd,Ford,Cogolin,19,1520
+9baa5121-c646-4fba-b89f-b002dc3148c4,Infiniti,London,9,720
+a09d7ac8-0fcf-43d5-ba54-a3f2e38da8a2,Ford,Nice,20,1600
+9c60ea52-4ee8-466f-aa2b-51d4822c552d,Volvo,London,14,1120
+2503bc7e-8ca3-4361-8e27-4d09f05ee9c9,Land Rover,Cogolin,27,2160
+a70a59cc-2c4d-4002-9038-d05ee3ad9a1f,Volvo,Paris,26,2080
+970f4f53-b7fe-4482-b3a7-3f909bc26d12,Mazda,Berlin,29,2320
+fa0d626a-4142-447b-9c11-d05fc7104696,Mercedes-Benz,Paris,25,2000
+8f9f472b-7303-467b-8f11-a20998a67519,Buick,Menton,22,1760
+8dcf28cd-eaea-488f-9c01-1f5147867c5d,Audi,Menton,8,640
+91b3c9b6-8f8d-4a50-9da5-8930c2b673dc,Volkswagen,London,28,2240
+b4f6275f-7680-43a8-b087-2e538fb739e2,Plymouth,New York,30,2400
+29ac5874-ba34-4c8d-96f9-ddaf0a8bab3e,Acura,Cogolin,27,2160
+ca66ff80-dba0-4905-a527-ff4a0aafcc27,Toyota,Nice,28,2240
+fc536fdf-db4c-4bf4-b568-673f48813afe,Lexus,Menton,4,320
+40247ff9-4348-4b6c-880a-26fa807388bc,MINI,New York,3,240
+174e2aa5-4e8e-432b-82fa-34e75091475d,Pontiac,Paris,18,1440
+42c2f240-3d96-4251-8d74-5ad12471be29,Chevrolet,Berlin,18,1440
+ebc77cbf-10af-4413-a180-5a58a8d8b6fb,Mercedes-Benz,Berlin,28,2240
+8edf0079-74c8-4f0b-8454-ecf950867b16,BMW,Cogolin,21,1680
+133e3613-c1cd-4aea-a325-bdd462f78e72,Dodge,Nice,26,2080
+67aeac10-6017-4880-adb5-e3dee13e9c30,Lincoln,Berlin,14,1120
+3e46085c-2b8c-4211-91e5-fc2e4221d3b9,Subaru,Menton,4,320
+53f31097-5cc1-4f1e-a1f0-a4c64ca6d730,Chevrolet,Nice,8,640

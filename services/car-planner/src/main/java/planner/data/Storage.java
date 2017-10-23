@@ -6,7 +6,13 @@ import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 import org.json.JSONArray;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
+import java.util.Scanner;
 
 public class Storage {
 
@@ -45,10 +51,31 @@ public class Storage {
         return new Jongo(client.getDB(Network.DATABASE)).getCollection(Network.COLLECTION);
     }
 
+    public static void initialize() throws ParseException {
+        File file = new File(Storage.class.getClassLoader().getResource("cars.csv").getFile());
+        try (Scanner scanner = new Scanner(file)) {
+            scanner.nextLine();
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] objects = line.split(";");
+                CarRental car = new CarRental(objects[0], objects[1], objects[2], Integer.parseInt(objects[3]), Integer.parseInt(objects[4]));
+                create(car);
+            }
+
+            scanner.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     static {
-        getCars().remove();
-        create(new CarRental("peugeot", "Pangkalan", 24));
-        create(new CarRental("renault", "Paris", 10));
+        try {
+            Storage.getCars().remove();
+            Storage.initialize();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
 }
