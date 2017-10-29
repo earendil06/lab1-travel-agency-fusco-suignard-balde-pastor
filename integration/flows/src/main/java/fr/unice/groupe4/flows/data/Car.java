@@ -5,10 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class Car implements Serializable {
-    //private date... //todo do it...
-//    @JsonProperty("place") private String place;
-//    @JsonProperty("hours") private String hours;
-
     @JsonProperty("name")
     private String name;
     @JsonProperty("place")
@@ -17,6 +13,8 @@ public class Car implements Serializable {
     private int duration;
     @JsonProperty("uid")
     private String uid;
+    @JsonProperty("price")
+    private int price;
 
     public Car() {
     }
@@ -26,6 +24,7 @@ public class Car implements Serializable {
         this.place = other.place;
         this.duration = other.duration;
         this.uid = other.uid;
+        this.price = other.price;
     }
 
     public String getName() {
@@ -67,6 +66,15 @@ public class Car implements Serializable {
                 ", place='" + place + '\'' +
                 ", duration=" + duration +
                 ", uid='" + uid + '\'' +
+                ", price='" + price + '\'' +
                 '}';
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getPrice() {
+        return price;
     }
 }

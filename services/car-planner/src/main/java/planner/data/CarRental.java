@@ -13,6 +13,7 @@ public class CarRental {
     private String place;
     private int duration;
     private String uid;
+    private int price;
 
     public CarRental() {
     }
@@ -37,11 +38,21 @@ public class CarRental {
         return uid;
     }
 
-    public CarRental(String name, String place, int duration) {
-        this.uid = UUID.randomUUID().toString();
+    @XmlElement
+    public int getPrice() {
+        return price;
+    }
+
+    public CarRental(String name, String place, int duration, int price) {
+        this(UUID.randomUUID().toString(), name, place, duration, price);
+    }
+
+    public CarRental(String uuid, String name, String place, int duration, int price) {
+        this.uid = uuid;
         this.name = name;
         this.place = place;
         this.duration = duration;
+        this.price = price;
     }
 
     JSONObject toJson() {
@@ -49,6 +60,7 @@ public class CarRental {
                 .put("uid", this.uid)
                 .put("name", this.name)
                 .put("place", this.place)
+                .put("price", this.price)
                 .put("duration", this.duration);
     }
 
@@ -56,6 +68,7 @@ public class CarRental {
     public String toString() {
         return "CarRental{" +
                 "name='" + name + '\'' +
+                ", price='" + price + '\'' +
                 ", place='" + place + '\'' +
                 ", duration=" + duration +
                 ", uid='" + uid + '\'' +

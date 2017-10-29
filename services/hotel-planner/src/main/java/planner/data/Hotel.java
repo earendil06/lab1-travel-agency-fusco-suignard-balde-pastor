@@ -52,7 +52,11 @@ public class Hotel {
     }
 
     public Hotel(String name, String place, int price, Date dateArrival, Date dateDeparture) {
-        this.uid = UUID.randomUUID().toString();
+        this(UUID.randomUUID().toString(), name, place, price, dateArrival, dateDeparture);
+    }
+
+    public Hotel(String uuid, String name, String place, int price, Date dateArrival, Date dateDeparture) {
+        this.uid = uuid;
         this.name = name;
         this.place = place;
         this.price = price;

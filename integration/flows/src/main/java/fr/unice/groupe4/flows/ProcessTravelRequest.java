@@ -31,6 +31,7 @@ public class ProcessTravelRequest extends RouteBuilder {
     public void configure() throws Exception {
         from(Endpoints.TRAVEL_REQUEST_INPUT)
                 .routeId("submitTravel")
+                .routeDescription("Handle a travel request from an employee")
                 .log("input is " + body())
                 .unmarshal().json(JsonLibrary.Jackson, Map.class)
                 .split().method(TravelRequestSplitter.class, "split")
@@ -60,16 +61,19 @@ public class ProcessTravelRequest extends RouteBuilder {
 
         from(HANDLE_FLIGHT_ENDPOINT)
                 .routeId("handle flight requests")
+                .routeDescription("handle flight requests")
                 .process(ProcessTravelRequest::json2flight)
                 .inOut(COMPARE_FLIGHT_ENDPOINT);
 
         from(HANDLE_CAR_ENDPOINT)
                 .routeId("handle car requests")
+                .routeDescription("handle car requests")
                 .process(ProcessTravelRequest::json2car)
                 .inOut(COMPARE_CAR_ENDPOINT);
 
         from(HANDLE_HOTEL_ENDPOINT)
                 .routeId("handle hotel requests")
+                .routeDescription("handle hotel requests")
                 .process(ProcessTravelRequest::json2hotel)
                 .inOut(COMPARE_HOTEL_ENDPOINT);
 

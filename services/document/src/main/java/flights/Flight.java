@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class Flight {
 
@@ -16,10 +17,10 @@ public class Flight {
     @AttributeQueryable(order = true, filter = true)
     private String to;
 
-    @AttributeQueryable(filter = true, order = true, minMax = true)
+    @AttributeQueryable(filter = true, order = true)
     private Date date;
 
-    @AttributeQueryable(filter = true, order = true, minMax = true)
+    @AttributeQueryable(filter = true, order = true)
     private Date hour;
 
     @AttributeQueryable(order = true, filter = true, minMax = true)
@@ -31,6 +32,8 @@ public class Flight {
     @AttributeQueryable(order = true, filter = true)
     private boolean direct;
 
+    private String uid;
+
     @MongoObjectId
     String id;
 
@@ -39,6 +42,10 @@ public class Flight {
     public Flight() {}
 
     public Flight(String from, String to, Date date, Date hour, int duration, double price, boolean direct) throws ParseException {
+        this(UUID.randomUUID().toString(), from, to, date, hour, duration, price, direct);
+    }
+
+    public Flight(String uuid, String from, String to, Date date, Date hour, int duration, double price, boolean direct) throws ParseException {
         this.from = from;
         this.to = to;
         this.date = date;
@@ -46,6 +53,11 @@ public class Flight {
         this.duration = duration;
         this.price = price;
         this.direct= direct;
+        this.uid = uuid;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public Flight(JSONObject data) throws ParseException {
@@ -65,6 +77,7 @@ public class Flight {
         DateFormat df = new SimpleDateFormat(DATE_PATTERN);
         DateFormat hf = new SimpleDateFormat(HOUR_PATTERN);
         return new JSONObject()
+                .put("uid", uid)
                 .put("from", this.from)
                 .put("to", this.to)
                 .put("date", df.format(this.date))

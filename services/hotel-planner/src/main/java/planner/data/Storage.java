@@ -76,8 +76,8 @@ public class Storage {
             scanner.nextLine();
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                String[] objects = line.split(";");
-                Hotel hotel = new Hotel(objects[0], objects[1], Integer.parseInt(objects[2]), format.parse(objects[3]), format.parse(objects[4]));
+                String[] objects = line.split(",");
+                Hotel hotel = new Hotel(objects[0], objects[1], objects[2], Integer.parseInt(objects[5]), format.parse(objects[3]), format.parse(objects[4]));
                 createHotel(hotel);
             }
 

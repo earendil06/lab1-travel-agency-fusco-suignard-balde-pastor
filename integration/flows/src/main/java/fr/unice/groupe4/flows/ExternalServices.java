@@ -28,24 +28,27 @@ public class ExternalServices extends RouteBuilder {
     public void configure() throws Exception {
         from(COMPARE_HOTEL_ENDPOINT)
                 .routeId("retrieve hotels from services")
+                .routeDescription("retrieve hotels from services")
                 .bean(HotelHelper.class, "buildGetHotelForTravel(${body})")
                 .inOut(HOTEL_ENDPOINT)
                 .process(result2Hotel);
 
+        from(COMPARE_CAR_ENDPOINT)
+                .routeId("retrieve cars from services")
+                .routeDescription("retrieve cars from services")
+                .bean(CarHelper.class, "buildGetCarForTravel(${body})")
+                .inOut(CAR_ENDPOINT)
+                .process(result2Car);
+
         from(COMPARE_FLIGHT_ENDPOINT)
                 .routeId("retrieve flights from services")
+                .routeDescription("retrieve flights from services")
                 .setHeader(Exchange.HTTP_METHOD, constant("POST"))
                 .setHeader("Content-Type", constant("application/json"))
                 .setHeader("Accept", constant("application/json"))
                 .bean(FlightHelper.class, "buildGetFlightForTravel(${body})")
                 .inOut(FLIGHT_ENDPOINT)
                 .process(result2Flight);
-
-        from(COMPARE_CAR_ENDPOINT)
-                .routeId("retrieve cars from services")
-                .bean(CarHelper.class, "buildGetCarForTravel(${body})")
-                .inOut(CAR_ENDPOINT)
-                .process(result2Car);
     }
 
     private static Processor result2Hotel = (Exchange exc) -> {
@@ -56,9 +59,12 @@ public class ExternalServices extends RouteBuilder {
         Type listType = new TypeToken<ArrayList<Hotel>>(){}.getType();
         List<Hotel> hotels = new Gson().fromJson(jsonArray, listType);
         //todo if no response go to end route
+        if (hotels.isEmpty()) {
+            System.out.println("NO HOTEL");
+            return;
+        }
         //get the min price
         Hotel min = hotels.stream().min(Comparator.comparingInt(Hotel::getPrice)).get();
-//        System.out.println("min: " + min);
         exc.getIn().setBody(min);
     };
 
@@ -66,9 +72,12 @@ public class ExternalServices extends RouteBuilder {
         String jsonArray = exc.getIn().getBody(String.class);
         Type listType = new TypeToken<ArrayList<Flight>>(){}.getType();
         List<Flight> flights = new Gson().fromJson(jsonArray, listType);
-
+        //todo if no response go to end route
+        if (flights.isEmpty()) {
+            System.out.println("NO FLIGHTS");
+            return;
+        }
         Flight min = flights.stream().min(Comparator.comparingDouble(Flight::getPrice)).get();
-//        System.out.println("min: " + min);
         exc.getIn().setBody(min);
     };
 
@@ -80,10 +89,12 @@ public class ExternalServices extends RouteBuilder {
         Type listType = new TypeToken<ArrayList<Car>>(){}.getType();
         List<Car> cars = new Gson().fromJson(jsonArray, listType);
         //todo if no response go to end route
+        if (cars.isEmpty()) {
+            System.out.println("NO CARS");
+            return;
+        }
         //get the min price
-        //Car min = cars.stream().min(Comparator.comparingInt(Car::getPrice)).get();
-        //System.out.println("min: " + min);
-        //exc.getIn().setBody(min);
-        exc.getIn().setBody(cars.get(0));
+        Car min = cars.stream().min(Comparator.comparingInt(Car::getPrice)).get();
+        exc.getIn().setBody(min);
     };
 }

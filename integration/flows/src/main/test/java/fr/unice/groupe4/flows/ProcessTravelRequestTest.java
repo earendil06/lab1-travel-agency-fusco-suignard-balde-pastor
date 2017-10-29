@@ -1,10 +1,6 @@
 package fr.unice.groupe4.flows;
 
 import com.google.gson.Gson;
-import fr.unice.groupe4.flows.data.Car;
-import fr.unice.groupe4.flows.data.Flight;
-import fr.unice.groupe4.flows.data.Hotel;
-import fr.unice.groupe4.flows.data.TravelRequest;
 import org.apache.camel.Exchange;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,17 +11,19 @@ import static fr.unice.groupe4.flows.utils.Endpoints.*;
 
 public class ProcessTravelRequestTest extends ActiveMQTest {
 
-    @Override public String isMockEndpointsAndSkip() {
-        return COMPARE_FLIGHT_ENDPOINT       +
-                "|" + COMPARE_CAR_ENDPOINT   +
+    @Override
+    public String isMockEndpointsAndSkip() {
+        return COMPARE_FLIGHT_ENDPOINT +
+                "|" + COMPARE_CAR_ENDPOINT +
                 "|" + COMPARE_HOTEL_ENDPOINT +
                 "|" + HANDLE_FLIGHT_ENDPOINT +
-                "|" + HANDLE_HOTEL_ENDPOINT  +
+                "|" + HANDLE_HOTEL_ENDPOINT +
                 "|" + HANDLE_CAR_ENDPOINT
                 ;
     }
 
-    @Override public String isMockEndpoints() {
+    @Override
+    public String isMockEndpoints() {
         return TRAVEL_REQUEST_INPUT +
                 "|" + DEATH_POOL +
                 "|" + RESULT_POOL
@@ -62,7 +60,8 @@ public class ProcessTravelRequestTest extends ActiveMQTest {
         });
     }
 
-    @Test public void testAllFlowWithoutExternal() throws Exception {
+    @Test
+    public void testAllFlowWithoutExternal() throws Exception {
         mock(TRAVEL_REQUEST_INPUT).expectedMessageCount(1);
         mock(HANDLE_HOTEL_ENDPOINT).expectedMessageCount(1);
         mock(HANDLE_CAR_ENDPOINT).expectedMessageCount(1);
