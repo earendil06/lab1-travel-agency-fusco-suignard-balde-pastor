@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class TravelRequest implements Serializable {
     @JsonProperty("email") private String email;
-    @JsonProperty("flight") private Flight flight;
+    @JsonProperty("flight") private TravelFlight flight;
     @JsonProperty("hotel") private Hotel hotel;
     @JsonProperty("car") private Car car;
 
@@ -21,11 +21,11 @@ public class TravelRequest implements Serializable {
         this.email = email;
     }
 
-    public Flight getFlight() {
+    public TravelFlight getFlight() {
         return flight;
     }
 
-    public void setFlight(Flight flight) {
+    public void setFlight(TravelFlight flight) {
         this.flight = flight;
     }
 

@@ -28,6 +28,9 @@ public class Flight implements Serializable {
     @JsonProperty("direct")
     private boolean direct;
 
+    @JsonProperty("uid")
+    private String uid;
+
     public Flight() {
     }
 
@@ -39,6 +42,7 @@ public class Flight implements Serializable {
         this.duration = other.duration;
         this.price = other.price;
         this.direct = other.direct;
+        this.uid = other.uid;
     }
 
     public String getFrom() {
@@ -107,6 +111,7 @@ public class Flight implements Serializable {
                 ", duration=" + duration +
                 ", price=" + price +
                 ", direct=" + direct +
+                ", uid='" + uid + '\'' +
                 '}';
     }
 
@@ -115,5 +120,13 @@ public class Flight implements Serializable {
         map.put("from", from);
         map.put("to", to);
         return map;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }

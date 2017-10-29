@@ -21,6 +21,8 @@ public class Endpoints {
     public static final String COMPARE_FLIGHT_ENDPOINT = "activemq:compare-flight";
 //    public static final String FLIGHT_ENDPOINT = "http:flight-planner:8080/tcs-service-doc/flights";//use when in docker
     public static final String FLIGHT_ENDPOINT = "http://localhost:9080/tcs-service-doc/flights";
+//    public static final String OTHER_FLIGHT_ENDPOINT = "http:flightreservation-document:8080/flightreservation-service-document/registry";
+    public static final String OTHER_FLIGHT_ENDPOINT = "http://localhost:9180/flightreservation-service-document/registry";
 
     public static final String COMPARE_CAR_ENDPOINT = "activemq:compare-car";
 //    public static final String CAR_ENDPOINT = "http:car-planner:8080/service-car-planner/CarPlannerService";//use when in docker

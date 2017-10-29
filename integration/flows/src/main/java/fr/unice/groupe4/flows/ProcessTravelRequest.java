@@ -1,10 +1,7 @@
 package fr.unice.groupe4.flows;
 
 import com.google.gson.Gson;
-import fr.unice.groupe4.flows.data.Car;
-import fr.unice.groupe4.flows.data.Flight;
-import fr.unice.groupe4.flows.data.Hotel;
-import fr.unice.groupe4.flows.data.TravelRequest;
+import fr.unice.groupe4.flows.data.*;
 import fr.unice.groupe4.flows.utils.Endpoints;
 import fr.unice.groupe4.flows.utils.TravelRequestSplitter;
 import org.apache.camel.Exchange;
@@ -38,7 +35,7 @@ public class ProcessTravelRequest extends RouteBuilder {
 //                    .parallelProcessing().executorService(WORKERS)
                     .choice()
                         .when(header(TYPE).isEqualTo(EMAIL))
-                            .log("email is " + body())
+                            .log("email is ${body}")
 
                         .when(header(TYPE).isEqualTo(FLIGHT))
                             .inOut(HANDLE_FLIGHT_ENDPOINT)
@@ -54,7 +51,7 @@ public class ProcessTravelRequest extends RouteBuilder {
                     .end()
                     .aggregate(constant(true), merge)
                     .completionPredicate(ProcessTravelRequest::matches)
-                    .log("after aggregation " + body())
+                    .log("after aggregation ${body}")
                 .marshal().json(JsonLibrary.Jackson, TravelRequest.class)
         .to(RESULT_POOL)
         ;
@@ -132,7 +129,7 @@ public class ProcessTravelRequest extends RouteBuilder {
                     old.setEmail(email);
                     break;
                 case FLIGHT:
-                    Flight flight = msg.getBody(Flight.class);
+                    TravelFlight flight = msg.getBody(TravelFlight.class);
                     old.setFlight(flight);
                     break;
                 case CAR:
