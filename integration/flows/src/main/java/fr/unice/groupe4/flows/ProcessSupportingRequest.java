@@ -27,53 +27,22 @@ public class ProcessSupportingRequest extends RouteBuilder{
     @Override
     public void configure() throws Exception {
         from(MAIL_INPUT)
-                .log("***************************test *********************************")
-                .log("Starting submit mail for living expenses")
-                .routeId("LivingExpenses")
-                .log("input is " + body())
+                .routeId("mail-to-refund-expenses")
+                .routeDescription("Loads a json file containing the expense for travel and proces Contents")
+                .log("Creating an anonymize instance")
+                .setProperty("file", simple("${body}"))
+                .setHeader("expense-id-gen", simple("${body}"))
+                .setBody(simple("${exchangeProperty[file]}"))
+                .log("body are " + body())
                 .unmarshal().json(JsonLibrary.Jackson, Map.class)
-                .split().method(SupportingRequestSplitter.class, "split")
-                //.parallelProcessing().executorService(WORKERS)
-                    .choice()
-                    .when(header("type").isEqualTo("livingExpenses"))
-                    .log("livingExpenses is " + body())
-                    .when(header("type").isEqualTo("employer"))
-                    .log("employer id is " + body())
-                    .when(header("type").isEqualTo("travel"))
-                    .log("travel id is " + body())
-                    .when(header("type").isEqualTo("expenses"))
-                    .split(body())
-                        .choice()
-                        .when(simple("${body[Type]} =~ 'restaurent'"))
-                        .log("this expenses is remboursed")
-                        .log("{Type : ${body[Type]} Price : ${body[Price]} }")
-                        .when(simple("${body[Type]} =~ 'transport'"))
-                        .log("this expenses is remboursed")
-                        .log("{Type : ${body[Type]} Price : ${body[Price]} }")
-                        .when(simple("${body[Type]} != 'restaurent' && ${body[Type]} != 'transport'"))
-                        .log("This expenses is not Rembouresed")
-                        /*
-                        aggregate the expenses object
-                        .aggregate(constant(true), mergeExpense)
-                        .completionPredicate(exchange -> {
-                         ExpenseRequest expenseRequest = exchange.getIn().getBody(ExpenseRequest.class);
-                                 return expenseRequest != null &&
-                                    expenseRequest.getType() != null &&
-                                    expenseRequest.getMotif() != null &&
-                                    expenseRequest.getPrice() != null;
-                                 })
-                        .log("############### after aggregation expense " + body()+ "#######################")
-                    .aggregate(constant(true), merge)
-                    .completionPredicate(exchange -> {
-                        SupportingRequest supportingRequest = exchange.getIn().getBody(SupportingRequest.class);
-                        return supportingRequest != null &&
-                            supportingRequest.getLivingExpenses() != null &&
-                            supportingRequest.getEmployer() != null &&
-                            supportingRequest.getTravel() != null;
-                    })
-                    .log("############### after aggregation " + body()+ "#######################")
+                .to(MESSAGE_GENERATION)
+        ;
 
-                    */
+        from(MESSAGE_GENERATION)
+            .routeId("Generate-mail-report-for-refund")
+            .routeDescription("Generate a report for refund all expenses for on travel")
+            .log("Le contenue de body est : " + body())
+            .setProperty("report", simple("${body}"))
 
             ;
 
@@ -167,7 +136,6 @@ public class ProcessSupportingRequest extends RouteBuilder{
                     String travel = msg.getBody(String.class);
                     old.setTravel(travel);
                     break;
-
             }
         }
 

@@ -7,7 +7,10 @@ public class Endpoints {
     public static final String TEST_INPUT = "file:camel/input";
 
     public static final String MAIL_INPUT = "file:camel/mail";
+    public static final String MAIL_REPORT = "file:camel/report";
     public static final String MAIL_ANALYSIS = "file:camel/analysis";
+    public static final String MESSAGE_GENERATION = "activemq:message-generation";
+
     public static final String TRAVEL_REQUEST_INPUT = "file:camel/input";
 
     public static final String HANDLE_HOTEL_ENDPOINT = "direct:handle-hotel";
