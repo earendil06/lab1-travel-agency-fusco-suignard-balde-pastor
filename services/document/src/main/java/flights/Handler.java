@@ -1,7 +1,6 @@
 package flights;
 
 import com.mongodb.MongoClient;
-import org.apache.velocity.runtime.directive.Parse;
 import org.jongo.Find;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
@@ -17,25 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Handler {
-
-    static {
-        JSONObject o = new JSONObject();
-        o.put("from", "Paris")
-                .put("to", "Pangkalan")
-                .put("date", "09.12.2017")
-                .put("hour", "10.10")
-                .put("duration", 12)
-                .put("price", 12.0)
-                .put("direct", true);
-        Flight f = null;
-        try {
-            f = new Flight(o);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        purge();
-        create(f);
-    }
 
     static JSONArray retrieve(JSONObject input) throws ParseException {
         MongoCollection flights = getFlights();
@@ -188,6 +168,7 @@ public class Handler {
 
     public static void initialize() throws ParseException {
         DateFormat format = new SimpleDateFormat(Flight.DATE_PATTERN);
+        DateFormat formatHour = new SimpleDateFormat(Flight.HOUR_PATTERN);
 
         File file = new File(Handler.class.getClassLoader().getResource("flights.csv").getFile());
         try (Scanner scanner = new Scanner(file)) {
@@ -200,7 +181,7 @@ public class Handler {
                         objects[1],
                         objects[2],
                         format.parse(objects[3]),
-                        format.parse(objects[4]),
+                        formatHour.parse(objects[4]),
                         Integer.parseInt(objects[5]),
                         Double.parseDouble(objects[6]),
                         Boolean.getBoolean(objects[7]));
