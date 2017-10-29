@@ -3,5 +3,6 @@
     "employer": "identifiant@test",
     "travel" : "travelID012155",
     "type" : "restaurant",
+    "date" : "10-12-2017",
     "price" : 100
 }
