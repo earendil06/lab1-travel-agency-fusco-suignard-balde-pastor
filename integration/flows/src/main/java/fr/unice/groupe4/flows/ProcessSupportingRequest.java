@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import fr.unice.groupe4.flows.utils.SupportingRequestSplitter;
-import fr.unice.groupe4.flows.utils.ExpenseRequestSplitter;
 import fr.unice.groupe4.flows.data.SupportingRequest;
 import fr.unice.groupe4.flows.data.ExpenseRequest;
 
@@ -29,22 +27,38 @@ public class ProcessSupportingRequest extends RouteBuilder{
         from(MAIL_INPUT)
                 .routeId("mail-to-refund-expenses")
                 .routeDescription("Loads a json file containing the expense for travel and proces Contents")
-                .log("Creating an anonymize instance")
-                .setProperty("file", simple("${body}"))
-                .setHeader("expense-id-gen", simple("${body}"))
-                .setBody(simple("${exchangeProperty[file]}"))
-                .log("body are " + body())
                 .unmarshal().json(JsonLibrary.Jackson, Map.class)
-                .to(MESSAGE_GENERATION)
+                //.log("le contenu est " + body())
+                //.log("${body[type]}")
+                .choice()
+                .when(simple("${body[type]} =~ 'restaurant'"))
+                    .log("this expenses is remboursed")
+                    .to(EXPENSE_TO_REFUND)
+                .when(simple("${body[type]} =~ 'voiture'"))
+                    .log("this expenses is remboursed")
+                    .to(EXPENSE_TO_REFUND)
+                .otherwise()
+                    .log("this expenses is not remboursed")
+                    .to(EXPENSE_NOT_REFUND)
+
+
         ;
 
-        from(MESSAGE_GENERATION)
-            .routeId("Generate-mail-report-for-refund")
+        from(EXPENSE_TO_REFUND)
+            .routeId("Generate-mail-report-to-refund")
             .routeDescription("Generate a report for refund all expenses for on travel")
-            .log("Le contenue de body est : " + body())
-            .setProperty("report", simple("${body}"))
+            .log("This expense is supported by the company")
+            .log("Type : ${body[type]}   ; Price : ${body[price]} ")
+            //.setProperty("report", simple("${body}"))
 
             ;
+        from(EXPENSE_NOT_REFUND)
+                .routeId("Generate-mail-report-for-not-refund")
+                .routeDescription("Generate a report to explain why this expense is not refund")
+                .log("Type : ${body[type]}   ; Price : ${body[price]} ")
+                //.setProperty("report", simple("${body}"))
+
+        ;
 
     }
 
