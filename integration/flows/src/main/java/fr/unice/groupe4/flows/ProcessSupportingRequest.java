@@ -39,6 +39,9 @@ public class ProcessSupportingRequest extends RouteBuilder{
                 .otherwise()
                     .log("this expenses is not remboursed")
                     .to(EXPENSE_NOT_REFUND)
+               .end()
+               //.aggregate(constant(true), mergeExpense)
+
 
 
         ;
@@ -48,9 +51,19 @@ public class ProcessSupportingRequest extends RouteBuilder{
             .routeDescription("Generate a report for refund all expenses for on travel")
             .log("This expense is supported by the company")
             .log("Type : ${body[type]}   ; Price : ${body[price]} ")
+            .aggregate(constant(true), mergeExpense).completionTimeout(10000)
+            .log("************* After Agregate ****************************")
+            .log("${body}")
+            .to("direct:test")
+
             //.setProperty("report", simple("${body}"))
 
             ;
+        from("direct:test")
+                .log("Direct test ***********************")
+                .log("${body}")
+                ;
+
         from(EXPENSE_NOT_REFUND)
                 .routeId("Generate-mail-report-for-not-refund")
                 .routeDescription("Generate a report to explain why this expense is not refund")
@@ -65,19 +78,23 @@ public class ProcessSupportingRequest extends RouteBuilder{
         @Override
         public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
             Message newIn = newExchange.getIn();
+            Object newBody = newIn.getBody();
+            ArrayList list = null;
             if (oldExchange == null) {
-                ExpenseRequest exp = newExchange.getIn().getBody(ExpenseRequest.class);
-                List<ExpenseRequest> list = new ArrayList<>();
-                list.add(exp);
+                list = new ArrayList();
+                list.add(newBody);
                 newIn.setBody(list);
                 return newExchange;
             } else {
-                List<ExpenseRequest> oldList = oldExchange.getIn().getBody(List.class);
-                ExpenseRequest exp = newExchange.getIn().getBody(ExpenseRequest.class);
-                oldList.add(exp);
+                Message in = oldExchange.getIn();
+                list = in.getBody(ArrayList.class);
+                list.add(newBody);
                 return oldExchange;
             }
         }
     };
+
+
+
 
 }
