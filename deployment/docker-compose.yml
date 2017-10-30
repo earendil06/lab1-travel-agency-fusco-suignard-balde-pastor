@@ -2,6 +2,30 @@ version: '3'
 
 services:
 
+#other groups
+  flightreservation-document:
+    container_name: flightreservation-document
+    image: matthieugenovese/flightreservation-document
+    environment:
+      - db_host=tcs-database
+      - db_port=27017
+    depends_on:
+      - database
+    ports:
+      - "9180:8080"
+
+#  flightreservation-document:
+#    container_name: travel-cars
+#    image: fgbl/travel-cars
+#    environment:
+#      - db_host=tcs-database
+#      - db_port=27017
+#    depends_on:
+#      - database
+#    ports:
+#      - "9280:8080"
+
+#us
   hotel-planner:
     container_name: hotel-planner
     image: hotel-planner
@@ -24,6 +48,7 @@ services:
     ports:
       - "9080:8080"
 
+
 #  travel-manager:
 #    container_name: travel-manager
 #    image: travel-manager
@@ -45,21 +70,21 @@ services:
       - database
     ports:
       - "9060:8080"
-
-  integration-bus:  # To attach to this container at runtime: docker exec -it tcs-bus sh
-    container_name: integration
-    image: integration
-    volumes:
-      - "./camel_input:/servicemix/camel/input"
-      - "./camel_output:/servicemix/camel/output"
-    ports:
-      - "8181:8181"
-      - "8101:8101"
-      - "1099:1099"
-      - "61616:61616"
-      - "44444:44444"
-#    depends_on:
-#      - hotel-planner
+#
+#  integration-bus:  # To attach to this container at runtime: docker exec -it tcs-bus sh
+#    container_name: integration
+#    image: integration
+#    volumes:
+#      - "./camel_input:/servicemix/camel/input"
+#      - "./camel_output:/servicemix/camel/output"
+#    ports:
+#      - "8181:8181"
+#      - "8101:8101"
+#      - "1099:1099"
+#      - "61616:61616"
+#      - "44444:44444"
+##    depends_on:
+##      - hotel-planner
 
   database:
     container_name: tcs-database
