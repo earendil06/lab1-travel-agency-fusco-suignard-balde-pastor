@@ -1,6 +1,8 @@
 {
 	"email" : "toto@toto.com",
 	"flight" : { "destination" : "Menton" },
-	"car" : { "place" : "Pangkalan", "duration": 10},
-	"hotel" : { "place" : "Pangkalan", "dateArrival" : "09.12.2017", "dateDeparture" : "19.12.2017" }
+	"car" : { "place" : "Menton", "duration": 2},
+	"hotel" : { "place" : "Menton", "dateArrival" : "11.11.2016", "dateDeparture" : "18.11.2016" }
 }
+
+

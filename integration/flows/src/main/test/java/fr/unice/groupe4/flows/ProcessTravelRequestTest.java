@@ -79,7 +79,7 @@ public class ProcessTravelRequestTest extends ActiveMQTest {
 
 /*    @Test public void testAllFlowFail() throws Exception {
         mock(TRAVEL_REQUEST_INPUT).expectedMessageCount(1);
-        mock(DEATH_POOL).expectedMessageCount(0);
+        mock(DEATH_POOL).expectedMessageCount(1);
         mock(HANDLE_HOTEL_ENDPOINT).expectedMessageCount(0);
         mock(HANDLE_CAR_ENDPOINT).expectedMessageCount(0);
         mock(HANDLE_FLIGHT_ENDPOINT).expectedMessageCount(0);

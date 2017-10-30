@@ -1,8 +1,8 @@
 package fr.unice.groupe4.flows;
 
 import fr.unice.groupe4.flows.data.Car;
-import fr.unice.groupe4.flows.data.Flight;
 import fr.unice.groupe4.flows.data.Hotel;
+import fr.unice.groupe4.flows.data.TravelFlight;
 import fr.unice.groupe4.flows.data.TravelRequest;
 import fr.unice.groupe4.flows.utils.Endpoints;
 import org.apache.activemq.broker.BrokerService;
@@ -83,9 +83,9 @@ public abstract class ActiveMQTest extends CamelTestSupport {
     @Before
     public void buildNewRequest() {
         travelRequest = new TravelRequest();
-        Flight flight = new Flight();
-        flight.setFrom("Cogolin");
-        flight.setTo("Menton");
+        TravelFlight flight = new TravelFlight();
+        flight.setDestination("Menton");
+//        flight.setTo("Menton");
         Car car = new Car();
         car.setPlace("Menton");
         car.setDuration(10);
@@ -116,13 +116,12 @@ public abstract class ActiveMQTest extends CamelTestSupport {
         car.setName("Taxi Pastor");
         car.setUid("caruid");
 
-        Flight flight = new Flight();
-        flight.setFrom("Cogolin");
-        flight.setTo("Menton");
+        TravelFlight flight = new TravelFlight();
+        flight.setDestination("Menton");
         flight.setDate("10.10.1010");
-        flight.setHour("10.10");
-        flight.setDirect(true);
+        flight.setIsDirect(true);
         flight.setPrice(42);
+        flight.setId("714"); //best reference ever, +9999 point.
 
         finalRequest = new TravelRequest();
         finalRequest.setHotel(hotel);

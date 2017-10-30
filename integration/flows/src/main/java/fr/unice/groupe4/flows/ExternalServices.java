@@ -25,6 +25,7 @@ import java.util.concurrent.Executors;
 import static fr.unice.groupe4.flows.utils.Endpoints.*;
 
 public class ExternalServices extends RouteBuilder {
+
     @Override
     public void configure() throws Exception {
         from(COMPARE_HOTEL_ENDPOINT)
@@ -47,21 +48,22 @@ public class ExternalServices extends RouteBuilder {
                 .routeId("retrieve flights from services")
                 .routeDescription("retrieve flights from services")
                 .multicast(mergeFlights).parallelProcessing().executorService(Executors.newFixedThreadPool(2))
-                .to("direct:ourFlight", "direct:otherFlight")
+                .to(COMPARE_OUR_FLIGHT, COMPARE_OTHER_FLIGHT)
                 .end()
                 .log("END COMPARE FLIGHTS")
         ;
 
-        from("direct:ourFlight")
+        from(COMPARE_OUR_FLIGHT)
                 .setHeader(Exchange.HTTP_METHOD, constant("POST"))
                 .setHeader("Content-Type", constant("application/json"))
                 .setHeader("Accept", constant("application/json"))
                 .bean(FlightHelper.class, "buildGetFlightForTravel(${body})")
                 .inOut(FLIGHT_ENDPOINT)
+                .log("aaaa ${body}")
                 .process(result2Flight)
         ;
 
-        from("direct:otherFlight")
+        from(COMPARE_OTHER_FLIGHT)
                 .setHeader(Exchange.HTTP_METHOD, constant("POST"))
                 .setHeader("Content-Type", constant("application/json"))
                 .setHeader("Accept", constant("application/json"))
@@ -75,24 +77,17 @@ public class ExternalServices extends RouteBuilder {
         if (oldExchange == null) {
             return newExchange;
         } else {
-            OtherFlight otherFlight;
-            Flight flight;
-            if (oldExchange.getIn().getBody(Object.class) instanceof OtherFlight) {
-                otherFlight = oldExchange.getIn().getBody(OtherFlight.class);
-                flight = newExchange.getIn().getBody(Flight.class);
-            } else {
-                otherFlight = newExchange.getIn().getBody(OtherFlight.class);
-                flight = oldExchange.getIn().getBody(Flight.class);
-            }
+            TravelFlight otherFlight = newExchange.getIn().getBody(TravelFlight.class);
+            TravelFlight flight = oldExchange.getIn().getBody(TravelFlight.class);
             if (flight == null && otherFlight == null) {
                 System.out.println("ALL FLIGHTS NULL");
                 oldExchange.getIn().setBody(new Flight());
                 return oldExchange;
             }
             if (flight == null || otherFlight.getPrice() < flight.getPrice()) {
-                oldExchange.getIn().setBody(new TravelFlight(otherFlight));
+                oldExchange.getIn().setBody(otherFlight);
             } else {
-                oldExchange.getIn().setBody(new TravelFlight(flight));
+                oldExchange.getIn().setBody(flight);
             }
         }
         return oldExchange;
@@ -136,7 +131,8 @@ public class ExternalServices extends RouteBuilder {
             System.out.println("NO FLIGHTS");
             return;
         }
-        Flight min = flights.stream().min(Comparator.comparingDouble(Flight::getPrice)).get();
+        Flight flightMin = flights.stream().min(Comparator.comparingDouble(Flight::getPrice)).get();
+        TravelFlight min = new TravelFlight(flightMin);
         exc.getIn().setBody(min);
     };
 
@@ -144,8 +140,7 @@ public class ExternalServices extends RouteBuilder {
         String input = exc.getIn().getBody(String.class);
         Type mapType = new TypeToken<Map<String, Object>>() {
         }.getType();
-        Type flightType = new TypeToken<List<OtherFlight>>() {
-        }.getType();
+        Type flightType = new TypeToken<List<OtherFlight>>() {}.getType();
         Map<String, Object> map;
         List<OtherFlight> flights;
         try {
@@ -163,7 +158,8 @@ public class ExternalServices extends RouteBuilder {
             System.out.println("NO FLIGHTS");
             return;
         }
-        OtherFlight min = flights.stream().min(Comparator.comparingDouble(OtherFlight::getPrice)).get();
+        OtherFlight flightMin = flights.stream().min(Comparator.comparingDouble(OtherFlight::getPrice)).get();
+        TravelFlight min = new TravelFlight(flightMin);
         exc.getIn().setBody(min);
     };
 

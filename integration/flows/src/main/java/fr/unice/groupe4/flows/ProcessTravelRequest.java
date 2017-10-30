@@ -1,7 +1,10 @@
 package fr.unice.groupe4.flows;
 
 import com.google.gson.Gson;
-import fr.unice.groupe4.flows.data.*;
+import fr.unice.groupe4.flows.data.Car;
+import fr.unice.groupe4.flows.data.Hotel;
+import fr.unice.groupe4.flows.data.TravelFlight;
+import fr.unice.groupe4.flows.data.TravelRequest;
 import fr.unice.groupe4.flows.utils.Endpoints;
 import fr.unice.groupe4.flows.utils.TravelRequestSplitter;
 import org.apache.camel.Exchange;
@@ -86,7 +89,7 @@ public class ProcessTravelRequest extends RouteBuilder {
     private static void json2flight(Exchange exchange) {
         Gson gson = new Gson();
         String s = exchange.getIn().getBody(String.class);
-        Flight flight = gson.fromJson(s, Flight.class);
+        TravelFlight flight = gson.fromJson(s, TravelFlight.class);
         exchange.getIn().setBody(flight);
     }
 

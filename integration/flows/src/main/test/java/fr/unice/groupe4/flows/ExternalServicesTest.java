@@ -1,6 +1,5 @@
 package fr.unice.groupe4.flows;
 
-import com.google.gson.Gson;
 import org.apache.camel.Exchange;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,13 +12,14 @@ public class ExternalServicesTest extends ActiveMQTest {
 
     @Override
     public String isMockEndpointsAndSkip() {
-        return CAR_ENDPOINT + "|" + HOTEL_ENDPOINT
+        return CAR_ENDPOINT + "|" + HOTEL_ENDPOINT + "|" + FLIGHT_ENDPOINT
                 ;
     }
 
     @Override
     public String isMockEndpoints() {
-        return COMPARE_FLIGHT_ENDPOINT + "|" + COMPARE_CAR_ENDPOINT + "|" + COMPARE_HOTEL_ENDPOINT + "|" + FLIGHT_ENDPOINT
+        return COMPARE_FLIGHT_ENDPOINT + "|" + COMPARE_CAR_ENDPOINT + "|" + COMPARE_HOTEL_ENDPOINT +
+         "|" + COMPARE_OUR_FLIGHT
                 ;
     }
 
@@ -31,6 +31,7 @@ public class ExternalServicesTest extends ActiveMQTest {
         isAvailableAndMocked(FLIGHT_ENDPOINT);
         isAvailableAndMocked(CAR_ENDPOINT);
         isAvailableAndMocked(HOTEL_ENDPOINT);
+        isAvailableAndMocked(COMPARE_OUR_FLIGHT);
     }
 
     @Before
@@ -40,7 +41,7 @@ public class ExternalServicesTest extends ActiveMQTest {
             String template = "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                     "    <soap:Body>\n" +
                     "        <ns2:getHotelsForTravelResponse xmlns:ns2=\"http://service.planner/\">\n" +
-                    "            <hotel_planner_result>[{\"uid\":\"b9b05899-7f09-4ddc-900f-9e4ed36e1974\",\"dateArrival\":\"09/12/2017\",\"price\":188,\"name\":\"Heaney, Walsh and Roberts\",\"place\":\"Pangkalan\",\"dateDeparture\":\"19/12/2017\"}]</hotel_planner_result>\n" +
+                    "            <hotel_planner_result>[{\"uid\":\"hoteluid\",\"dateArrival\":\"10.10.1010\",\"price\":100,\"name\":\"Pastor Hotel\",\"place\":\"Menton\",\"dateDeparture\":\"11.11.1111\"}]</hotel_planner_result>\n" +
                     "        </ns2:getHotelsForTravelResponse>\n" +
                     "    </soap:Body>\n" +
                     "</soap:Envelope>";
@@ -51,7 +52,7 @@ public class ExternalServicesTest extends ActiveMQTest {
             String template = "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                     "    <soap:Body>\n" +
                     "        <ns2:getCarByPlaceResponse xmlns:ns2=\"http://service.planner/\">\n" +
-                    "            <car_planner_result>[{\"duration\":24,\"uid\":\"d97db42f-ab89-4d58-9b7c-5b9798c664f2\",\"name\":\"peugeot\",\"place\":\"Pangkalan\"}]</car_planner_result>\n" +
+                    "            <car_planner_result>[{\"duration\":24,\"uid\":\"caruid\",\"name\":\"Taxi Pastor\",\"place\":\"Menton\"}]</car_planner_result>\n" +
                     "        </ns2:getCarByPlaceResponse>\n" +
                     "    </soap:Body>\n" +
                     "</soap:Envelope>";
@@ -59,34 +60,26 @@ public class ExternalServicesTest extends ActiveMQTest {
         });
 
         mock(FLIGHT_ENDPOINT).whenAnyExchangeReceived((Exchange exc) -> {
-            String template = "[\n" +
-                    "    {\n" +
-                    "        \"date\": \"09.12.2017\",\n" +
-                    "        \"duration\": 12,\n" +
-                    "        \"hour\": \"10.10\",\n" +
-                    "        \"price\": 12,\n" +
-                    "        \"direct\": true,\n" +
-                    "        \"from\": \"Paris\",\n" +
-                    "        \"to\": \"Pangkalan\"\n" +
-                    "    }\n" +
-                    "]";
+            String template = "[ {\n" +
+                    "    \"date\": \"10.10.1010\",\n" +
+                    "    \"duration\": 12,\n" +
+                    "    \"uid\": \"714\",\n" +
+                    "    \"hour\": \"10.10\",\n" +
+                    "    \"price\": 42,\n" +
+                    "    \"direct\": true,\n" +
+                    "    \"from\": \"Cogolin\",\n" +
+                    "    \"to\": \"Menton\"\n" +
+                    "  }\n ]";
             exc.getIn().setBody(template);
         });
     }
+    @Test
+    public void testOurFlightExternal() throws Exception {
+        mock(FLIGHT_ENDPOINT).expectedMessageCount(1);
 
-//    @Test
-//    public void testFlightExternal() throws Exception {
-//        mock(COMPARE_FLIGHT_ENDPOINT).expectedMessageCount(1);
-////        mock(DEATH_POOL).expectedMessageCount(1);
-//        mock(FLIGHT_ENDPOINT).expectedMessageCount(3);
-//
-//        Gson gson = new Gson();
-//        String travelRequestJson = gson.toJson(travelRequest);
-//
-//        Object out = template.requestBody(COMPARE_FLIGHT_ENDPOINT, travelRequest.getFlight());
-//        System.out.println();
-//        System.out.println(out);
-//        System.out.println();
-//        assertMockEndpointsSatisfied(1, TimeUnit.SECONDS);
-//    }
+        Object out = template.requestBody(COMPARE_OUR_FLIGHT, travelRequest.getFlight());
+        assertMockEndpointsSatisfied(1, TimeUnit.SECONDS);
+
+        assertEquals(finalRequest.getFlight().toString(), out.toString());
+    }
 }

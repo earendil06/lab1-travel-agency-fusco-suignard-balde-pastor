@@ -71,11 +71,11 @@ public class TravelFlight implements Serializable {
         this.price = price;
     }
 
-    public boolean isDirect() {
+    public boolean getIsDirect() {
         return isDirect;
     }
 
-    public void setDirect(boolean direct) {
+    public void setIsDirect(boolean direct) {
         isDirect = direct;
     }
 

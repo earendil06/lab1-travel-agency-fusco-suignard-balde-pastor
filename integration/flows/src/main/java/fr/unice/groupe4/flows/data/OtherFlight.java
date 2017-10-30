@@ -18,7 +18,7 @@ public class OtherFlight implements Serializable {
     @JsonProperty("price")
     private double price;
 
-    @JsonProperty("isDirect")
+    @JsonProperty("getIsDirect")
     private boolean isDirect;
 
     @JsonProperty("stops")
@@ -34,7 +34,7 @@ public class OtherFlight implements Serializable {
                 ", date='" + date + '\'' +
                 ", id='" + id + '\'' +
                 ", price=" + price +
-                ", isDirect=" + isDirect +
+                ", getIsDirect=" + isDirect +
                 ", stops=" + stops +
                 '}';
     }
