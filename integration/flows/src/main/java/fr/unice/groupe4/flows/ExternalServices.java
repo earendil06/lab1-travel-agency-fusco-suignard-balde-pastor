@@ -33,14 +33,13 @@ public class ExternalServices extends RouteBuilder {
                 .routeDescription("retrieve hotels from services")
                 .multicast(mergeHotels)//.parallelProcessing().executorService(Executors.newFixedThreadPool(2))
                 .to(COMPARE_OUR_HOTEL, COMPARE_OTHER_HOTEL)
-                .to(COMPARE_OUR_HOTEL)
                 .end()
                 .log("END COMPARE HOTELS")
         ;
 
         from(COMPARE_OUR_HOTEL)
                 .bean(HotelHelper.class, "buildGetHotelForTravel(${body})")
-                .inOut(HOTEL_ENDPOINT)
+                .inOut(HOTEL_ENDPOINT.replace("http:", "http://"))
                 .process(result2Hotel)
         ;
 
@@ -52,7 +51,7 @@ public class ExternalServices extends RouteBuilder {
                 .setProperty("request", simple("${body}"))
                 .setBody(simple(""))
 //                .inOut(OTHER_HOTEL_ENDPOINT + simple("${exchangeProperty[request]}"))
-                .recipientList(simple(OTHER_HOTEL_ENDPOINT + "${exchangeProperty[request]}"))
+                .recipientList(simple(OTHER_HOTEL_ENDPOINT.replace("http:", "http://") + "${exchangeProperty[request]}"))
                 .removeProperty("request")
                 .log("FROM OTHER HOTEL request")
                 .process(result2OtherHotel)
@@ -72,7 +71,7 @@ public class ExternalServices extends RouteBuilder {
                 .setHeader("Content-Type", constant("application/json"))
                 .setHeader("Accept", constant("application/json"))
                 .bean(FlightHelper.class, "buildGetFlightForTravel(${body})")
-                .inOut(FLIGHT_ENDPOINT)
+                .inOut(FLIGHT_ENDPOINT.replace("http:", "http://"))
                 .process(result2Flight)
         ;
 
@@ -81,7 +80,7 @@ public class ExternalServices extends RouteBuilder {
                 .setHeader("Content-Type", constant("application/json"))
                 .setHeader("Accept", constant("application/json"))
                 .bean(FlightHelper.class, "buildGetFlightForTravelOther(${body})")
-                .inOut(OTHER_FLIGHT_ENDPOINT)
+                .inOut(OTHER_FLIGHT_ENDPOINT.replace("http:", "http://"))
                 .process(result2OtherFlight)
         ;
 
@@ -90,7 +89,7 @@ public class ExternalServices extends RouteBuilder {
                 .routeId("retrieve cars from services")
                 .routeDescription("retrieve cars from services")
                 .bean(CarHelper.class, "buildGetCarForTravel(${body})")
-                .inOut(CAR_ENDPOINT)
+                .inOut(CAR_ENDPOINT.replace("http:", "http://"))
                 .process(result2Car)
         ;
     }
@@ -192,13 +191,12 @@ public class ExternalServices extends RouteBuilder {
 
     private static Processor result2Flight = (Exchange exc) -> {
         String jsonArray = exc.getIn().getBody(String.class);
-        Type listType = new TypeToken<ArrayList<Flight>>() {
-        }.getType();
+        Type listType = new TypeToken<ArrayList<Flight>>() {}.getType();
         List<Flight> flights;
         try {
             flights = new Gson().fromJson(jsonArray, listType);
         } catch (com.google.gson.JsonSyntaxException e) {
-            System.out.println( e + " NO FLIGHTS");
+            System.out.println(e + " NO FLIGHTS " + jsonArray);
             return;
         }
         if (flights == null || flights.isEmpty()) {
@@ -225,7 +223,7 @@ public class ExternalServices extends RouteBuilder {
             }
             flights = new Gson().fromJson(map.get("vols").toString(), flightType);
         } catch (com.google.gson.JsonSyntaxException e) {
-            System.out.println("NO Other FLIGHTS");
+            System.out.println(e + " NO Other FLIGHTS");
             return;
         }
         if (flights == null || flights.isEmpty()) {
