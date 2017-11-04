@@ -1,11 +1,10 @@
 package fr.unice.groupe4.flows.utils;
 
-import fr.unice.groupe4.flows.data.Hotel;
+import fr.unice.groupe4.flows.data.TravelHotel;
 
 public class HotelHelper {
-//    private XPath xpath = XPathFactory.newInstance().newXPath();
 
-    public String buildGetHotelForTravel(Hotel hotel) {
+    public String buildGetHotelForTravel(TravelHotel hotel) {
         StringBuilder builder = new StringBuilder();
         builder.append("<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
                 "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n");
@@ -17,6 +16,16 @@ public class HotelHelper {
         builder.append("  </getHotelsForTravel>\n");
         builder.append(" </soap:Body>");
         builder.append("</soap:Envelope>");
+        return builder.toString();
+    }
+
+    public String buildGetHotelForTravelOther(TravelHotel hotel) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("/").append(hotel.getPlace())
+                .append("/").append(hotel.getName())
+                .append("/").append(hotel.getDateArrival().replace(".", "-"))
+                .append("/").append(hotel.getDateDeparture().replace(".", "-"));
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAA " + builder.toString());
         return builder.toString();
     }
 }

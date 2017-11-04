@@ -1,8 +1,8 @@
 package fr.unice.groupe4.flows;
 
 import fr.unice.groupe4.flows.data.Car;
-import fr.unice.groupe4.flows.data.Hotel;
 import fr.unice.groupe4.flows.data.TravelFlight;
+import fr.unice.groupe4.flows.data.TravelHotel;
 import fr.unice.groupe4.flows.data.TravelRequest;
 import fr.unice.groupe4.flows.utils.Endpoints;
 import org.apache.activemq.broker.BrokerService;
@@ -89,7 +89,7 @@ public abstract class ActiveMQTest extends CamelTestSupport {
         Car car = new Car();
         car.setPlace("Menton");
         car.setDuration(10);
-        Hotel hotel = new Hotel();
+        TravelHotel hotel = new TravelHotel();
         hotel.setPlace("Menton");
         hotel.setDateArrival("10.10.1010");
         hotel.setDateDeparture("11.11.1111");
@@ -102,7 +102,7 @@ public abstract class ActiveMQTest extends CamelTestSupport {
     TravelRequest finalRequest;
     @Before
     public void buildFinalRequest() {
-        Hotel hotel = new Hotel();
+        TravelHotel hotel = new TravelHotel();
         hotel.setPlace("Menton");
         hotel.setDateArrival("10.10.1010");
         hotel.setDateDeparture("11.11.1111");

@@ -31,17 +31,31 @@ public class ExternalServices extends RouteBuilder {
         from(COMPARE_HOTEL_ENDPOINT)
                 .routeId("retrieve hotels from services")
                 .routeDescription("retrieve hotels from services")
+                .multicast(mergeHotels)//.parallelProcessing().executorService(Executors.newFixedThreadPool(2))
+                .to(COMPARE_OUR_HOTEL, COMPARE_OTHER_HOTEL)
+                .to(COMPARE_OUR_HOTEL)
+                .end()
+                .log("END COMPARE HOTELS")
+        ;
+
+        from(COMPARE_OUR_HOTEL)
                 .bean(HotelHelper.class, "buildGetHotelForTravel(${body})")
                 .inOut(HOTEL_ENDPOINT)
                 .process(result2Hotel)
         ;
 
-        from(COMPARE_CAR_ENDPOINT)
-                .routeId("retrieve cars from services")
-                .routeDescription("retrieve cars from services")
-                .bean(CarHelper.class, "buildGetCarForTravel(${body})")
-                .inOut(CAR_ENDPOINT)
-                .process(result2Car)
+        from(COMPARE_OTHER_HOTEL)
+                .bean(HotelHelper.class, "buildGetHotelForTravelOther(${body})")
+                .setHeader(Exchange.HTTP_METHOD, constant("GET"))
+//                .setHeader("Content-Type", constant("application/json"))
+                .setHeader("Accept", constant("application/json"))
+                .setProperty("request", simple("${body}"))
+                .setBody(simple(""))
+//                .inOut(OTHER_HOTEL_ENDPOINT + simple("${exchangeProperty[request]}"))
+                .recipientList(simple(OTHER_HOTEL_ENDPOINT + "${exchangeProperty[request]}"))
+                .removeProperty("request")
+                .log("FROM OTHER HOTEL request")
+                .process(result2OtherHotel)
         ;
 
         from(COMPARE_FLIGHT_ENDPOINT)
@@ -59,7 +73,6 @@ public class ExternalServices extends RouteBuilder {
                 .setHeader("Accept", constant("application/json"))
                 .bean(FlightHelper.class, "buildGetFlightForTravel(${body})")
                 .inOut(FLIGHT_ENDPOINT)
-                .log("aaaa ${body}")
                 .process(result2Flight)
         ;
 
@@ -71,6 +84,15 @@ public class ExternalServices extends RouteBuilder {
                 .inOut(OTHER_FLIGHT_ENDPOINT)
                 .process(result2OtherFlight)
         ;
+
+
+        from(COMPARE_CAR_ENDPOINT)
+                .routeId("retrieve cars from services")
+                .routeDescription("retrieve cars from services")
+                .bean(CarHelper.class, "buildGetCarForTravel(${body})")
+                .inOut(CAR_ENDPOINT)
+                .process(result2Car)
+        ;
     }
 
     private static AggregationStrategy mergeFlights = (oldExchange, newExchange) -> {
@@ -81,13 +103,33 @@ public class ExternalServices extends RouteBuilder {
             TravelFlight flight = oldExchange.getIn().getBody(TravelFlight.class);
             if (flight == null && otherFlight == null) {
                 System.out.println("ALL FLIGHTS NULL");
-                oldExchange.getIn().setBody(new Flight());
+                oldExchange.getIn().setBody(new TravelFlight());
                 return oldExchange;
             }
             if (flight == null || otherFlight.getPrice() < flight.getPrice()) {
                 oldExchange.getIn().setBody(otherFlight);
             } else {
                 oldExchange.getIn().setBody(flight);
+            }
+        }
+        return oldExchange;
+    };
+
+    private static AggregationStrategy mergeHotels = (oldExchange, newExchange) -> {
+        if (oldExchange == null) {
+            return newExchange;
+        } else {
+            TravelHotel otherHotel = newExchange.getIn().getBody(TravelHotel.class);
+            TravelHotel hotel = oldExchange.getIn().getBody(TravelHotel.class);
+            if (hotel == null && otherHotel == null) {
+                System.out.println("ALL HOTELS NULL");
+                oldExchange.getIn().setBody(new TravelHotel());
+                return oldExchange;
+            }
+            if (hotel == null || otherHotel.getPrice() < hotel.getPrice()) {
+                oldExchange.getIn().setBody(otherHotel);
+            } else {
+                oldExchange.getIn().setBody(hotel);
             }
         }
         return oldExchange;
@@ -112,9 +154,41 @@ public class ExternalServices extends RouteBuilder {
             return;
         }
         //get the min price
-        Hotel min = hotels.stream().min(Comparator.comparingInt(Hotel::getPrice)).get();
+        Hotel hotelMin = hotels.stream().min(Comparator.comparingInt(Hotel::getPrice)).get();
+        TravelHotel min = new TravelHotel(hotelMin);
         exc.getIn().setBody(min);
     };
+
+    private static Processor result2OtherHotel = (Exchange exc) -> {
+        String input = exc.getIn().getBody(String.class);
+        Type mapType = new TypeToken<Map<String, List<OtherHotel>>>() {}.getType();
+        Type hotelType = new TypeToken<List<OtherHotel>>() {}.getType();
+        Map<String, List<OtherHotel>> map;
+        List<OtherHotel> hotels;
+        System.out.println("input " + input);
+        try {
+            map = new Gson().fromJson(input, mapType);
+            if (map == null) {
+                System.out.println("NO Other HOTELS");
+                return;
+            }
+            System.out.println("map " + map);
+            //hotels = new Gson().fromJson(map.get("hotels").toString().trim(), hotelType);
+            hotels = map.get("hotels");
+            System.out.println("hotels " + hotels);
+        } catch (com.google.gson.JsonSyntaxException e) {
+            System.out.println(e + " NO Other HOTELS");
+            return;
+        }
+        if (hotels == null || hotels.isEmpty()) {
+            System.out.println("NO Other HOTELS");
+            return;
+        }
+        OtherHotel hotelMin = hotels.stream().min(Comparator.comparingDouble(OtherHotel::getAmount)).get();
+        TravelHotel min = new TravelHotel(hotelMin);
+        exc.getIn().setBody(min);
+    };
+
 
     private static Processor result2Flight = (Exchange exc) -> {
         String jsonArray = exc.getIn().getBody(String.class);
@@ -124,7 +198,7 @@ public class ExternalServices extends RouteBuilder {
         try {
             flights = new Gson().fromJson(jsonArray, listType);
         } catch (com.google.gson.JsonSyntaxException e) {
-            System.out.println("NO FLIGHTS");
+            System.out.println( e + " NO FLIGHTS");
             return;
         }
         if (flights == null || flights.isEmpty()) {
@@ -146,16 +220,16 @@ public class ExternalServices extends RouteBuilder {
         try {
             map = new Gson().fromJson(input, mapType);
             if (map == null) {
-                System.out.println("NO FLIGHTS");
+                System.out.println("NO Other FLIGHTS");
                 return;
             }
             flights = new Gson().fromJson(map.get("vols").toString(), flightType);
         } catch (com.google.gson.JsonSyntaxException e) {
-            System.out.println("NO FLIGHTS");
+            System.out.println("NO Other FLIGHTS");
             return;
         }
         if (flights == null || flights.isEmpty()) {
-            System.out.println("NO FLIGHTS");
+            System.out.println("NO Other FLIGHTS");
             return;
         }
         OtherFlight flightMin = flights.stream().min(Comparator.comparingDouble(OtherFlight::getPrice)).get();

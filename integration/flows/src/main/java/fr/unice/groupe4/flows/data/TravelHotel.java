@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-public class Hotel implements Serializable {
+public class TravelHotel implements Serializable {
     @JsonProperty("place")
     private String place;
     @JsonProperty("dateArrival")
@@ -14,20 +14,29 @@ public class Hotel implements Serializable {
     @JsonProperty("price")
     private int price = 0;
     @JsonProperty("name")
-    private String name = "";
+    private String name = "PastorHotel";
     @JsonProperty("uid")
     private String uid = "";
 
-    public Hotel() {
+    public TravelHotel() {
     }
 
-    public Hotel(Hotel origin) {
-        this.place = origin.place;
-        this.dateArrival = origin.dateArrival;
-        this.dateDeparture = origin.dateDeparture;
-        this.price = origin.price;
-        this.name = origin.name;
+    public TravelHotel(Hotel origin) {
+        this.place = origin.getPlace();
+        this.dateArrival = origin.getDateArrival();
+        this.dateDeparture = origin.getDateDeparture();
+        this.price = origin.getPrice();
+        this.name = origin.getName();
         this.uid = origin.getUid();
+    }
+
+    public TravelHotel(OtherHotel origin) {
+        this.place = origin.getCity();
+        this.dateArrival = origin.getArrivalDate();
+        this.dateDeparture = origin.getDepartureDate();
+        this.price = (int) (origin.getAmount() * origin.getNumberOfNight());
+        this.name = origin.getName();
+        this.uid = String.valueOf(origin.getId());
     }
 
     public String getPlace() {
@@ -76,7 +85,7 @@ public class Hotel implements Serializable {
 
     @Override
     public String toString() {
-        return "Hotel{" +
+        return "TravelHotel{" +
                 "place='" + place + '\'' +
                 ", dateArrival='" + dateArrival + '\'' +
                 ", dateDeparture='" + dateDeparture + '\'' +

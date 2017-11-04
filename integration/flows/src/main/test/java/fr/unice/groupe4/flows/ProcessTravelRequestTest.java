@@ -30,19 +30,6 @@ public class ProcessTravelRequestTest extends ActiveMQTest {
                 ;
     }
 
-    @Test
-    public void testExecutionContext() throws Exception {
-        isAvailableAndMocked(TRAVEL_REQUEST_INPUT);
-        isAvailableAndMocked(RESULT_POOL);
-        isAvailableAndMocked(DEATH_POOL);
-        isAvailableAndMocked(HANDLE_FLIGHT_ENDPOINT);
-        isAvailableAndMocked(HANDLE_HOTEL_ENDPOINT);
-        isAvailableAndMocked(HANDLE_CAR_ENDPOINT);
-        isAvailableAndMocked(COMPARE_FLIGHT_ENDPOINT);
-        isAvailableAndMocked(COMPARE_CAR_ENDPOINT);
-        isAvailableAndMocked(COMPARE_HOTEL_ENDPOINT);
-    }
-
     @Before
     public void initMocks() {
         resetMocks();
@@ -64,9 +51,6 @@ public class ProcessTravelRequestTest extends ActiveMQTest {
     public void testAllFlowWithoutExternal() throws Exception {
         mock(TRAVEL_REQUEST_INPUT).expectedMessageCount(1);
         mock(HANDLE_HOTEL_ENDPOINT).expectedMessageCount(1);
-        mock(HANDLE_CAR_ENDPOINT).expectedMessageCount(1);
-        mock(HANDLE_FLIGHT_ENDPOINT).expectedMessageCount(1);
-        mock(RESULT_POOL).expectedMessageCount(1);
 
         Gson gson = new Gson();
         String travelRequestJson = gson.toJson(travelRequest);
@@ -74,7 +58,7 @@ public class ProcessTravelRequestTest extends ActiveMQTest {
 
         mock(RESULT_POOL).expectedBodiesReceived(gson.toJson(finalRequest));
 
-        assertMockEndpointsSatisfied(1, TimeUnit.SECONDS);
+        assertMockEndpointsSatisfied(10, TimeUnit.SECONDS);
     }
 
 /*    @Test public void testAllFlowFail() throws Exception {

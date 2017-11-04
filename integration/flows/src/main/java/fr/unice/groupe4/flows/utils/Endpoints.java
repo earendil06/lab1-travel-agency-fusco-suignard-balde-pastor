@@ -18,15 +18,22 @@ public class Endpoints {
     public static final String HANDLE_FLIGHT_ENDPOINT = "direct:handle-flight";
 
     public static final String COMPARE_HOTEL_ENDPOINT = "activemq:compare-hotel";
-    public static final String HOTEL_ENDPOINT = "http:localhost:9090/service-hotel-planner/HotelPlannerService";
+    //    public static final String HOTEL_ENDPOINT = "http:hotel-planner:8080/service-hotel-planner/HotelPlannerService";
+    public static final String HOTEL_ENDPOINT = "http://localhost:9090/service-hotel-planner/HotelPlannerService";
 
     public static final String COMPARE_FLIGHT_ENDPOINT = "activemq:compare-flight";
-    public static final String FLIGHT_ENDPOINT = "http:localhost:9080/tcs-service-doc/flights";
+    //    public static final String FLIGHT_ENDPOINT = "http:tcs-flight:8080/tcs-service-doc/flights";
+    public static final String FLIGHT_ENDPOINT = "http://localhost:9080/tcs-service-doc/flights";
 
-    public static final String OTHER_FLIGHT_ENDPOINT = "http:localhost:9180/flightreservation-service-document/registry";
+    //    public static final String OTHER_FLIGHT_ENDPOINT = "http:other-flights:8080/flightreservation-service-document/registry";
+    public static final String OTHER_FLIGHT_ENDPOINT = "http://localhost:9180/flightreservation-service-document/registry";
+    //    public static final String OTHER_HOTEL_ENDPOINT = "http:other-hotels:8080/tta-car-and-hotel/hotels/city/";
+    public static final String OTHER_HOTEL_ENDPOINT = "http://localhost:9380/tta-car-and-hotel/hotels";
+    public static final String OTHER_CAR_ENDPOINT = "http://localhost:9280/cars";
 
     public static final String COMPARE_CAR_ENDPOINT = "activemq:compare-car";
-    public static final String CAR_ENDPOINT = "http:localhost:9060/service-car-planner/CarPlannerService";
+    //    public static final String CAR_ENDPOINT = "http:car-planner:8080/service-car-planner/CarPlannerService";
+    public static final String CAR_ENDPOINT = "http://localhost:9060/service-car-planner/CarPlannerService";
 
     public static final String DEATH_POOL = "activemq:global:dead";
 
@@ -34,5 +41,7 @@ public class Endpoints {
 
     public static final String COMPARE_OUR_FLIGHT = "direct:ourFlight";
     public static final String COMPARE_OTHER_FLIGHT = "direct:otherFlight";
+    public static final String COMPARE_OUR_HOTEL = "direct:ourHotel";
+    public static final String COMPARE_OTHER_HOTEL = "direct:otherHotel";
 
 }

@@ -3,9 +3,9 @@ version: '3'
 services:
 
 #other groups
-  flightreservation-document:
-    container_name: flightreservation-document
-    image: matthieugenovese/flightreservation-document
+  other-flights:
+    container_name: other-flights
+    image: earendil06/other-flights
     environment:
       - db_host=tcs-database
       - db_port=27017
@@ -14,16 +14,22 @@ services:
     ports:
       - "9180:8080"
 
-#  flightreservation-document:
-#    container_name: travel-cars
-#    image: fgbl/travel-cars
-#    environment:
-#      - db_host=tcs-database
-#      - db_port=27017
-#    depends_on:
-#      - database
-#    ports:
-#      - "9280:8080"
+  other-hotels:
+    container_name: other-hotels
+    image: earendil06/other-hotels
+    environment:
+      - db_host=tcs-database
+      - db_port=27017
+    depends_on:
+      - database
+    ports:
+      - "9380:8080"
+
+  other-cars:
+    container_name: travel-cars
+    image: earendil06/travel-cars
+    ports:
+      - "9280:8080"
 
 #us
   hotel-planner:
@@ -83,8 +89,9 @@ services:
 #      - "1099:1099"
 #      - "61616:61616"
 #      - "44444:44444"
-##    depends_on:
-##      - hotel-planner
+#    depends_on:
+#      - hotel-planner
+#      - car-planner
 
   database:
     container_name: tcs-database

@@ -12,14 +12,14 @@ public class ExternalServicesTest extends ActiveMQTest {
 
     @Override
     public String isMockEndpointsAndSkip() {
-        return CAR_ENDPOINT + "|" + HOTEL_ENDPOINT + "|" + FLIGHT_ENDPOINT
+        return CAR_ENDPOINT + "|" + HOTEL_ENDPOINT + "|" + FLIGHT_ENDPOINT + "|" + OTHER_FLIGHT_ENDPOINT
                 ;
     }
 
     @Override
     public String isMockEndpoints() {
         return COMPARE_FLIGHT_ENDPOINT + "|" + COMPARE_CAR_ENDPOINT + "|" + COMPARE_HOTEL_ENDPOINT +
-         "|" + COMPARE_OUR_FLIGHT
+         "|" + COMPARE_OUR_FLIGHT + "|" + COMPARE_OTHER_FLIGHT
                 ;
     }
 
@@ -32,6 +32,8 @@ public class ExternalServicesTest extends ActiveMQTest {
         isAvailableAndMocked(CAR_ENDPOINT);
         isAvailableAndMocked(HOTEL_ENDPOINT);
         isAvailableAndMocked(COMPARE_OUR_FLIGHT);
+        isAvailableAndMocked(COMPARE_OTHER_FLIGHT);
+        isAvailableAndMocked(OTHER_FLIGHT_ENDPOINT);
     }
 
     @Before
@@ -72,12 +74,39 @@ public class ExternalServicesTest extends ActiveMQTest {
                     "  }\n ]";
             exc.getIn().setBody(template);
         });
+
+        mock(OTHER_FLIGHT_ENDPOINT).whenAnyExchangeReceived((Exchange exc) -> {
+            String template = "{\n" +
+                    "    \"size\": 1,\n" +
+                    "    \"vols\": [\n" +
+                    "        {\n" +
+                    "            \"date\": \"10.10.1010\",\n" +
+                    "            \"price\": \"42\",\n" +
+                    "            \"destination\": \"Menton\",\n" +
+                    "            \"id\": \"714\",\n" +
+                    "            \"stops\": [],\n" +
+                    "            \"isDirect\": true\n" +
+                    "        }\n" +
+                    "    ]\n" +
+                    "}";
+            exc.getIn().setBody(template);
+        });
     }
     @Test
     public void testOurFlightExternal() throws Exception {
         mock(FLIGHT_ENDPOINT).expectedMessageCount(1);
 
         Object out = template.requestBody(COMPARE_OUR_FLIGHT, travelRequest.getFlight());
+        assertMockEndpointsSatisfied(1, TimeUnit.SECONDS);
+
+        assertEquals(finalRequest.getFlight().toString(), out.toString());
+    }
+
+    @Test
+    public void testOtherFlightExternal() throws Exception {
+        mock(OTHER_FLIGHT_ENDPOINT).expectedMessageCount(1);
+
+        Object out = template.requestBody(COMPARE_OTHER_FLIGHT, travelRequest.getFlight());
         assertMockEndpointsSatisfied(1, TimeUnit.SECONDS);
 
         assertEquals(finalRequest.getFlight().toString(), out.toString());

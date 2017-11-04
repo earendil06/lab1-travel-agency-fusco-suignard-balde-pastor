@@ -29,5 +29,6 @@ mvn clean package
 #cd ..
 
 #other group
-docker pull matthieugenovese/flightreservation-document
-#docker pull fgbl/travel-cars
+docker pull earendil06/other-flights
+docker pull earendil06/other-hotels
+docker pull earendil06/travel-cars

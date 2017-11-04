@@ -2,8 +2,8 @@ package fr.unice.groupe4.flows;
 
 import com.google.gson.Gson;
 import fr.unice.groupe4.flows.data.Car;
-import fr.unice.groupe4.flows.data.Hotel;
 import fr.unice.groupe4.flows.data.TravelFlight;
+import fr.unice.groupe4.flows.data.TravelHotel;
 import fr.unice.groupe4.flows.data.TravelRequest;
 import fr.unice.groupe4.flows.utils.Endpoints;
 import fr.unice.groupe4.flows.utils.TravelRequestSplitter;
@@ -96,7 +96,7 @@ public class ProcessTravelRequest extends RouteBuilder {
     private static void json2hotel(Exchange exchange) {
         Gson gson = new Gson();
         String s = exchange.getIn().getBody(String.class);
-        Hotel hotel = gson.fromJson(s, Hotel.class);
+        TravelHotel hotel = gson.fromJson(s, TravelHotel.class);
         exchange.getIn().setBody(hotel);
     }
 
@@ -140,7 +140,7 @@ public class ProcessTravelRequest extends RouteBuilder {
                     old.setCar(car);
                     break;
                 case HOTEL:
-                    Hotel hotel = msg.getBody(Hotel.class);
+                    TravelHotel hotel = msg.getBody(TravelHotel.class);
                     old.setHotel(hotel);
                     break;
             }
