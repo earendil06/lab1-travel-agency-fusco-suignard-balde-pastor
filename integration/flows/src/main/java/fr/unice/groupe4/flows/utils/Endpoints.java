@@ -29,6 +29,7 @@ public class Endpoints {
     public static final String OTHER_FLIGHT_ENDPOINT = "http:localhost:9180/flightreservation-service-document/registry";
     //    public static final String OTHER_HOTEL_ENDPOINT = "http:other-hotels:8080/tta-car-and-hotel/hotels/city/";
     public static final String OTHER_HOTEL_ENDPOINT = "http:localhost:9380/tta-car-and-hotel/hotels";
+//    public static final String OTHER_CAR_ENDPOINT = "http:travel-cars:9060/cars"; //todo is it 9060 or 9280 ?
     public static final String OTHER_CAR_ENDPOINT = "http:localhost:9280/cars";
 
     public static final String COMPARE_CAR_ENDPOINT = "activemq:compare-car";
@@ -43,5 +44,7 @@ public class Endpoints {
     public static final String COMPARE_OTHER_FLIGHT = "direct:otherFlight";
     public static final String COMPARE_OUR_HOTEL = "direct:ourHotel";
     public static final String COMPARE_OTHER_HOTEL = "direct:otherHotel";
+    public static final String COMPARE_OUR_CAR = "direct:ourCar";
+    public static final String COMPARE_OTHER_CAR = "direct:otherCar";
 
 }

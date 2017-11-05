@@ -1,4 +1,4 @@
-package fr.unice.groupe4.flows.data;
+package fr.unice.groupe4.flows.data.otherdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

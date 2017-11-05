@@ -1,10 +1,10 @@
 package fr.unice.groupe4.flows;
 
 import com.google.gson.Gson;
-import fr.unice.groupe4.flows.data.Car;
-import fr.unice.groupe4.flows.data.TravelFlight;
-import fr.unice.groupe4.flows.data.TravelHotel;
-import fr.unice.groupe4.flows.data.TravelRequest;
+import fr.unice.groupe4.flows.data.traveldata.TravelCar;
+import fr.unice.groupe4.flows.data.traveldata.TravelFlight;
+import fr.unice.groupe4.flows.data.traveldata.TravelHotel;
+import fr.unice.groupe4.flows.data.traveldata.TravelRequest;
 import fr.unice.groupe4.flows.utils.Endpoints;
 import fr.unice.groupe4.flows.utils.TravelRequestSplitter;
 import org.apache.camel.Exchange;
@@ -35,7 +35,7 @@ public class ProcessTravelRequest extends RouteBuilder {
                 .log("input is " + body())
                 .unmarshal().json(JsonLibrary.Jackson, Map.class)
                 .split().method(TravelRequestSplitter.class, "split")
-//                    .parallelProcessing().executorService(WORKERS)
+                    .parallelProcessing().executorService(WORKERS)
                     .choice()
                         .when(header(TYPE).isEqualTo(EMAIL))
                             .log("email is ${body}")
@@ -82,7 +82,7 @@ public class ProcessTravelRequest extends RouteBuilder {
     private static void json2car(Exchange exchange) {
         Gson gson = new Gson();
         String s = exchange.getIn().getBody(String.class);
-        Car car = gson.fromJson(s, Car.class);
+        TravelCar car = gson.fromJson(s, TravelCar.class);
         exchange.getIn().setBody(car);
     }
 
@@ -136,7 +136,7 @@ public class ProcessTravelRequest extends RouteBuilder {
                     old.setFlight(flight);
                     break;
                 case CAR:
-                    Car car = msg.getBody(Car.class);
+                    TravelCar car = msg.getBody(TravelCar.class);
                     old.setCar(car);
                     break;
                 case HOTEL:

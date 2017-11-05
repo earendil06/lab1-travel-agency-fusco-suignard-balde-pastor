@@ -1,4 +1,4 @@
-package fr.unice.groupe4.flows.data;
+package fr.unice.groupe4.flows.data.traveldata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -8,7 +8,7 @@ public class TravelRequest implements Serializable {
     @JsonProperty("email") private String email;
     @JsonProperty("flight") private TravelFlight flight;
     @JsonProperty("hotel") private TravelHotel hotel;
-    @JsonProperty("car") private Car car;
+    @JsonProperty("car") private TravelCar car;
 
     public TravelRequest() {
     }
@@ -37,11 +37,11 @@ public class TravelRequest implements Serializable {
         this.hotel = hotel;
     }
 
-    public Car getCar() {
+    public TravelCar getCar() {
         return car;
     }
 
-    public void setCar(Car car) {
+    public void setCar(TravelCar car) {
         this.car = car;
     }
 

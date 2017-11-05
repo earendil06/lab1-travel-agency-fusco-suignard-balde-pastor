@@ -1,6 +1,8 @@
-package fr.unice.groupe4.flows.data;
+package fr.unice.groupe4.flows.data.traveldata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.unice.groupe4.flows.data.otherdata.OtherFlight;
+import fr.unice.groupe4.flows.data.ourdata.Flight;
 
 import java.io.Serializable;
 
