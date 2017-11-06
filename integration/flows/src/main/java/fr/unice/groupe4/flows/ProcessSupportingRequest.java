@@ -23,7 +23,7 @@ public class ProcessSupportingRequest extends RouteBuilder{
 
     @Override
     public void configure() throws Exception {
-        from(MAIL_INPUT)
+        /*from(MAIL_INPUT)
                 .routeId("mail-to-refund-expenses")
                 .routeDescription("Loads a json file containing the expense for travel and proces Contents")
                 .unmarshal().json(JsonLibrary.Jackson, Map.class)
@@ -72,6 +72,15 @@ public class ProcessSupportingRequest extends RouteBuilder{
 
         ;
 
+
+        from(MAIL_INPUT)
+                .routeId("Expense Json to object Expense")
+                .routeDescription("Loads a json file containing the expense for travel and proces Contents")
+                .unmarshal().json(JsonLibrary.Jackson, Map.class)
+                .log("le contenu est " + body())
+
+        ;
+        */
     }
 
     private static AggregationStrategy mergeExpense = new AggregationStrategy() {

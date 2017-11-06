@@ -8,8 +8,8 @@ public class SupportingRequest {
     @JsonProperty("livingExpenses") private String livingExpenses;
     @JsonProperty("employer") private String employer;
     @JsonProperty("travel") private String travel;
-   // @JsonProperty("expenses") private List<String> expenses;
-   // @JsonProperty("prices") private String prices;
+    @JsonProperty("type") private String expenses;
+    @JsonProperty("prices") private String prices;
 
     public SupportingRequest() {
     }

@@ -3,44 +3,64 @@ package fr.unice.groupe4.flows.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ExpenseRequest {
-    @JsonProperty("type") private String type;
-    @JsonProperty("motif") private String motif;
-    @JsonProperty("price") private String price;
+    @JsonProperty("livingExpenses") private String livingExpenses;
+    @JsonProperty("employer") private String employer;
+    @JsonProperty("travel") private String travel;
+    @JsonProperty("type") private String expenses;
+    @JsonProperty("prices") private String prices;
 
 
     public ExpenseRequest() {
     }
 
-    public String getType() {
-        return type;
+    public String getLivingExpenses() {
+        return livingExpenses;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setLivingExpenses(String livingExpenses) {
+        this.livingExpenses = livingExpenses;
     }
 
-    public String getMotif() {
-        return motif;
+    public String getEmployer() {
+        return employer;
     }
 
-    public void setMotif(String motif) {
-        this.motif = motif;
+    public void setEmployer(String employer) {
+        this.employer = employer;
     }
 
-    public String getPrice() {
-        return price;
+    public String getTravel() {
+        return travel;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setTravel(String travel) {
+        this.travel = travel;
+    }
+
+    public String getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(String expenses) {
+        this.expenses = expenses;
+    }
+
+    public String getPrices() {
+        return prices;
+    }
+
+    public void setPrices(String prices) {
+        this.prices = prices;
     }
 
     @Override
     public String toString() {
         return "ExpenseRequest{" +
-                "type='" + type + '\'' +
-                ", motif='" + motif + '\'' +
-                ", price='" + price + '\'' +
+                "livingExpenses='" + livingExpenses + '\'' +
+                ", employer='" + employer + '\'' +
+                ", travel='" + travel + '\'' +
+                ", expenses='" + expenses + '\'' +
+                ", prices='" + prices + '\'' +
                 '}';
     }
 }
