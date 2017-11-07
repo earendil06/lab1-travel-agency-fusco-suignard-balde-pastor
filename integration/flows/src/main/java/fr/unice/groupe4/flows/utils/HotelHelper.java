@@ -54,10 +54,10 @@ public class HotelHelper {
             TravelHotel hotel = oldExchange.getIn().getBody(TravelHotel.class);
             if (hotel == null && otherHotel == null) {
                 System.out.println("ALL HOTELS NULL");
-                oldExchange.getIn().setBody(new TravelHotel());
+                oldExchange.getIn().setBody(null);
                 return oldExchange;
             }
-            if (hotel == null || otherHotel.getPrice() < hotel.getPrice()) {
+            if (hotel == null || hotel.getPrice() == 0 || otherHotel.getPrice() < hotel.getPrice()) {
                 oldExchange.getIn().setBody(otherHotel);
             } else {
                 oldExchange.getIn().setBody(hotel);
@@ -68,8 +68,12 @@ public class HotelHelper {
 
     public static Processor result2Hotel = (Exchange exc) -> {
         XPath xpath = XPathFactory.newInstance().newXPath();
-        String response = exc.getIn().getBody(String.class);
-        InputSource source = new InputSource(new StringReader(response));
+        String input = exc.getIn().getBody(String.class);
+        if (input == null) {
+            exc.getIn().setBody(null);
+            return;
+        }
+        InputSource source = new InputSource(new StringReader(input));
         String jsonArray = xpath.evaluate("//hotel_planner_result", source);
         Type listType = new TypeToken<ArrayList<Hotel>>() {
         }.getType();
@@ -92,9 +96,11 @@ public class HotelHelper {
 
     public static Processor result2OtherHotel = (Exchange exc) -> {
         String input = exc.getIn().getBody(String.class);
+        if (input == null) {
+            exc.getIn().setBody(null);
+            return;
+        }
         Type mapType = new TypeToken<Map<String, List<OtherHotel>>>() {
-        }.getType();
-        Type hotelType = new TypeToken<List<OtherHotel>>() {
         }.getType();
         Map<String, List<OtherHotel>> map;
         List<OtherHotel> hotels;

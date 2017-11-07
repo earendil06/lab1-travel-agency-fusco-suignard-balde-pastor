@@ -115,6 +115,7 @@ public abstract class ActiveMQTest extends CamelTestSupport {
         car.setDuration(10);
         car.setName("Taxi Pastor");
         car.setUid("caruid");
+        car.setPrice(142);
 
         TravelFlight flight = new TravelFlight();
         flight.setDestination("Menton");

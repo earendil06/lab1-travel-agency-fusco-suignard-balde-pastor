@@ -46,10 +46,10 @@ public class FlightHelper {
             TravelFlight flight = oldExchange.getIn().getBody(TravelFlight.class);
             if (flight == null && otherFlight == null) {
                 System.out.println("ALL FLIGHTS NULL");
-                oldExchange.getIn().setBody(new TravelFlight());
+                oldExchange.getIn().setBody(null);
                 return oldExchange;
             }
-            if (flight == null || otherFlight.getPrice() < flight.getPrice()) {
+            if (flight == null || flight.getPrice() == 0 || otherFlight.getPrice() < flight.getPrice()) {
                 oldExchange.getIn().setBody(otherFlight);
             } else {
                 oldExchange.getIn().setBody(flight);
@@ -60,14 +60,18 @@ public class FlightHelper {
 
 
     public static Processor result2Flight = (Exchange exc) -> {
-        String jsonArray = exc.getIn().getBody(String.class);
+        String input = exc.getIn().getBody(String.class);
+        if (input == null) {
+            exc.getIn().setBody(null);
+            return;
+        }
         Type listType = new TypeToken<ArrayList<Flight>>() {
         }.getType();
         List<Flight> flights;
         try {
-            flights = new Gson().fromJson(jsonArray, listType);
+            flights = new Gson().fromJson(input, listType);
         } catch (com.google.gson.JsonSyntaxException e) {
-            System.out.println(e + " NO FLIGHTS " + jsonArray);
+            System.out.println(e + " NO FLIGHTS " + input);
             return;
         }
         if (flights == null || flights.isEmpty()) {
@@ -81,6 +85,10 @@ public class FlightHelper {
 
     public static Processor result2OtherFlight = (Exchange exc) -> {
         String input = exc.getIn().getBody(String.class);
+        if (input == null) {
+            exc.getIn().setBody(null);
+            return;
+        }
         Type mapType = new TypeToken<Map<String, Object>>() {
         }.getType();
         Type flightType = new TypeToken<List<OtherFlight>>() {

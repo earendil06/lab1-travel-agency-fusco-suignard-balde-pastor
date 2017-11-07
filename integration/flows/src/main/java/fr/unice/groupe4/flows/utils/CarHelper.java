@@ -48,10 +48,10 @@ public class CarHelper {
             TravelCar car = oldExchange.getIn().getBody(TravelCar.class);
             if (car == null && otherCar == null) {
                 System.out.println("ALL CARS NULL");
-                oldExchange.getIn().setBody(new TravelCar());
+                oldExchange.getIn().setBody(null);
                 return oldExchange;
             }
-            if (car == null || otherCar.getPrice() < car.getPrice()) {
+            if (car == null || car.getPrice() == 0 || otherCar.getPrice() < car.getPrice()) {
                 oldExchange.getIn().setBody(otherCar);
             } else {
                 oldExchange.getIn().setBody(car);
@@ -62,8 +62,12 @@ public class CarHelper {
 
     public static Processor result2Car = (Exchange exc) -> {
         XPath xpath = XPathFactory.newInstance().newXPath();
-        String response = exc.getIn().getBody(String.class);
-        InputSource source = new InputSource(new StringReader(response));
+        String input = exc.getIn().getBody(String.class);
+        if (input == null) {
+            exc.getIn().setBody(null);
+            return;
+        }
+        InputSource source = new InputSource(new StringReader(input));
         String jsonArray = xpath.evaluate("//car_planner_result", source);
         Type listType = new TypeToken<ArrayList<Car>>() {
         }.getType();
@@ -86,14 +90,18 @@ public class CarHelper {
 
     public static Processor result2OtherCar = (Exchange exc) -> {
         int duration = (int) exc.getProperty("duration");
-        String response = exc.getIn().getBody(String.class);
+        String input = exc.getIn().getBody(String.class);
+        if (input == null) {
+            exc.getIn().setBody(null);
+            return;
+        }
         Type listType = new TypeToken<ArrayList<OtherCar>>() {
         }.getType();
         List<OtherCar> cars;
         try {
-            cars = new Gson().fromJson(response, listType);
+            cars = new Gson().fromJson(input, listType);
         } catch (com.google.gson.JsonSyntaxException e) {
-            System.out.println(e + " NO CARS " + response);
+            System.out.println(e + " NO CARS " + input);
             return;
         }
         if (cars == null || cars.isEmpty()) {

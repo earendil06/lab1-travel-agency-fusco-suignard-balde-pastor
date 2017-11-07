@@ -21,11 +21,11 @@ import static fr.unice.groupe4.flows.utils.Endpoints.*;
 
 public class ProcessTravelRequest extends RouteBuilder {
     private static final ExecutorService WORKERS = Executors.newFixedThreadPool(3);
-    private static final String EMAIL = "email";
-    private static final String FLIGHT = "flight";
-    private static final String CAR = "car";
-    private static final String HOTEL = "hotel";
-    private static final String TYPE = "type";
+    public static final String EMAIL = "email";
+    public static final String FLIGHT = "flight";
+    public static final String CAR = "car";
+    public static final String HOTEL = "hotel";
+    public static final String TYPE = "type";
 
     @Override
     public void configure() throws Exception {
@@ -53,7 +53,8 @@ public class ProcessTravelRequest extends RouteBuilder {
                             .to(DEATH_POOL)
                     .end()
                     .aggregate(constant(true), merge)
-                    .completionPredicate(ProcessTravelRequest::matches)
+                    //.completionPredicate(ProcessTravelRequest::matches)
+                    .completionSize(4)
                     .log("after aggregation ${body}")
                 .marshal().json(JsonLibrary.Jackson, TravelRequest.class)
         .to(RESULT_POOL)

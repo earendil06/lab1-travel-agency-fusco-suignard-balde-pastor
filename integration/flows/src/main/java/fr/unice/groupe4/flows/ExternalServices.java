@@ -7,6 +7,7 @@ import fr.unice.groupe4.flows.utils.HotelHelper;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 
+import java.io.IOException;
 import java.util.concurrent.Executors;
 
 import static fr.unice.groupe4.flows.utils.Endpoints.*;
@@ -15,6 +16,15 @@ public class ExternalServices extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
+
+        onException(IOException.class)
+                .log("EXCEPTION")
+                .maximumRedeliveries(2)
+//                .redeliveryDelay(5000)
+                .redeliveryDelay(500)
+                .process(exchange -> exchange.getIn().setBody(null))
+                .continued(true);
+
         from(COMPARE_HOTEL_ENDPOINT)
                 .routeId("retrieve hotels from services")
                 .routeDescription("retrieve hotels from services")
@@ -38,8 +48,8 @@ public class ExternalServices extends RouteBuilder {
                 .setBody(simple(""))
                 .recipientList(simple(OTHER_HOTEL_ENDPOINT.replace("http:", "http://")
                         + "${exchangeProperty[request]}"))
+                .end()
                 .removeProperty("request")
-                .log("FROM OTHER HOTEL request")
                 .process(HotelHelper.result2OtherHotel)
         ;
 
@@ -68,6 +78,7 @@ public class ExternalServices extends RouteBuilder {
                 .bean(FlightHelper.class, "buildGetFlightForTravelOther(${body})")
                 .inOut(OTHER_FLIGHT_ENDPOINT.replace("http:", "http://"))
                 .process(FlightHelper.result2OtherFlight)
+
         ;
 
         from(COMPARE_CAR_ENDPOINT)
@@ -95,10 +106,10 @@ public class ExternalServices extends RouteBuilder {
                 .setBody(simple(""))
                 .recipientList(simple(OTHER_CAR_ENDPOINT.replace("http:", "http://")
                         + "${exchangeProperty[request]}"))
+                .end()
                 .removeProperty("request")
                 .process(CarHelper.result2OtherCar)
                 .removeProperty("duration")
         ;
     }
-
 }
