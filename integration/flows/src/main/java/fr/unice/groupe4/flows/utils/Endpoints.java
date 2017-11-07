@@ -7,7 +7,11 @@ public class Endpoints {
     public static final String TEST_INPUT = "file:camel/input";
 
     public static final String MAIL_INPUT = "file:camel/mail";
-    public static final String ARCHIVAGE = "file:camel/archivage/";
+    public static final String ARCHIVE = "file:camel/archive/";
+
+    public static final String COMPARE_TOTALPRICE_TO_CITY_PRICEDAY = "direct:comparePrice";
+    public static final String GET_PRICE_BY_CITY = "direct:getPriceByCity";
+    public static final String GENERATE_MAIL_REPORT_REFUND = "file:camel/refund";
 
 
     public static final String EXPENSE_TO_REFUND = "activemq:refund-report";

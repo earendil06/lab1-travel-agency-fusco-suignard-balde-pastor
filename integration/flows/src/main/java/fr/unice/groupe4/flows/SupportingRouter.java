@@ -3,6 +3,7 @@ package fr.unice.groupe4.flows;
 import com.google.gson.Gson;
 import fr.unice.groupe4.flows.data.Expense;
 import fr.unice.groupe4.flows.data.SupportingTravel;
+import fr.unice.groupe4.flows.utils.RefundReport;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
@@ -31,30 +32,16 @@ public class SupportingRouter extends RouteBuilder {
                 .routeId("Expense Json to object Expense")
                 .routeDescription("Loads a json file containing the expense for travel and proces Contents")
                 .unmarshal().json(JsonLibrary.Jackson, Map.class)
-                .log("le contenu est " + body())
-                .setProperty("input", simple("${body}"))
-                .process(exchange -> {
-                    String json = exchange.getIn().getBody(String.class);
-                    InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8.name()));
-                    exchange.getIn().setBody(stream);
-                })
-                .recipientList(simple(ARCHIVAGE + "${exchangeProperty[input[name]]}${exchangeProperty[input[id]]}")).end()
-                .setBody(simple("${exchangeProperty[input]}"))
-                .removeProperty("input")
-                //.process(SupportingRouter::json2Expense)
-                .log("La conversion de json object en Expense" + body())
-                .log("L'expense  " + body())
-
                 .choice()
-                .when(simple("${body[type]} =~ 'restaurant'"))
-                .log("this expenses is remboursed")
-                .to(EXPENSE_TO_REFUND)
-                .when(simple("${body[type]} =~ 'car'"))
-                .log("this expenses is remboursed")
-                .to(EXPENSE_TO_REFUND)
-                .otherwise()
-                .log("this expenses is not remboursed")
-                .to(EXPENSE_NOT_REFUND)
+                    .when(simple("${body[type]} =~ 'restaurant'"))
+                        .log("this expenses is remboursed")
+                        .to(EXPENSE_TO_REFUND)
+                    .when(simple("${body[type]} =~ 'car'"))
+                        .log("this expenses is remboursed")
+                        .to(EXPENSE_TO_REFUND)
+                    .otherwise()
+                        .log("this expenses is not remboursed")
+                        .to(EXPENSE_NOT_REFUND)
                 .end()
 
         ;
@@ -62,23 +49,39 @@ public class SupportingRouter extends RouteBuilder {
         from(EXPENSE_TO_REFUND)
                 .routeId("Generate-mail-report-to-refund")
                 .routeDescription("Generate a report for refund all expenses for on travel")
-                .log("This expense is supported by the company")
-                .log("Type : ${body[type]}   ; Price : ${body[price]} ")
+                .setProperty("input", simple("${body}"))
+                .process(exchange -> {
+                    String json = exchange.getIn().getBody(String.class);
+                    InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8.name()));
+                    exchange.getIn().setBody(stream);
+                })
+                .recipientList(simple(ARCHIVE + "${exchangeProperty[input[name]]}${exchangeProperty[input[id]]}")).end()
+                .setBody(simple("${exchangeProperty[input]}"))
+                .removeProperty("input")
                 .aggregate(constant(true), mergeExpense).completionTimeout(500)
                 .log("************* After Agregate ****************************")
-                .to("direct:comparePrice")
+                .to(COMPARE_TOTALPRICE_TO_CITY_PRICEDAY)
 
         //.setProperty("report", simple("${body}"))
 
         ;
-        from("direct:comparePrice")
+        from(COMPARE_TOTALPRICE_TO_CITY_PRICEDAY)
                 .routeId("Compare-PriceTotal-to-City-Price-Day")
-                .log("Direct test ***********************")
                 .log("${body.totalPrice}")
-                .inOut("direct:getPriceByCity")
+                .inOut(GET_PRICE_BY_CITY)
                 .choice()
                     .when(exchangeProperty("priceByDay").isGreaterThanOrEqualTo(simple("${body.totalPrice}")))
                         .log("votre remboursement va etre effectuer ")
+                        .setProperty("report-refund", simple("${body}"))
+                        .bean(RefundReport.class,"write(${body})")
+                        .process(exchange -> {
+                                String json = exchange.getIn().getBody(String.class);
+                                InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8.name()));
+                                exchange.getIn().setBody(stream);
+                        })
+                        .recipientList(simple(GENERATE_MAIL_REPORT_REFUND + "${exchangeProperty[report-refund.id]}")).end()
+                        .setBody(simple("${exchangeProperty[report-refund]}"))
+                        .removeProperty("report-refund")
                     .otherwise()
                         .log("vous depassez le seuil autoriser de ${exchangeProperty[priceByDay]}," +
                                 " veuillez nous fournir des justificatifs ")
@@ -87,7 +90,7 @@ public class SupportingRouter extends RouteBuilder {
                 .log("${body}")
         ;
 
-        from("direct:getPriceByCity")
+        from(GET_PRICE_BY_CITY)
                 .routeId("direct:getPriceByCity")
                 .choice()
                     .when(simple("${body.city} == 'Nice'"))
