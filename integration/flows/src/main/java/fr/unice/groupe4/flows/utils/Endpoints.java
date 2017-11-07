@@ -7,6 +7,7 @@ public class Endpoints {
     public static final String TEST_INPUT = "file:camel/input";
 
     public static final String MAIL_INPUT = "file:camel/mail";
+    public static final String ARCHIVAGE = "file:camel/archivage/";
 
 
     public static final String EXPENSE_TO_REFUND = "activemq:refund-report";

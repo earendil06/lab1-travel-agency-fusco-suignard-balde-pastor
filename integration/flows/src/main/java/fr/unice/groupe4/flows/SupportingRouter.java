@@ -3,12 +3,14 @@ package fr.unice.groupe4.flows;
 import com.google.gson.Gson;
 import fr.unice.groupe4.flows.data.Expense;
 import fr.unice.groupe4.flows.data.SupportingTravel;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.camel.processor.aggregate.AggregationStrategy;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +32,15 @@ public class SupportingRouter extends RouteBuilder {
                 .routeDescription("Loads a json file containing the expense for travel and proces Contents")
                 .unmarshal().json(JsonLibrary.Jackson, Map.class)
                 .log("le contenu est " + body())
-
+                .setProperty("input", simple("${body}"))
+                .process(exchange -> {
+                    String json = exchange.getIn().getBody(String.class);
+                    InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8.name()));
+                    exchange.getIn().setBody(stream);
+                })
+                .recipientList(simple(ARCHIVAGE + "${exchangeProperty[input[name]]}")).end()
+                .setBody(simple("${exchangeProperty[input]}"))
+                .removeProperty("input")
                 //.process(SupportingRouter::json2Expense)
                 .log("La conversion de json object en Expense" + body())
                 .log("L'expense  " + body())
@@ -54,16 +64,41 @@ public class SupportingRouter extends RouteBuilder {
                 .routeDescription("Generate a report for refund all expenses for on travel")
                 .log("This expense is supported by the company")
                 .log("Type : ${body[type]}   ; Price : ${body[price]} ")
-                .aggregate(constant(true), mergeExpense).completionTimeout(10000)
+                .aggregate(constant(true), mergeExpense).completionTimeout(500)
                 .log("************* After Agregate ****************************")
-                .to("direct:test")
+                .to("direct:comparePrice")
 
         //.setProperty("report", simple("${body}"))
 
         ;
-        from("direct:test")
+        from("direct:comparePrice")
+                .routeId("Compare-PriceTotal-to-City-Price-Day")
                 .log("Direct test ***********************")
+                .log("${body.totalPrice}")
+                .inOut("direct:getPriceByCity")
+                .choice()
+                    .when(exchangeProperty("priceByDay").isGreaterThanOrEqualTo(simple("${body.totalPrice}")))
+                        .log("votre remboursement va etre effectuer ")
+                    .otherwise()
+                        .log("vous depassez le seuil autoriser de ${exchangeProperty[priceByDay]}," +
+                                " veuillez nous fournir des justificatifs ")
+                .end()
+                .removeProperty("priceByDay")
                 .log("${body}")
+        ;
+
+        from("direct:getPriceByCity")
+                .routeId("direct:getPriceByCity")
+                .choice()
+//                    .when(simple("${body.city} == 'Menton'"))
+                .when(simple("'aaa' == 'Menton'"))
+                        .setProperty("priceByDay", simple("150"))
+//                    .when(simple("${body.city} == 'Berlin'"))
+                .when(simple("'bbb' == 'Menton'"))
+                        .setProperty("priceByDay", simple("150"))
+                    .otherwise()
+                        .setProperty("priceByDay", simple("1000"))
+                .end()
         ;
 
         from(EXPENSE_NOT_REFUND)
