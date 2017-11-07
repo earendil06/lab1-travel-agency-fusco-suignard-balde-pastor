@@ -8,6 +8,7 @@ public class SupportingTravel {
     @JsonProperty("id") private String id;
     @JsonProperty("expenses") private List expenses;
     @JsonProperty("totalPrice") private double totalPrice;
+    @JsonProperty("city") private String city;
 
     public SupportingTravel() {
     }
@@ -46,11 +47,20 @@ public class SupportingTravel {
         expenses.add(exp);
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     @Override
     public String toString() {
         return "SupportingTravel{" +
                 "id='" + id + '\'' +
                 ", expenses=" + expenses +
+                ", city=" + city +
                 ", totalPrice=" + totalPrice +
                 '}';
     }

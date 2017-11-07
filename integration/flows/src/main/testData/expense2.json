@@ -1,6 +1,7 @@
 {
-"id" : "1",
-"name" : "deplacement",
-"type" : "car",
-"price" : 300
+  "id" : "2",
+  "name" : "deplacement",
+  "type" : "car",
+  "price" : 300,
+  "city" : "Nice"
 }

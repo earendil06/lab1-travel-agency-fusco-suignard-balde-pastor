@@ -7,6 +7,7 @@ public class Expense {
     @JsonProperty("name") private String name;
     @JsonProperty("type")  private String type;
     @JsonProperty("price") private double price;
+    @JsonProperty("city") private String city;
 
     public Expense(String id, String name, String type) {
         this.id = id;
@@ -50,12 +51,21 @@ public class Expense {
         this.price = price;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     @Override
     public String toString() {
         return "Expense{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
+                ", city='" + city + '\'' +
                 ", price=" + price +
                 '}';
     }

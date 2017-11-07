@@ -38,7 +38,7 @@ public class SupportingRouter extends RouteBuilder {
                     InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8.name()));
                     exchange.getIn().setBody(stream);
                 })
-                .recipientList(simple(ARCHIVAGE + "${exchangeProperty[input[name]]}")).end()
+                .recipientList(simple(ARCHIVAGE + "${exchangeProperty[input[name]]}${exchangeProperty[input[id]]}")).end()
                 .setBody(simple("${exchangeProperty[input]}"))
                 .removeProperty("input")
                 //.process(SupportingRouter::json2Expense)
@@ -90,12 +90,10 @@ public class SupportingRouter extends RouteBuilder {
         from("direct:getPriceByCity")
                 .routeId("direct:getPriceByCity")
                 .choice()
-//                    .when(simple("${body.city} == 'Menton'"))
-                .when(simple("'aaa' == 'Menton'"))
-                        .setProperty("priceByDay", simple("150"))
-//                    .when(simple("${body.city} == 'Berlin'"))
-                .when(simple("'bbb' == 'Menton'"))
-                        .setProperty("priceByDay", simple("150"))
+                    .when(simple("${body.city} == 'Nice'"))
+                        .setProperty("priceByDay", simple("950"))
+                    .when(simple("${body.city} == 'Berlin'"))
+                        .setProperty("priceByDay", simple("1050"))
                     .otherwise()
                         .setProperty("priceByDay", simple("1000"))
                 .end()
@@ -132,7 +130,7 @@ public class SupportingRouter extends RouteBuilder {
                 supp.setId("EXP"+System.currentTimeMillis());
                 newExchange.getIn().setBody(supp);
                 System.out.println("Le supporting est " + supp);
-
+                supp.setCity(newExp.getCity());
                 return newExchange;
             } else {
                 SupportingTravel supportingTravel = oldExchange.getIn().getBody(SupportingTravel.class);
@@ -141,8 +139,10 @@ public class SupportingRouter extends RouteBuilder {
 
                 supportingTravel.getExpenses().add(newExpense);
 
+
                 System.out.println("Le Supporting avant le add est : " + supportingTravel.getTotalPrice());
                 double totalPrice =  supportingTravel.getTotalPrice() + newExpense.getPrice();
+
                 supportingTravel.setTotalPrice(totalPrice);
                 return oldExchange;
             }
