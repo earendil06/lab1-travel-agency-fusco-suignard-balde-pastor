@@ -15,9 +15,9 @@ mvn clean package
 
 # Build docker images
 #build services/travel-manager travel-manager
-build services/hotel-planner  hotel-planner
-build services/car-planner    car-planner
-build services/document       tcs-doc
+#build services/hotel-planner  hotel-planner
+#build services/car-planner    car-planner
+#build services/document       tcs-doc
 
 #build integration/esbgroupe4 esbgroupe4
 #cd integration/esbgroupe4
@@ -28,7 +28,12 @@ build services/document       tcs-doc
 #docker build -t integration . #--no-cache
 #cd ..
 
+#our group
+#docker pull earendil06/
+#docker pull earendil06/
+#docker pull earendil06/
+
 #other groups
 docker pull earendil06/other-flights
 docker pull earendil06/other-hotels
-docker pull earendil06/travel-cars
+docker pull earendil06/other-cars

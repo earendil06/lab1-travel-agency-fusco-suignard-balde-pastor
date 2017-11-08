@@ -1,5 +1,6 @@
 package fr.unice.groupe4.flows;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.google.gson.Gson;
 import fr.unice.groupe4.flows.data.traveldata.TravelCar;
 import fr.unice.groupe4.flows.data.traveldata.TravelFlight;
@@ -26,14 +27,23 @@ public class ProcessTravelRequest extends RouteBuilder {
     public static final String CAR = "car";
     public static final String HOTEL = "hotel";
     public static final String TYPE = "type";
+    private static final String NUMBER_OF_DATA = "numberOfData";
 
     @Override
     public void configure() throws Exception {
         from(Endpoints.TRAVEL_REQUEST_INPUT)
                 .routeId("submitTravel")
                 .routeDescription("Handle a travel request from an employee")
-                .log("input is " + body())
-                .unmarshal().json(JsonLibrary.Jackson, Map.class)
+                .log("input is ${body}")
+                .doTry()
+                    .unmarshal().json(JsonLibrary.Jackson, Map.class)
+                    .process(exchange ->
+                            exchange.setProperty(NUMBER_OF_DATA, exchange.getIn().getBody(Map.class).size()))
+                    .log("numberOfData ${exchangeProperty["+NUMBER_OF_DATA+"]}")
+                .doCatch(JsonParseException.class)
+                    .log("Exception in INPUT")
+                    .to(DEATH_POOL)
+                .end()
                 .split().method(TravelRequestSplitter.class, "split")
                     .parallelProcessing().executorService(WORKERS)
                     .choice()
@@ -53,11 +63,11 @@ public class ProcessTravelRequest extends RouteBuilder {
                             .to(DEATH_POOL)
                     .end()
                     .aggregate(constant(true), merge)
-                    //.completionPredicate(ProcessTravelRequest::matches)
-                    .completionSize(4)
+                    .completionSize(simple("${exchangeProperty["+NUMBER_OF_DATA+"]}"))
                     .log("after aggregation ${body}")
                 .marshal().json(JsonLibrary.Jackson, TravelRequest.class)
-        .to(RESULT_POOL)
+                .log("TO RESULT")
+                .to(RESULT_POOL)
         ;
 
         from(HANDLE_FLIGHT_ENDPOINT)
@@ -147,13 +157,4 @@ public class ProcessTravelRequest extends RouteBuilder {
             }
         }
     };
-
-    private static boolean matches(Exchange exchange) {
-        TravelRequest travelRequest = exchange.getIn().getBody(TravelRequest.class);
-        return travelRequest != null &&
-                travelRequest.getEmail() != null &&
-                travelRequest.getCar() != null &&
-                travelRequest.getHotel() != null &&
-                travelRequest.getFlight() != null;
-    }
 }

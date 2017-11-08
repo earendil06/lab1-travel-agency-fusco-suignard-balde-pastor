@@ -26,8 +26,8 @@ services:
       - "9380:8080"
 
   other-cars:
-    container_name: travel-cars
-    image: earendil06/travel-cars
+    container_name: other-cars
+    image: earendil06/other-cars
     ports:
       - "9060:9060"
 

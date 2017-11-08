@@ -23,7 +23,6 @@ public abstract class ActiveMQTest extends CamelTestSupport {
     /**
      * Handling ActiveMQ
      */
-
     private static BrokerService brokerSvc;
 
     @BeforeClass
@@ -43,9 +42,11 @@ public abstract class ActiveMQTest extends CamelTestSupport {
     @Override
     protected RouteBuilder createRouteBuilder() throws Exception {
         DeathPool deathPool = new DeathPool();
+//        IOErrorHandler ioErrorHandler = new IOErrorHandler();
         return new RouteBuilder() {
             @Override
             public void configure() throws Exception {
+//                this.includeRoutes(ioErrorHandler);
                 this.includeRoutes(deathPool);
                 this.setErrorHandlerBuilder(deathPool.getErrorHandlerBuilder());
                 this.includeRoutes(new ProcessTravelRequest());
@@ -130,5 +131,7 @@ public abstract class ActiveMQTest extends CamelTestSupport {
         finalRequest.setFlight(flight);
         finalRequest.setEmail("tata@toto.com");
     }
+
+
 
 }

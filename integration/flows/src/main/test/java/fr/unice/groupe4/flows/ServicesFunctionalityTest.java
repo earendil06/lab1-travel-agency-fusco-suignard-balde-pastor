@@ -1,5 +1,6 @@
 package fr.unice.groupe4.flows;
 
+import fr.unice.groupe4.flows.data.traveldata.TravelCar;
 import fr.unice.groupe4.flows.data.traveldata.TravelFlight;
 import org.apache.camel.Exchange;
 import org.junit.Before;
@@ -9,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import static fr.unice.groupe4.flows.utils.Endpoints.*;
 
-public class ExternalServicesTest extends ActiveMQTest {
+public class ServicesFunctionalityTest extends ActiveMQTest {
 
     @Override
     public String isMockEndpointsAndSkip() {
@@ -34,15 +35,20 @@ public class ExternalServicesTest extends ActiveMQTest {
                 + "|" + COMPARE_OTHER_CAR
                 + "|" + COMPARE_OUR_HOTEL
                 + "|" + COMPARE_OTHER_HOTEL
+
+                + "|" + TRAVEL_REQUEST_INPUT
+                + "|" + DEATH_POOL
+                + "|" + RESULT_POOL
                 ;
     }
 
     @Test
     public void testExecutionContext() throws Exception {
+        System.out.println();
         isAvailableAndMocked(CAR_ENDPOINT);
-//        isAvailableAndMocked(OTHER_CAR_ENDPOINT);
+        isAvailableAndMocked(OTHER_CAR_ENDPOINT);
         isAvailableAndMocked(HOTEL_ENDPOINT);
-//        isAvailableAndMocked(OTHER_HOTEL_ENDPOINT);
+        isAvailableAndMocked(OTHER_HOTEL_ENDPOINT);
         isAvailableAndMocked(FLIGHT_ENDPOINT);
         isAvailableAndMocked(OTHER_FLIGHT_ENDPOINT);
 
@@ -117,10 +123,10 @@ public class ExternalServicesTest extends ActiveMQTest {
                     "            \"country\": \"France\",\n" +
                     "            \"address\": \"7 Boyd Circle\",\n" +
                     "            \"city\": \"Menton\",\n" +
-                    "            \"name\": \"Green, Sauer and Durgan\"\n" +
+                    "            \"name\": \"Taxi Pastor\"\n" +
                     "        },\n" +
                     "        \"year\": 2005,\n" +
-                    "        \"priceperday\": 137.1,\n" +
+                    "        \"priceperday\": 14.2,\n" +
                     "        \"model\": \"Town & Country\",\n" +
                     "        \"id\": 1,\n" +
                     "        \"bookings\": [],\n" +
@@ -129,6 +135,7 @@ public class ExternalServicesTest extends ActiveMQTest {
             exc.getIn().setBody(template);
         });
 
+        //todo other hotel tests
         mock(OTHER_HOTEL_ENDPOINT).whenAnyExchangeReceived((Exchange exc) -> {
             String template = "";
             exc.getIn().setBody(template);
@@ -158,18 +165,18 @@ public class ExternalServicesTest extends ActiveMQTest {
         assertEquals(finalRequest.getCar().toString(), out.toString());
     }
 
-//    @Test
-//    public void testOtherCarExternal() throws Exception {
-//        mock(COMPARE_OTHER_CAR).expectedMessageCount(1);
-//        mock(OTHER_CAR_ENDPOINT).expectedMessageCount(1);
-//
-//        Object out = template.requestBody(COMPARE_OTHER_CAR, travelRequest.getCar());
-//        assertMockEndpointsSatisfied(10, TimeUnit.SECONDS);
-//
-//        TravelCar car = finalRequest.getCar();
-//        car.setUid("caruid");
-//        assertEquals(finalRequest.getCar().toString(), out.toString());
-//    }
+    @Test
+    public void testOtherCarExternal() throws Exception {
+        mock(COMPARE_OTHER_CAR).expectedMessageCount(1);
+        mock(OTHER_CAR_ENDPOINT).expectedMessageCount(1);
+
+        Object out = template.requestBody(COMPARE_OTHER_CAR, travelRequest.getCar());
+        assertMockEndpointsSatisfied(10, TimeUnit.SECONDS);
+
+        TravelCar car = finalRequest.getCar();
+        car.setUid("1");
+        assertEquals(finalRequest.getCar().toString(), out.toString());
+    }
 
     @Test
     public void testOurFlightExternal() throws Exception {
