@@ -10,6 +10,11 @@ build() { # $1: directory, $2: image_name
   cd ../..
 }
 
+cd ./deployment/
+mkdir camel_input
+mkdir camel_output
+cd ..
+
 # Compile services code
 mvn clean package
 
