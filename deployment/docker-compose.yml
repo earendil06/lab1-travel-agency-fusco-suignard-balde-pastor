@@ -65,8 +65,8 @@ services:
     ports:
       - "9160:8080"
 
-#  integration-bus:  # To attach to this container at runtime: docker exec -it integration sh
-  container_name: integration
+  integration-bus:  # To attach to this container at runtime: docker exec -it integration sh
+    container_name: integration
     image: integration
     volumes:
       - "./camel_input:/servicemix/camel/input"
