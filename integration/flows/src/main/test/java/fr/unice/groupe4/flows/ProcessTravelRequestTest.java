@@ -9,6 +9,9 @@ import java.util.concurrent.TimeUnit;
 
 import static fr.unice.groupe4.flows.utils.Endpoints.*;
 
+/**
+ * General tests, normal cases and special input cases.
+ */
 public class ProcessTravelRequestTest extends ActiveMQTest {
 
     @Override

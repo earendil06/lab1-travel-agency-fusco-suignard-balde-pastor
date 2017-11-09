@@ -65,6 +65,34 @@ services:
     ports:
       - "9160:8080"
 
+#  integration-bus:  # To attach to this container at runtime: docker exec -it integration sh
+  container_name: integration
+    image: integration
+    volumes:
+      - "./camel_input:/servicemix/camel/input"
+      - "./camel_output:/servicemix/camel/output"
+    ports:
+      - "8181:8181"
+      - "8101:8101"
+      - "1099:1099"
+      - "61616:61616"
+      - "44444:44444"
+    depends_on:
+      - our-flights
+      - our-cars
+      - our-hotels
+      - other-flights
+      - other-hotels
+      - other-cars
+
+  database:
+    container_name: tcs-database
+    image: mongo:3.0
+    volumes:
+      - "./mongo_data:/data/db"
+    ports:
+      - "27017:27017"
+
 #  travel-manager:
 #    container_name: travel-manager
 #    image: travel-manager
@@ -75,36 +103,6 @@ services:
 #      - database
 #    ports:
 #      - "9070:8080"
-
-
-#  integration-bus:  # To attach to this container at runtime: docker exec -it integration sh
-#    container_name: integration
-#    image: integration
-#    volumes:
-#      - "./camel_input:/servicemix/camel/input"
-#      - "./camel_output:/servicemix/camel/output"
-#    ports:
-#      - "8181:8181"
-#      - "8101:8101"
-#      - "1099:1099"
-#      - "61616:61616"
-#      - "44444:44444"
-#    depends_on:
-#      - our-flights
-#      - our-cars
-#      - our-hotels
-#      - other-flights
-#      - other-hotels
-#      - other-cars
-
-  database:
-    container_name: tcs-database
-    image: mongo:3.0
-    volumes:
-      - "./mongo_data:/data/db"
-    ports:
-      - "27017:27017"
-
 
 #  cadvisor:                       # Container monitoring, on port 8090
 #    container_name: tcs-monitoring
