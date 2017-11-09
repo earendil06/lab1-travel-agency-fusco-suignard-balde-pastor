@@ -41,10 +41,10 @@ public class HotelHelper {
         if(hotel == null || hotel.getPlace() == null || hotel.getDateArrival() == null) {
             return "";
         }
-        builder.append("/").append(hotel.getPlace());
-//                .append("/").append("PastorHotel")
-//                .append("/").append(hotel.getDateArrival().replace(".", "-"))
-//                .append("/").append(hotel.getDateDeparture().replace(".", "-"));
+        builder.append("/").append(hotel.getPlace())
+                .append("/").append("PastorHotel")
+                .append("/").append(hotel.getDateArrival().replace(".", "-"))
+                .append("/").append(hotel.getDateDeparture().replace(".", "-"));
         return builder.toString();
     }
 

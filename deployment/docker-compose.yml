@@ -77,13 +77,13 @@ services:
       - "1099:1099"
       - "61616:61616"
       - "44444:44444"
-    depends_on:
-      - our-flights
-      - our-cars
-      - our-hotels
-      - other-flights
-      - other-hotels
-      - other-cars
+#    depends_on:
+#      - our-flights
+#      - our-cars
+#      - our-hotels
+#      - other-flights
+#      - other-hotels
+#      - other-cars
 
   database:
     container_name: tcs-database

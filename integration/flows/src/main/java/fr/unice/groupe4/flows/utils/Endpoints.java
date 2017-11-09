@@ -29,7 +29,7 @@ public class Endpoints {
     public static final String HOTEL_ENDPOINT = "http:our-hotels:8080/service-hotel-planner/HotelPlannerService";
     public static final String FLIGHT_ENDPOINT = "http:our-flights:8080/tcs-service-doc/flights";
     public static final String OTHER_FLIGHT_ENDPOINT = "http:other-flights:8080/flightreservation-service-document/registry";
-    public static final String OTHER_HOTEL_ENDPOINT = "http:other-hotels:8080/tta-car-and-hotel/hotels/city";
+    public static final String OTHER_HOTEL_ENDPOINT = "http:other-hotels:8080/tta-car-and-hotel/hotels";
     public static final String OTHER_CAR_ENDPOINT = "http:other-cars:9060/cars";
     public static final String CAR_ENDPOINT = "http:our-cars:8080/service-car-planner/CarPlannerService";
 
