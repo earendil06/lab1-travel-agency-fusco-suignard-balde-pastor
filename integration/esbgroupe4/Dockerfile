@@ -1,7 +1,7 @@
 FROM openjdk:8-jdk-alpine
 
 # Build:                docker build -t esb . # Consider --no-cache if necessary
-# Interactive run:      docker run -it --entrypoint "sh" petitroll/esb
+# Interactive run:      docker run -it --entrypoint "sh" esb
 
 # Installing service mix from the Apache French Mirror
 RUN wget http://apache.mirrors.ovh.net/ftp.apache.org/dist/servicemix/servicemix-7/7.0.1/apache-servicemix-7.0.1.zip \

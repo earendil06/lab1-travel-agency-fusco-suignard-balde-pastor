@@ -38,8 +38,11 @@ public class HotelHelper {
 
     public String buildGetHotelForTravelOther(TravelHotel hotel) {
         StringBuilder builder = new StringBuilder();
+        if(hotel == null || hotel.getPlace() == null || hotel.getDateArrival() == null) {
+            return "";
+        }
         builder.append("/").append(hotel.getPlace())
-                .append("/").append(hotel.getName())
+                .append("/").append("PastorHotel")
                 .append("/").append(hotel.getDateArrival().replace(".", "-"))
                 .append("/").append(hotel.getDateDeparture().replace(".", "-"));
         return builder.toString();

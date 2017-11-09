@@ -32,9 +32,9 @@ services:
       - "9060:9060"
 
 #us
-  hotel-planner:
-    container_name: hotel-planner
-    image: hotel-planner
+  our-hotels:
+    container_name: our-hotels
+    image: earendil06/our-hotels
     environment:
       - db_host=tcs-database
       - db_port=27017
@@ -43,9 +43,9 @@ services:
     ports:
       - "9090:8080"
 
-  flight-planner:
-    container_name: tcs-flight
-    image: tcs-doc
+  our-flights:
+    container_name: our-flights
+    image: earendil06/our-flights
     environment:
       - db_host=tcs-database
       - db_port=27017
@@ -54,6 +54,16 @@ services:
     ports:
       - "9080:8080"
 
+  our-cars:
+    container_name: our-cars
+    image: earendil06/our-cars
+    environment:
+      - db_host=tcs-database
+      - db_port=27017
+    depends_on:
+      - database
+    ports:
+      - "9160:8080"
 
 #  travel-manager:
 #    container_name: travel-manager
@@ -66,36 +76,26 @@ services:
 #    ports:
 #      - "9070:8080"
 
-  car-planner:
-    container_name: car-planner
-    image: car-planner
-    environment:
-      - db_host=tcs-database
-      - db_port=27017
-    depends_on:
-      - database
-    ports:
-      - "9160:8080"
 
-  integration-bus:  # To attach to this container at runtime: docker exec -it tcs-bus sh
-    container_name: integration
-    image: integration
-    volumes:
-      - "./camel_input:/servicemix/camel/input"
-      - "./camel_output:/servicemix/camel/output"
-    ports:
-      - "8181:8181"
-      - "8101:8101"
-      - "1099:1099"
-      - "61616:61616"
-      - "44444:44444"
-    depends_on:
-      - hotel-planner
-      - car-planner
-      - flight-planner
-      - other-flights
-      - other-hotels
-      - other-cars
+#  integration-bus:  # To attach to this container at runtime: docker exec -it integration sh
+#    container_name: integration
+#    image: integration
+#    volumes:
+#      - "./camel_input:/servicemix/camel/input"
+#      - "./camel_output:/servicemix/camel/output"
+#    ports:
+#      - "8181:8181"
+#      - "8101:8101"
+#      - "1099:1099"
+#      - "61616:61616"
+#      - "44444:44444"
+#    depends_on:
+#      - our-flights
+#      - our-cars
+#      - our-hotels
+#      - other-flights
+#      - other-hotels
+#      - other-cars
 
   database:
     container_name: tcs-database
@@ -104,7 +104,6 @@ services:
       - "./mongo_data:/data/db"
     ports:
       - "27017:27017"
-
 
 
 #  cadvisor:                       # Container monitoring, on port 8090

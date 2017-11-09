@@ -36,9 +36,7 @@ public class TravelHotel implements Serializable {
         this.place = origin.getCity();
         this.dateArrival = origin.getArrivalDate();
         this.dateDeparture = origin.getDepartureDate();
-        System.out.println("TRAVELHOTEL PRICE CONSTRUCT");
         this.price = (int) (origin.getAmount() * origin.getNumberOfNight());
-        System.out.println("TRAVELHOTEL PRICE " + price);
         this.name = origin.getName();
         this.uid = String.valueOf(origin.getId());
     }

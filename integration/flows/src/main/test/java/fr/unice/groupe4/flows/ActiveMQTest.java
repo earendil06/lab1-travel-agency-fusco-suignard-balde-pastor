@@ -20,6 +20,14 @@ import java.util.Map;
 
 public abstract class ActiveMQTest extends CamelTestSupport {
 
+    public static double CHEAPEST_FLIGHT_PRICE = 42;
+    public static double CHEAPEST_CAR_PRICE = 10;
+    public static double CHEAPEST_HOTEL_PRICE = 299;
+
+    public static double HIGHEST_FLIGHT_PRICE = 100;
+    public static double HIGHEST_CAR_PRICE = 200;
+    public static double HIGHEST_HOTEL_PRICE = 300;
+
     /**
      * Handling ActiveMQ
      */
@@ -107,7 +115,7 @@ public abstract class ActiveMQTest extends CamelTestSupport {
         hotel.setPlace("Menton");
         hotel.setDateArrival("10.10.1010");
         hotel.setDateDeparture("11.11.1111");
-        hotel.setPrice(100);
+        hotel.setPrice((int) CHEAPEST_HOTEL_PRICE);
         hotel.setUid("hoteluid");
         hotel.setName("Pastor Hotel");
 
@@ -115,14 +123,14 @@ public abstract class ActiveMQTest extends CamelTestSupport {
         car.setPlace("Menton");
         car.setDuration(10);
         car.setName("Taxi Pastor");
-        car.setUid("caruid");
-        car.setPrice(142);
+        car.setUid("1");
+        car.setPrice(CHEAPEST_CAR_PRICE * 10);
 
         TravelFlight flight = new TravelFlight();
         flight.setDestination("Menton");
         flight.setDate("10.10.1010");
         flight.setIsDirect(true);
-        flight.setPrice(42);
+        flight.setPrice(CHEAPEST_FLIGHT_PRICE);
         flight.setId("714"); //best reference ever, +9999 point.
 
         finalRequest = new TravelRequest();

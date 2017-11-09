@@ -178,29 +178,18 @@ public class ServicesResiliencyTests extends ActiveMQTest {
         assertMockEndpointsSatisfied(10, TimeUnit.SECONDS);
     }
 
-    private void mockFlightAndCarResult() {
+    private void mockFlights() {
         mock(FLIGHT_ENDPOINT).whenAnyExchangeReceived((Exchange exc) -> {
             String template = "[ {\n" +
                     "    \"date\": \"10.10.1010\",\n" +
                     "    \"duration\": 12,\n" +
                     "    \"uid\": \"714\",\n" +
                     "    \"hour\": \"10.10\",\n" +
-                    "    \"price\": 43,\n" +
+                    "    \"price\": " + HIGHEST_FLIGHT_PRICE + ",\n" +
                     "    \"direct\": true,\n" +
                     "    \"from\": \"Cogolin\",\n" +
                     "    \"to\": \"Menton\"\n" +
                     "  }\n ]";
-            exc.getIn().setBody(template);
-        });
-
-        mock(CAR_ENDPOINT).whenAnyExchangeReceived((Exchange exc) -> {
-            String template = "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-                    "    <soap:Body>\n" +
-                    "        <ns2:getCarByPlaceResponse xmlns:ns2=\"http://service.planner/\">\n" +
-                    "            <car_planner_result>[{\"duration\":10,\"uid\":\"caruid\",\"name\":\"Taxi Pastor\",\"place\":\"Menton\",\"price\":142}]</car_planner_result>\n" +
-                    "        </ns2:getCarByPlaceResponse>\n" +
-                    "    </soap:Body>\n" +
-                    "</soap:Envelope>";
             exc.getIn().setBody(template);
         });
 
@@ -210,7 +199,7 @@ public class ServicesResiliencyTests extends ActiveMQTest {
                     "    \"vols\": [\n" +
                     "        {\n" +
                     "            \"date\": \"10.10.1010\",\n" +
-                    "            \"price\": \"42\",\n" +
+                    "            \"price\": \"" + CHEAPEST_FLIGHT_PRICE + "\",\n" +
                     "            \"destination\": \"Menton\",\n" +
                     "            \"id\": \"714\",\n" +
                     "            \"stops\": [],\n" +
@@ -218,6 +207,20 @@ public class ServicesResiliencyTests extends ActiveMQTest {
                     "        }\n" +
                     "    ]\n" +
                     "}";
+            exc.getIn().setBody(template);
+        });
+    }
+
+    private void mockCars() {
+        mock(CAR_ENDPOINT).whenAnyExchangeReceived((Exchange exc) -> {
+            String template = "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                    "    <soap:Body>\n" +
+                    "        <ns2:getCarByPlaceResponse xmlns:ns2=\"http://service.planner/\">\n" +
+                    "            <car_planner_result>[{\"duration\":10,\"uid\":\"caruid\"," +
+                    "\"name\":\"Taxi Pastor\",\"place\":\"Menton\",\"price\":" + HIGHEST_CAR_PRICE + "}]</car_planner_result>\n" +
+                    "        </ns2:getCarByPlaceResponse>\n" +
+                    "    </soap:Body>\n" +
+                    "</soap:Envelope>";
             exc.getIn().setBody(template);
         });
 
@@ -231,7 +234,7 @@ public class ServicesResiliencyTests extends ActiveMQTest {
                     "            \"name\": \"Taxi Pastor\"\n" +
                     "        },\n" +
                     "        \"year\": 2005,\n" +
-                    "        \"priceperday\": 14.2,\n" +
+                    "        \"priceperday\": " + CHEAPEST_CAR_PRICE + ",\n" +
                     "        \"model\": \"Town & Country\",\n" +
                     "        \"id\": 1,\n" +
                     "        \"bookings\": [],\n" +
@@ -242,14 +245,32 @@ public class ServicesResiliencyTests extends ActiveMQTest {
     }
 
     /**
-     * Mock a result on Car and Hotel endpoints but not on Hotel. <br />
+     * Actually only one hotel service.
+     */
+    private void mockHotels() {
+        mock(HOTEL_ENDPOINT).whenAnyExchangeReceived((Exchange exc) -> {
+            String template = "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                    "    <soap:Body>\n" +
+                    "        <ns2:getHotelsForTravelResponse xmlns:ns2=\"http://service.planner/\">\n" +
+                    "            <hotel_planner_result>[{\"uid\":\"hoteluid\",\"dateArrival\":\"10.10.1010\"," +
+                    "\"price\":" + CHEAPEST_HOTEL_PRICE + ",\"name\":\"Pastor Hotel\",\"place\":\"Menton\",\"dateDeparture\":\"11.11.1111\"}]</hotel_planner_result>\n" +
+                    "        </ns2:getHotelsForTravelResponse>\n" +
+                    "    </soap:Body>\n" +
+                    "</soap:Envelope>";
+            exc.getIn().setBody(template);
+        });
+    }
+
+    /**
+     * Mock a result on Car and Flight endpoints but not on Hotel. <br />
      * Should finish with hotel = null and other with a value.
      *
      * @throws Exception ignore
      */
     @Test
     public void allFlowWithoutHotelResiliencyTest() throws Exception {
-        mockFlightAndCarResult();
+        mockFlights();
+        mockCars();
 
         mock(TRAVEL_REQUEST_INPUT).expectedMessageCount(1);
 
@@ -263,7 +284,7 @@ public class ServicesResiliencyTests extends ActiveMQTest {
         mock(CAR_ENDPOINT).expectedMessageCount(1);
         mock(OTHER_CAR_ENDPOINT).expectedMessageCount(1);
 
-        //hotel is expected to retry his request 3 times
+        //hotel is expected to try his request 3 times
         mock(COMPARE_OUR_HOTEL).expectedMessageCount(1);
         mock(COMPARE_OTHER_HOTEL).expectedMessageCount(1);
         mock(HOTEL_ENDPOINT).expectedMessageCount(3);
@@ -281,6 +302,102 @@ public class ServicesResiliencyTests extends ActiveMQTest {
                         "\"flight\":" + gson.toJson(finalRequest.getFlight()) + "," +
                         "\"hotel\":null," +
                         "\"car\":" + gson.toJson(finalRequest.getCar()) +
+                        "}";
+        mock(RESULT_POOL).expectedBodiesReceived(expected);
+
+        assertMockEndpointsSatisfied(10, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Mock a result on Car and Hotel endpoints but not on Flight. <br />
+     * Should finish with flight = null and other with a value.
+     *
+     * @throws Exception ignore
+     */
+    @Test
+    public void allFlowWithoutFlightResiliencyTest() throws Exception {
+        mockHotels();
+        mockCars();
+
+        mock(TRAVEL_REQUEST_INPUT).expectedMessageCount(1);
+
+        //flight is expected to try his request 3 times
+        mock(COMPARE_OUR_FLIGHT).expectedMessageCount(1);
+        mock(COMPARE_OTHER_FLIGHT).expectedMessageCount(1);
+        mock(FLIGHT_ENDPOINT).expectedMessageCount(3);
+        mock(OTHER_FLIGHT_ENDPOINT).expectedMessageCount(3);
+
+        mock(COMPARE_OUR_CAR).expectedMessageCount(1);
+        mock(COMPARE_OTHER_CAR).expectedMessageCount(1);
+        mock(CAR_ENDPOINT).expectedMessageCount(1);
+        mock(OTHER_CAR_ENDPOINT).expectedMessageCount(1);
+
+        mock(COMPARE_OUR_HOTEL).expectedMessageCount(1);
+        mock(COMPARE_OTHER_HOTEL).expectedMessageCount(1);
+        mock(HOTEL_ENDPOINT).expectedMessageCount(1);
+        //hotel is expected to try his request 3 times
+        mock(OTHER_HOTEL_ENDPOINT).expectedMessageCount(3);
+
+        mock(RESULT_POOL).expectedMessageCount(1);
+
+        Gson gson = new Gson();
+        String travelRequestJson = gson.toJson(travelRequest);
+        template.sendBody(TRAVEL_REQUEST_INPUT, travelRequestJson);
+
+        String expected =
+                "{" +
+                        "\"email\":" + gson.toJson(finalRequest.getEmail()) + "," +
+                        "\"flight\":null," +
+                        "\"hotel\":" + gson.toJson(finalRequest.getHotel()) + "," +
+                        "\"car\":" + gson.toJson(finalRequest.getCar()) +
+                        "}";
+        mock(RESULT_POOL).expectedBodiesReceived(expected);
+
+        assertMockEndpointsSatisfied(10, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Mock a result on Flight and Hotel endpoints but not on Car. <br />
+     * Should finish with car = null and other with a value.
+     *
+     * @throws Exception ignore
+     */
+    @Test
+    public void allFlowWithoutCarResiliencyTest() throws Exception {
+        mockHotels();
+        mockFlights();
+
+        mock(TRAVEL_REQUEST_INPUT).expectedMessageCount(1);
+
+        mock(COMPARE_OUR_FLIGHT).expectedMessageCount(1);
+        mock(COMPARE_OTHER_FLIGHT).expectedMessageCount(1);
+        mock(FLIGHT_ENDPOINT).expectedMessageCount(1);
+        mock(OTHER_FLIGHT_ENDPOINT).expectedMessageCount(1);
+
+        //cars is expected to try his request 3 times
+        mock(COMPARE_OUR_CAR).expectedMessageCount(1);
+        mock(COMPARE_OTHER_CAR).expectedMessageCount(1);
+        mock(CAR_ENDPOINT).expectedMessageCount(3);
+        mock(OTHER_CAR_ENDPOINT).expectedMessageCount(3);
+
+        mock(COMPARE_OUR_HOTEL).expectedMessageCount(1);
+        mock(COMPARE_OTHER_HOTEL).expectedMessageCount(1);
+        mock(HOTEL_ENDPOINT).expectedMessageCount(1);
+        //hotel is expected to try his request 3 times
+        mock(OTHER_HOTEL_ENDPOINT).expectedMessageCount(3);
+
+        mock(RESULT_POOL).expectedMessageCount(1);
+
+        Gson gson = new Gson();
+        String travelRequestJson = gson.toJson(travelRequest);
+        template.sendBody(TRAVEL_REQUEST_INPUT, travelRequestJson);
+
+        String expected =
+                "{" +
+                        "\"email\":" + gson.toJson(finalRequest.getEmail()) + "," +
+                        "\"flight\":" + gson.toJson(finalRequest.getFlight()) + "," +
+                        "\"hotel\":" + gson.toJson(finalRequest.getHotel()) + "," +
+                        "\"car\":null" +
                         "}";
         mock(RESULT_POOL).expectedBodiesReceived(expected);
 

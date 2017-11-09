@@ -29,6 +29,9 @@ public class FlightHelper {
         Gson gson = new Gson();
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> filter = new HashMap<>();
+        if (flight.getDestination() == null || flight.getDestination().isEmpty()) {
+            return "";
+        }
         filter.put("destination", flight.getDestination());
         if (flight.getDate() != null) {
             filter.put("date", flight.getDate());

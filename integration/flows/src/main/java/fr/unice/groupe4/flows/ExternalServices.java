@@ -46,14 +46,21 @@ public class ExternalServices extends RouteBuilder {
                 .process(exchange -> exchange.getIn().setBody(null))
                 .continued(true).end()
                 .bean(HotelHelper.class, "buildGetHotelForTravelOther(${body})")
-                .setHeader(Exchange.HTTP_METHOD, constant("GET"))
-                .setHeader("Accept", constant("application/json"))
-                .setProperty("request", simple("${body}"))
-                .setHeader(Exchange.HTTP_QUERY, simple("${body}"))
-                .setBody(simple(""))
-                .inOut(OTHER_HOTEL_ENDPOINT.replace("http:", "http://"))
-                .removeProperty("request")
-                .process(HotelHelper.result2OtherHotel)
+                .choice()
+                    .when(body().isNotEqualTo(""))
+                        .setHeader(Exchange.HTTP_METHOD, constant("GET"))
+                        .setHeader("Accept", constant("application/json"))
+                        .setProperty("request", simple("${body}"))
+                        .setHeader(Exchange.HTTP_URI,
+                                simple(OTHER_HOTEL_ENDPOINT.replace("http:", "http://") + "${body}"))
+                        .setBody(simple(""))
+                        .inOut(OTHER_HOTEL_ENDPOINT.replace("http:", "http://"))
+                        .removeProperty("request")
+                        .process(HotelHelper.result2OtherHotel)
+                    .otherwise()
+                        .setBody(simple(""))
+                        .log("NO HOTEL")
+                .end()
         ;
 
         from(COMPARE_FLIGHT_ENDPOINT)
@@ -93,7 +100,6 @@ public class ExternalServices extends RouteBuilder {
                 .bean(FlightHelper.class, "buildGetFlightForTravelOther(${body})")
                 .inOut(OTHER_FLIGHT_ENDPOINT.replace("http:", "http://"))
                 .process(FlightHelper.result2OtherFlight)
-
         ;
 
         from(COMPARE_CAR_ENDPOINT)

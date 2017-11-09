@@ -29,9 +29,9 @@ mvn clean package
 #cd ..
 
 #our group
-#docker pull earendil06/
-#docker pull earendil06/
-#docker pull earendil06/
+docker pull earendil06/our-flights
+docker pull earendil06/our-hotels
+docker pull earendil06/our-cars
 
 #other groups
 docker pull earendil06/other-flights
