@@ -60,6 +60,7 @@ public abstract class ActiveMQTest extends CamelTestSupport {
                 this.includeRoutes(new ProcessTravelRequest());
                 this.includeRoutes(new ExternalServices());
                 this.includeRoutes(new SendToManager());
+                this.includeRoutes(new SupportingRouter());
             }
         };
     }
