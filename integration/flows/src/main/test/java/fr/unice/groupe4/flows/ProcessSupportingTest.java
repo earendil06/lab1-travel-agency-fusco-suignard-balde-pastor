@@ -1,4 +1,4 @@
-package java.fr.unice.groupe4.flows;
+package fr.unice.groupe4.flows;
 
 import com.google.gson.Gson;
 import fr.unice.groupe4.flows.data.Expense;

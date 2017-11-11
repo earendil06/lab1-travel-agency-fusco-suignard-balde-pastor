@@ -52,6 +52,10 @@ public class Endpoints {
     public static final String COMPARE_OUR_CAR = "direct:ourCar";
     public static final String COMPARE_OTHER_CAR = "direct:otherCar";
 
+    public static final String MANAGER1_ENDPOINT = "direct:manager1";
+    public static final String MANAGER2_ENDPOINT = "direct:manager2";
+    public static final String RETRY_ENDPOINT = "direct:retry";
+
 //    public static final String HOTEL_ENDPOINT = "http:localhost:9090/service-hotel-planner/HotelPlannerService";
 //    public static final String FLIGHT_ENDPOINT = "http:localhost:9080/tcs-service-doc/flights";
 //    public static final String OTHER_FLIGHT_ENDPOINT = "http:localhost:9180/flightreservation-service-document/registry";

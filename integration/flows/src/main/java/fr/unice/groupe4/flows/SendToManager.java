@@ -19,9 +19,9 @@ public class SendToManager extends RouteBuilder {
                 .routeId("Result Queue")
                 .routeDescription("Queue receiving the final request and sending it to a manager")
                 .loadBalance().failover(IOException.class)
-                .to("direct:manager1", "direct:manager2");
+                .to(MANAGER1_ENDPOINT, MANAGER2_ENDPOINT);
 
-        from("direct:manager1")
+        from(MANAGER1_ENDPOINT)
                 .routeId("manager1")
                 .routeDescription("send the request to the first instance of the manager service")
                 .log("MANAGER1")
@@ -32,7 +32,7 @@ public class SendToManager extends RouteBuilder {
                 .log("MANAGER1 new ID in Travel Service is ${body}")
         ;
 
-        from("direct:manager2")
+        from(MANAGER2_ENDPOINT)
                 .routeId("manager2")
                 .routeDescription("send the request to the second instance of the manager service")
                 .onException(IOException.class)
@@ -55,10 +55,10 @@ public class SendToManager extends RouteBuilder {
                 .routeId("retry timer")
                 .routeDescription("route that wakes every minute to retry failed request to the manager services")
                 .log("RETRYING MISSED RESULT")
-                .to("direct:retry")
+                .to(RETRY_ENDPOINT)
         ;
 
-        from("direct:retry")
+        from(RETRY_ENDPOINT)
                 .process(exchange -> {
                     ConsumerTemplate consumerTemplate = getContext().createConsumerTemplate();
                     Object receive = consumerTemplate.receiveBody(RETRY_MESSAGE_QUEUE, 100);
@@ -66,12 +66,12 @@ public class SendToManager extends RouteBuilder {
                     exchange.getIn().setBody(receive);
                 })
                 .choice()
-                .when(body().isNotEqualTo(null))
-                .log("RETRYING A MISSED REQUEST")
-                .to(RESULT_POOL)
-                .to("direct:retry")
-                .otherwise()
-                .log("NOTHING TO RETRY")
+                    .when(body().isNotEqualTo(null))
+                        .log("RETRYING A MISSED REQUEST")
+                        .to(RESULT_POOL)
+                        .to(RETRY_ENDPOINT)
+                    .otherwise()
+                        .log("NOTHING TO RETRY")
                 .end()
         ;
     }
