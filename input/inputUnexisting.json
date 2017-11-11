@@ -1,0 +1,6 @@
+{
+	"email" : "toto@toto.com",
+	"flight" : { "destination" : "nowhere" },
+	"car" : { "place" : "nowhere", "duration": 2},
+	"hotel" : { "place" : "nowhere", "dateArrival" : "11.11.2016", "dateDeparture" : "18.11.2016" }
+}

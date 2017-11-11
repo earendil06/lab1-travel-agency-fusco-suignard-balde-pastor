@@ -65,6 +65,17 @@ services:
     ports:
       - "9160:8080"
 
+  travel-manager2:
+    container_name: travel-manager2
+    image: travel-manager
+    environment:
+      - db_host=tcs-database
+      - db_port=27017
+    depends_on:
+      - database
+    ports:
+      - "9071:8080"
+
   integration-bus:  # To attach to this container at runtime: docker exec -it integration sh
     container_name: integration
     image: integration
@@ -93,16 +104,16 @@ services:
     ports:
       - "27017:27017"
 
-#  travel-manager:
-#    container_name: travel-manager
-#    image: travel-manager
-#    environment:
-#      - db_host=tcs-database
-#      - db_port=27017
-#    depends_on:
-#      - database
-#    ports:
-#      - "9070:8080"
+  travel-manager:
+    container_name: travel-manager
+    image: travel-manager
+    environment:
+      - db_host=tcs-database
+      - db_port=27017
+    depends_on:
+      - database
+    ports:
+      - "9070:8080"
 
 #  cadvisor:                       # Container monitoring, on port 8090
 #    container_name: tcs-monitoring

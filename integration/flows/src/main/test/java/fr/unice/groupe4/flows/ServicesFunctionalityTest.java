@@ -41,6 +41,7 @@ public class ServicesFunctionalityTest extends ActiveMQTest {
                 + "|" + HANDLE_FLIGHT_ENDPOINT
                 + "|" + HANDLE_HOTEL_ENDPOINT
 
+                + "|" + HANDLE_REQUEST
                 + "|" + TRAVEL_REQUEST_INPUT
                 + "|" + DEATH_POOL
                 + "|" + RESULT_POOL

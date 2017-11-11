@@ -1,0 +1,6 @@
+{
+	"email" : "ghn@toto.com",
+	"flight" : { "destination" : "Menton" },
+	"car" : { "place" : "Menton", "duration": 20},
+	"hotel" : { "place" : "Menton", "dateArrival" : "01.01.2016", "dateDeparture" : "20.12.2016" }
+}

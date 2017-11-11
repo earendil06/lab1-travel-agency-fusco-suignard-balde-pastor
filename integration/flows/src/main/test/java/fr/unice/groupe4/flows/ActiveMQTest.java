@@ -59,6 +59,7 @@ public abstract class ActiveMQTest extends CamelTestSupport {
                 this.setErrorHandlerBuilder(deathPool.getErrorHandlerBuilder());
                 this.includeRoutes(new ProcessTravelRequest());
                 this.includeRoutes(new ExternalServices());
+                this.includeRoutes(new SendToManager());
             }
         };
     }

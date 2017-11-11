@@ -1,6 +1,0 @@
-{
-	"email" : "toto@toto.com",
-    	"car" : { "place" : "Menton", "duration": 2},
-    	"hotel" : { "place" : "Menton", "dateArrival" : "11.11.2016", "dateDeparture" : "18.11.2016" }
-}
-

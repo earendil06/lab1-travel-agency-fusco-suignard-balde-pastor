@@ -1,0 +1,6 @@
+{
+	"email" : "tata@tata.fr",
+	"flight" : { "destination" : "Cogolin" },
+	"car" : { "place" : "Cogolin", "duration": 4},
+	"hotel" : { "place" : "Cogolin", "dateArrival" : "22.12.2017", "dateDeparture" : "30.12.2017" }
+}

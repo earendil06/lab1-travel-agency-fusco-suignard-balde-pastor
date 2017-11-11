@@ -38,33 +38,45 @@ public class ProcessTravelRequest extends RouteBuilder {
                 .doTry()
                     .unmarshal().json(JsonLibrary.Jackson, Map.class)
                     .process(exchange ->
-                            exchange.setProperty(NUMBER_OF_DATA, exchange.getIn().getBody(Map.class).size()))
-                    .log("numberOfData ${exchangeProperty["+NUMBER_OF_DATA+"]}")
+                        exchange.setProperty(NUMBER_OF_DATA, exchange.getIn().getBody(Map.class).size()))
+                    .log("numberOfData ${exchangeProperty[" + NUMBER_OF_DATA + "]}")
                 .doCatch(JsonParseException.class)
                     .log("Exception in INPUT")
-                    .to(DEATH_POOL)
+                    .setProperty("isFailed", simple("true"))
+                    .setBody(simple("FAILED MESSAGE"))
                 .end()
+                .choice()
+                    .when(simple("${property[isFailed]} == 'true'"))
+                        .log("STOP HERE")
+                        .removeProperty("isFailed")
+                        .to(BAD_INPUT_QUEUE)
+                    .otherwise()
+                        .to(HANDLE_REQUEST)
+                .end()
+        ;
+
+        from(HANDLE_REQUEST)
                 .split().method(TravelRequestSplitter.class, "split")
-                    .parallelProcessing().executorService(WORKERS)
-                    .choice()
-                        .when(header(TYPE).isEqualTo(EMAIL))
-                            .log("email is ${body}")
+                .parallelProcessing().executorService(WORKERS)
+                .choice()
+                    .when(header(TYPE).isEqualTo(EMAIL))
+                        .log("email is ${body}")
 
-                        .when(header(TYPE).isEqualTo(FLIGHT))
-                            .inOut(HANDLE_FLIGHT_ENDPOINT)
+                    .when(header(TYPE).isEqualTo(FLIGHT))
+                        .inOut(HANDLE_FLIGHT_ENDPOINT)
 
-                        .when(header(TYPE).isEqualTo(CAR))
-                            .inOut(HANDLE_CAR_ENDPOINT)
+                    .when(header(TYPE).isEqualTo(CAR))
+                        .inOut(HANDLE_CAR_ENDPOINT)
 
-                        .when(header(TYPE).isEqualTo(HOTEL))
-                            .inOut(HANDLE_HOTEL_ENDPOINT)
+                    .when(header(TYPE).isEqualTo(HOTEL))
+                        .inOut(HANDLE_HOTEL_ENDPOINT)
 
-                        .otherwise()
-                            .to(DEATH_POOL)
-                    .end()
-                    .aggregate(constant(true), merge)
-                    .completionSize(simple("${exchangeProperty["+NUMBER_OF_DATA+"]}"))
-                    .log("after aggregation ${body}")
+                    .otherwise()
+                        .to(DEATH_POOL)
+                .end()
+                .aggregate(constant(true), merge)
+                .completionSize(simple("${exchangeProperty[" + NUMBER_OF_DATA + "]}"))
+                .log("after aggregation ${body}")
                 .marshal().json(JsonLibrary.Jackson, TravelRequest.class)
                 .log("TO RESULT")
                 .to(RESULT_POOL)
@@ -88,8 +100,10 @@ public class ProcessTravelRequest extends RouteBuilder {
                 .process(ProcessTravelRequest::json2hotel)
                 .inOut(COMPARE_HOTEL_ENDPOINT);
 
-    }
+        from(BAD_INPUT_QUEUE)
+                .log("received bad input ${body}");
 
+    }
     private static void json2car(Exchange exchange) {
         Gson gson = new Gson();
         String s = exchange.getIn().getBody(String.class);

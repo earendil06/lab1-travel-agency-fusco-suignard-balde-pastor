@@ -1,16 +1,29 @@
 package fr.unice.groupe4.flows.data.traveldata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 
 public class TravelRequest implements Serializable {
-    @JsonProperty("email") private String email;
-    @JsonProperty("flight") private TravelFlight flight;
-    @JsonProperty("hotel") private TravelHotel hotel;
-    @JsonProperty("car") private TravelCar car;
+    @JsonProperty("email")
+    private String email;
+    @JsonProperty("flight")
+    private TravelFlight flight;
+    @JsonProperty("hotel")
+    private TravelHotel hotel;
+    @JsonProperty("car")
+    private TravelCar car;
 
     public TravelRequest() {
+    }
+
+    public TravelRequest(ManagerTravelRequest managerTravelRequest) {
+        this.email = managerTravelRequest.getEmail();
+        Gson gson = new Gson();
+        this.flight = gson.fromJson(managerTravelRequest.getFlights().get(0), TravelFlight.class);
+        this.car = gson.fromJson(managerTravelRequest.getCars().get(0), TravelCar.class);
+        this.hotel = gson.fromJson(managerTravelRequest.getHotels().get(0), TravelHotel.class);
     }
 
     public String getEmail() {

@@ -41,6 +41,7 @@ public class ServicesResiliencyTests extends ActiveMQTest {
                 + "|" + COMPARE_OUR_HOTEL
                 + "|" + COMPARE_OTHER_HOTEL
 
+                + "|" + HANDLE_REQUEST
                 + "|" + TRAVEL_REQUEST_INPUT
                 + "|" + DEATH_POOL
                 + "|" + RESULT_POOL

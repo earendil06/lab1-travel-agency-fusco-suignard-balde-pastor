@@ -26,17 +26,25 @@ public class Endpoints {
     public static final String COMPARE_FLIGHT_ENDPOINT = "activemq:compare-flight";
     public static final String COMPARE_CAR_ENDPOINT = "activemq:compare-car";
 
+    public static final String MIN_TIME_BETWEEN_RETRY = "60000";
+    public static final String TIMER_ENDPOINT = "timer://foo?fixedRate=true&period=" + MIN_TIME_BETWEEN_RETRY;
+    public static final String RETRY_MESSAGE_QUEUE = "activemq:retry";
+
     public static final String HOTEL_ENDPOINT = "http:our-hotels:8080/service-hotel-planner/HotelPlannerService";
     public static final String FLIGHT_ENDPOINT = "http:our-flights:8080/tcs-service-doc/flights";
     public static final String OTHER_FLIGHT_ENDPOINT = "http:other-flights:8080/flightreservation-service-document/registry";
     public static final String OTHER_HOTEL_ENDPOINT = "http:other-hotels:8080/tta-car-and-hotel/hotels";
     public static final String OTHER_CAR_ENDPOINT = "http:other-cars:9060/cars";
     public static final String CAR_ENDPOINT = "http:our-cars:8080/service-car-planner/CarPlannerService";
+    public static final String TRAVEL_ENDPOINT = "http:travel-manager:8080/service-travel-manager/TravelPlannerService/request";
+    public static final String TRAVEL_ENDPOINT2 = "http:travel-manager2:8080/service-travel-manager/TravelPlannerService/request";
 
     public static final String DEATH_POOL = "activemq:global:dead";
+    public static final String BAD_INPUT_QUEUE = "activemq:badinput";
 
     public static final String RESULT_POOL = "activemq:result";
 
+    public static final String HANDLE_REQUEST = "direct:handleRequest";
     public static final String COMPARE_OUR_FLIGHT = "direct:ourFlight";
     public static final String COMPARE_OTHER_FLIGHT = "direct:otherFlight";
     public static final String COMPARE_OUR_HOTEL = "direct:ourHotel";
@@ -50,4 +58,6 @@ public class Endpoints {
 //    public static final String OTHER_HOTEL_ENDPOINT = "http:localhost:9380/tta-car-and-hotel/hotels";
 //    public static final String OTHER_CAR_ENDPOINT = "http:localhost:9060/cars";
 //    public static final String CAR_ENDPOINT = "http:localhost:9160/service-car-planner/CarPlannerService";
+//    public static final String TRAVEL_ENDPOINT = "http:localhost:9070/service-travel-manager/TravelPlannerService/request";
+//    public static final String TRAVEL_ENDPOINT2 = "http:localhost:9071/service-travel-manager/TravelPlannerService/request";
 }

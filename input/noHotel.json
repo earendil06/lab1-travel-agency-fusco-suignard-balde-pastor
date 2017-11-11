@@ -1,0 +1,5 @@
+{
+	"email" : "toto@toto.com",
+	"flight" : { "destination" : "Menton" },
+	"car" : { "place" : "Menton", "duration": 2}
+}
