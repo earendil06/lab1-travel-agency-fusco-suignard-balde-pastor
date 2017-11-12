@@ -12,14 +12,16 @@ build() { # $1: directory, $2: image_name
 
 cd ./deployment/
 mkdir camel_input
+mkdir camel_mail
 mkdir camel_output
+mkdir camel_archive
 cd ..
 
 # Compile services code
 mvn clean package
 
 # Build docker images
-build services/travel-manager travel-manager
+#build services/travel-manager travel-manager
 #build services/hotel-planner  hotel-planner
 #build services/car-planner    car-planner
 #build services/document       tcs-doc
@@ -32,12 +34,13 @@ cd integration
 docker build -t integration . #--no-cache
 cd ..
 
-#our group
+##our group
 docker pull earendil06/our-flights
 docker pull earendil06/our-hotels
 docker pull earendil06/our-cars
+docker pull anthonyfusco/travel-manager
 
-#other groups
+##other groups
 docker pull earendil06/other-flights
 docker pull earendil06/other-hotels
 docker pull earendil06/other-cars

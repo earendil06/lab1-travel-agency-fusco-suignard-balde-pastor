@@ -11,7 +11,7 @@ echo " ____   ___    _       ____                              _  _
 echo -e "\033[0m"
 
 echo "running ..."
-
+echo "pensez à avoir vivant le container travel-manager ou travel-manager2 a la fin du run pour voir les messages échoués être relancer!"
 i=0
 until [ ${i} -eq 20  ]; do
     ./sendInput.sh ./input/input1.json
@@ -42,6 +42,12 @@ until [ ${i} -eq 20  ]; do
     ./sendInput.sh ./input/inputFail.json
 
     sleep 1s
+
+    ./sendInput.sh ./input/expense.json
+    ./sendInput.sh ./input/expense1.json
+    ./sendInput.sh ./input/expense2.json
+    ./sendInput.sh ./input/expense3.json
+
     i=$((i+1))
 done
 

@@ -1,0 +1,7 @@
+{
+  "id" : "2",
+  "name" : "deplacement",
+  "type" : "car",
+  "price" : 300,
+  "city" : "Nice"
+}
